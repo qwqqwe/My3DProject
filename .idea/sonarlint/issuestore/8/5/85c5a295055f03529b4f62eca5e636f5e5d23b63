@@ -1,0 +1,10 @@
+
+hpython:S1542"PRename function "Point_Show" to match the regular expression ^[a-z_][a-z0-9_]*$.(öâ´‘
+Kpython:S1172/"3Remove the unused function parameter "correlation".(Ãäó×
+apython:S1542/"IRename function "PCA" to match the regular expression ^[a-z_][a-z0-9_]*$.(Ãäó×
+npython:S1542?"VRename function "Point_Cloud_Show" to match the regular expression ^[a-z_][a-z0-9_]*$.(ËÉ°Á
+dpython:S1542]"LRename function "Router" to match the regular expression ^[a-z_][a-z0-9_]*$.(Çð·…
+gpython:S1542v"ORename function "NamePoint" to match the regular expression ^[a-z_][a-z0-9_]*$.(Õ‘ŽÔ
+>python:S125ˆ"Remove this commented out code.(°±€Í8íñÅ¼¦0
+=python:S125¢"Remove this commented out code.(¹ö¢N8ÑÃÂ¼¦0
+<python:S125ç"Remove this commented out code.(¬ª…¾ýÿÿÿÿ

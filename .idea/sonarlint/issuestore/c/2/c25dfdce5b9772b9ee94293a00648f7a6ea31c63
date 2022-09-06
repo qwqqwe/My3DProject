@@ -1,0 +1,24 @@
+
+6python:S125"Remove this commented out code.(²âòµ
+hpython:S1542"PRename function "Point_Show" to match the regular expression ^[a-z_][a-z0-9_]*$.(öâ´‘
+6python:S125)"Remove this commented out code.(…É¦“
+Kpython:S1172?"3Remove the unused function parameter "correlation".(Ãäó×
+apython:S1542?"IRename function "PCA" to match the regular expression ^[a-z_][a-z0-9_]*$.(Ãäó×
+npython:S1542O"VRename function "Point_Cloud_Show" to match the regular expression ^[a-z_][a-z0-9_]*$.(ËÉ°Á
+npython:S1542Y"QRename function "Change_Show" to match the regular expression ^[a-z_][a-z0-9_]*$.(Ý¡ìøüÿÿÿÿ
+epython:S1542™"LRename function "Router" to match the regular expression ^[a-z_][a-z0-9_]*$.(Çð·…
+hpython:S1542²"ORename function "NamePoint" to match the regular expression ^[a-z_][a-z0-9_]*$.(Õ‘ŽÔ
+ypython:S1186Â"[Add a nested comment explaining why this function is empty, or complete the implementation.(öæÀ£úÿÿÿÿ
+<python:S125Ò"Remove this commented out code.(ì×Ð¯üÿÿÿÿ
+<python:S125Ø"Remove this commented out code.(¾êèõþÿÿÿÿ
+<python:S125Û"Remove this commented out code.(ï«¨¼ÿÿÿÿÿ
+7python:S125Ý"Remove this commented out code.(°±€Í
+7python:S125ê"Remove this commented out code.(˜µÉØ
+<python:S125†"Remove this commented out code.(›‘Ðÿÿÿÿÿ
+7python:S125”"Remove this commented out code.(„¨¥è
+7python:S125¬"Remove this commented out code.(žÑ…Ü
+7python:S125µ"Remove this commented out code.(„¨¥è
+7python:S125Ä"Remove this commented out code.(­”þ…
+7python:S125Í"Remove this commented out code.(¿½×ú
+<python:S125Ò"Remove this commented out code.(¬ª…¾ýÿÿÿÿ
+6python:S125Þ"Remove this commented out code.(ö×Ö5

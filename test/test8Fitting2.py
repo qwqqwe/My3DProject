@@ -1,6 +1,6 @@
 '''
 
-将图像按照中心点对齐
+将图像按照不同方式进行对齐
 
 '''
 
@@ -348,7 +348,7 @@ def display():
 
   tank1=1   #每次切间隔距离
   astart = time.time()
-  print(point)
+  # print(point)
   while (slicing_min + 1+tank1*2 < slicing_max - 0.1):
     tank=slicing_min + 1+tank1*2      #tank切的位置
     P2 = np.array([tank, 0, 0])  # xyz
@@ -394,6 +394,10 @@ def display():
     x = sorted_poi[:, 0]
     # print(sorted_poi,sorted_poi)
     y = sorted_poi[:, 1]
+    ymax_index = np.argmax(y)
+    # print(num)
+    # x = x - x[ymax_index]
+    # y = y - y[ymax_index]
     x = x - x[median]
     y = y - y[median]
     # x = x - x[0]
@@ -450,6 +454,10 @@ def display():
   mean0, std0 = mean_std(polynomial_coefficient0)
 
   print("mean3 =",mean3,"std3 =",std3)
+  print("mean2 =",mean2,"std2 =",std2)
+  print("mean1 =",mean1,"std1 =",std1)
+  print("mean0 =",mean0,"std0 =",std0)
+
   # print(mean3, std3)
   # print(mean3, std3)
   # print(mean3, std3)

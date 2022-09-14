@@ -1,7 +1,7 @@
 '''
 
 将图像按照不同方式进行对齐
-
+测试，尝试用拐点对齐
 '''
 
 import line_profiler
@@ -388,23 +388,32 @@ def display():
     for i in range(len(poi_x)):
       sorted_poi[i] = poi[pre_sort_x[i][0]]
 
-    median = int(len(poi_x) / 2)
+
 
     #将图像中点坐标转移到0，0,
     x = sorted_poi[:, 0]
     # print(sorted_poi,sorted_poi)
     y = sorted_poi[:, 1]
     ymax_index = np.argmax(y)
+    akb1 = signal.argrelmax(y, order=40)  # 局部相对最小
     # print(num)
     # x = x - x[ymax_index]
     # y = y - y[ymax_index]
-    x = x - x[median]
-    y = y - y[median]
+    # x = x - x[median]
+    # y = y - y[median]
     # x = x - x[0]
     # y = y - y[0]
 
+    if np.size(akb1)<=1:
+      x = x - x[akb1]
+      y = y - y[akb1]
+      z1 = np.polyfit(x, y, 3)  # 曲线拟合，返回值为多项式的各项系数
+    elif np.size(akb1)>1:
+      median = int(len(poi_x) / 2)
+      x = x - x[median]
+      y = y - y[median]
+      z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
 
-    z1 = np.polyfit(x, y, 3)  # 曲线拟合，返回值为多项式的各项系数
     p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
     # print(z1)
     y_pred = p1(x)  # 根据函数的多项式表达式，求解 y
@@ -412,9 +421,18 @@ def display():
     # print(np.polyval(z1, 29))             #根据多项式求解特定 x 对应的 y 值
     z2 = np.asarray(z1)
 
+    # print("akb", akb1[0][0])
+    # xmax=x[akb1]
+    #
+    # plt.plot(xmax, ymax, '+', markersize=20)
+
+    plt.plot(x[akb1], y[akb1], '+', markersize=20)
 
     plt.plot(x, y, '*', label='original values')
-    plt.plot(x, y_pred, 'r', label='fit values')
+
+
+
+    plt.plot(x, y_pred, label='fit values')
     plt.title('')
     plt.xlabel('')
     plt.ylabel('')

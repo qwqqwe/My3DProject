@@ -3,7 +3,7 @@
 将图像按照不同方式进行对齐
 测试，尝试用拐点对齐
 '''
-
+import json
 import line_profiler
 import time
 import xyz1
@@ -120,11 +120,14 @@ def display():
   # #save_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/Filter_{}.png"
   # saveeeee_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/".format(a)
   # save_path=saveeeee_path+"Filter_{}.png"
-  txt_path='../txtcouldpoint/Third_1.txt'
+  txt_path='../txtcouldpoint/Third_6.txt'
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
   # fp = open('AllOutPutNom/O777/2.txt', 'w')
   # save_path="../test/AllOutPutNom/O777/Filter_{}.png"
   fp = open('AllOutPutNom/O9/2.txt', 'w')
+  f3 = open('AllOutPutNom/O9/3.txt', 'a+')
+  f4 = open('AllOutPutNom/O9/4.txt', 'a+')
+
   save_path = "../test/AllOutPutNom/O9/Filter_{}.png"
 
   # np.set_printoptions(precision=5)
@@ -439,15 +442,38 @@ def display():
     plt.legend(loc=3, borderaxespad=0., bbox_to_anchor=(0, 0))
     # plt.show()
     # saveName=tank1
-    if (tank-xmin-slicing_min-1 <=1 and tank-xmin-slicing_min-1>=-1):
+    if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):
       # plt.savefig("../test/AllOutPutNom/O8/Filter_One_{}.png".format(tank1))
       plt.savefig("../test/AllOutPutNom/O9/Filter_One_{}.png".format(tank1))
-    plt.savefig(save_path.format(tank1))
-    plt.clf()
+      plt.clf()
+    else:
+      if np.size(akb1)<=1:
+        #保存3次拟合的各项系数
+        data_list = []
+        data_list.append(z2[0])
+        data_list.append(z2[1])
+        data_list.append(z2[2])
+        data_list.append(z2[3])
+        list1 = json.dumps(data_list)
+        f3.write(list1 + "\n")
+
+      else:
+        data_list = []
+        data_list.append(z2[0])
+        data_list.append(z2[1])
+        data_list.append(z2[2])
+        data_list.append(z2[3])
+        data_list.append(z2[4])
+        list1 = json.dumps(data_list)
+        f4.write(list1 + "\n")
+
+      plt.savefig(save_path.format(tank1))
+      plt.clf()
     # print('------------------------------',tank1,'---------------------------------',file=fp)
     # print(p1,file=fp)
     # print(z2[0])
     # poly3 = poly3.append(z2[0])
+
     poly3.append(z2[0])
     poly2.append(z2[1])
     poly1.append(z2[2])
@@ -461,20 +487,23 @@ def display():
   bstart = time.time()
   print(bstart - astart)
   fp.close()
-  polynomial_coefficient3 = np.asarray(poly3)
-  polynomial_coefficient2 = np.asarray(poly2)
-  polynomial_coefficient1 = np.asarray(poly1)
-  polynomial_coefficient0 = np.asarray(poly0)
+  f3.close()
+  f4.close()
 
-  mean3,std3 =mean_std(polynomial_coefficient3)
-  mean2, std2 = mean_std(polynomial_coefficient2)
-  mean1, std1 = mean_std(polynomial_coefficient1)
-  mean0, std0 = mean_std(polynomial_coefficient0)
-
-  print("mean3 =",mean3,"std3 =",std3)
-  print("mean2 =",mean2,"std2 =",std2)
-  print("mean1 =",mean1,"std1 =",std1)
-  print("mean0 =",mean0,"std0 =",std0)
+  # polynomial_coefficient3 = np.asarray(poly3)
+  # polynomial_coefficient2 = np.asarray(poly2)
+  # polynomial_coefficient1 = np.asarray(poly1)
+  # polynomial_coefficient0 = np.asarray(poly0)
+  #
+  # mean3,std3 =mean_std(polynomial_coefficient3)
+  # mean2, std2 = mean_std(polynomial_coefficient2)
+  # mean1, std1 = mean_std(polynomial_coefficient1)
+  # mean0, std0 = mean_std(polynomial_coefficient0)
+  #
+  # print("mean3 =",mean3,"std3 =",std3)
+  # print("mean2 =",mean2,"std2 =",std2)
+  # print("mean1 =",mean1,"std1 =",std1)
+  # print("mean0 =",mean0,"std0 =",std0)
 
   # print(mean3, std3)
   # print(mean3, std3)

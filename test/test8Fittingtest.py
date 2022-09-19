@@ -124,11 +124,11 @@ def display():
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
   # fp = open('AllOutPutNom/O777/2.txt', 'w')
   # save_path="../test/AllOutPutNom/O777/Filter_{}.png"
-  fp = open('AllOutPutNom/O9/2.txt', 'w')
-  f3 = open('AllOutPutNom/O9/3.txt', 'a+')
-  f4 = open('AllOutPutNom/O9/4.txt', 'a+')
+  fp = open('AllOutPutNom/O10/2.txt', 'w')
+  f3 = open('AllOutPutNom/O10/3.txt', 'a+')
+  f4 = open('AllOutPutNom/O10/4.txt', 'a+')
 
-  save_path = "../test/AllOutPutNom/O9/Filter_{}.png"
+  save_path = "../test/AllOutPutNom/O10/Filter_{}.png"
 
   # np.set_printoptions(precision=5)
   np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
@@ -397,6 +397,7 @@ def display():
     x = sorted_poi[:, 0]
     # print(sorted_poi,sorted_poi)
     y = sorted_poi[:, 1]
+    print(sorted_poi)
     ymax_index = np.argmax(y)
     akb1 = signal.argrelmax(y, order=40)  # 局部相对最小
     # print(num)
@@ -408,13 +409,13 @@ def display():
     # y = y - y[0]
 
     if np.size(akb1)<=1:
-      x = x - x[akb1]
-      y = y - y[akb1]
+      # x = x - x[akb1]
+      # y = y - y[akb1]
       z1 = np.polyfit(x, y, 3)  # 曲线拟合，返回值为多项式的各项系数
     elif np.size(akb1)>1:
       median = int(len(poi_x) / 2)
-      x = x - x[median]
-      y = y - y[median]
+      # x = x - x[median]
+      # y = y - y[median]
       z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
 
     p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
@@ -442,9 +443,9 @@ def display():
     plt.legend(loc=3, borderaxespad=0., bbox_to_anchor=(0, 0))
     # plt.show()
     # saveName=tank1
-    if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):
+    if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
       # plt.savefig("../test/AllOutPutNom/O8/Filter_One_{}.png".format(tank1))
-      plt.savefig("../test/AllOutPutNom/O9/Filter_One_{}.png".format(tank1))
+      plt.savefig("../test/AllOutPutNom/O10/Filter_One_{}.png".format(tank1))
       plt.clf()
     else:
       if np.size(akb1)<=1:

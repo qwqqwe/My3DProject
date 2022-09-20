@@ -124,11 +124,11 @@ def display():
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
   # fp = open('AllOutPutNom/O777/2.txt', 'w')
   # save_path="../test/AllOutPutNom/O777/Filter_{}.png"
-  fp = open('AllOutPutNom/O9/2.txt', 'w')
-  f3 = open('AllOutPutNom/O9/3.txt', 'a+')
-  f4 = open('AllOutPutNom/O9/4.txt', 'a+')
+  fp = open('AllOutPutNom/O10/2.txt', 'w')
+  f3 = open('AllOutPutNom/O10/3.txt', 'a+')
+  f4 = open('AllOutPutNom/O10/4.txt', 'a+')
 
-  save_path = "../test/AllOutPutNom/O9/Filter_{}.png"
+  save_path = "../test/AllOutPutNom/O10/Filter_{}.png"
 
   # np.set_printoptions(precision=5)
   np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
@@ -233,6 +233,14 @@ def display():
   slicing_cloud.rotate(R1)        # 旋转
   slicing_cloud.rotate(R2)
   poi = np.asarray(slicing_cloud.points)  #转换数组
+
+  # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+  # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(slicing_cloud.points))
+  # # 可视化
+  # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
+
+
+
   # xyz1.Point_Show(poi)
   poi_x = poi[:, 0]     #切片  第一列
   pre_sort_x = sorted(enumerate(poi_x), key=lambda poi_x: poi_x[1])     #以第二个值X[1]进行排序
@@ -337,6 +345,11 @@ def display():
   mask2=points2[:, 0] > slicing_min
   pcd.points = o3d.utility.Vector3dVector(points2[mask2])
   point= np.asarray(pcd.points)
+
+  # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+  # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+  # # 可视化
+  # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
   #visualizer_cloud(pcd)
 
   # return 0
@@ -360,7 +373,7 @@ def display():
     point_size = point.shape[0]
     idx = []
     # 3.设置切片厚度阈值，此值为切片厚度的一半
-    Delta = 0.5
+    Delta = 0.1
     # 4.循环迭代查找满足切片的点
     for i in range(point_size):
     # for i in range(displaynou(point_size,tank1,6),displayu(point_size,tank1,3)):
@@ -372,20 +385,32 @@ def display():
     slicing_cloud = (pcd.select_by_index(idx))
     slicing_points = np.asarray(slicing_cloud.points)
 
+    # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+    # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+    # # 可视化
+    # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
+
     project_pane = [a, b, c, d]
     points_new = xyz1.point_project_array(slicing_points, project_pane)
     pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(points_new))
     # xyz1.Point_Show(points_new)
-
+    # xyz1.visualizer_cloud(pc_view)
     # 转化xy轴
     h1, h2, h3 = xyz1.Router(v)
     R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
     R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
-    pc_view.rotate(R1)
+    # pc_view.rotate(R1)
+
+    # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+    # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pc_view.points))
+    # # 可视化
+    # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
+
     # pc_view.rotate(R2)
+    # xyz1.visualizer_cloud(pc_view)
     poi = np.asarray(pc_view.points)
     # xyz1.Point_Show(poi)
-    poi_x = poi[:, 0]
+    poi_x = poi[:, 1]
     pre_sort_x = sorted(enumerate(poi_x), key=lambda poi_x: poi_x[1])
     sorted_poi = np.zeros((poi.shape))
     for i in range(len(poi_x)):
@@ -394,9 +419,12 @@ def display():
 
 
     #将图像中点坐标转移到0，0,
-    x = sorted_poi[:, 0]
+    x = sorted_poi[:, 1]
     # print(sorted_poi,sorted_poi)
-    y = sorted_poi[:, 1]
+    y = sorted_poi[:, 2]
+    # print(sorted_poi)
+    # plt.plot(x, y, '*')
+    # plt.show()
     ymax_index = np.argmax(y)
     akb1 = signal.argrelmax(y, order=40)  # 局部相对最大
     # print(num)
@@ -408,13 +436,13 @@ def display():
     # y = y - y[0]
 
     if np.size(akb1)<=1:
-      x = x - x[akb1]
-      y = y - y[akb1]
+      # x = x - x[akb1]
+      # y = y - y[akb1]
       z1 = np.polyfit(x, y, 3)  # 曲线拟合，返回值为多项式的各项系数
     elif np.size(akb1)>1:
       median = int(len(poi_x) / 2)
-      x = x - x[median]
-      y = y - y[median]
+      # x = x - x[median]
+      # y = y - y[median]
       z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
 
     p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
@@ -442,9 +470,9 @@ def display():
     plt.legend(loc=3, borderaxespad=0., bbox_to_anchor=(0, 0))
     # plt.show()
     # saveName=tank1
-    if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):
+    if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
       # plt.savefig("../test/AllOutPutNom/O8/Filter_One_{}.png".format(tank1))
-      plt.savefig("../test/AllOutPutNom/O9/Filter_One_{}.png".format(tank1))
+      plt.savefig("../test/AllOutPutNom/O10/Filter_One_{}.png".format(tank1))
       plt.clf()
     else:
       if np.size(akb1)<=1:

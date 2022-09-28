@@ -478,7 +478,7 @@ def display():
     # plt.plot(x, y, '*')
     # plt.show()
     ymax_index = np.argmax(y)
-    akb1 = signal.argrelmax(y, order=40)  # 局部相对最小
+    akb1 = signal.argrelmax(y, order=40)  # 局部相对最大
     # print(num)
     # x = x - x[ymax_index]
     # y = y - y[ymax_index]
@@ -555,7 +555,7 @@ def display():
 
       plt.savefig(save_path.format(tank1))
       plt.clf()
-    # print('------------------------------',tank1,'---------------------------------',file=fp)
+    # print('-----------------',tank1,'--------------------',file=fp)
     # print(p1,file=fp)
     # print(z2[0])
     # poly3 = poly3.append(z2[0])

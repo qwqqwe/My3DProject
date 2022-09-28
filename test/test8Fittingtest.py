@@ -226,6 +226,7 @@ def display():
   # 可视化统计滤波后的点云和噪声点云
   # display_inlier_outlier(pcd, ind)
 
+
   pcd = sor_pcd
   points = pcd.points
   point = np.asarray(points)
@@ -238,10 +239,10 @@ def display():
   pcd.rotate(R2)
   poi = np.asarray(pcd.points)  #转换数组
 
-  axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
-  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
-  # 可视化
-  o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
+  # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+  # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+  # # 可视化
+  # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
 
 
 

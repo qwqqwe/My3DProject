@@ -117,6 +117,15 @@ def Point_Cloud_Show(points):
   ax.set_zlabel('z')
   plt.show()
 
+def Point_Show(pca_point_cloud):
+  x = []
+  y = []
+  pca_point_cloud = np.asarray(pca_point_cloud)
+  for i in range(len(pca_point_cloud)):
+    x.append(pca_point_cloud[i][0])
+    y.append(pca_point_cloud[i][2])
+  plt.scatter(x, y)
+  plt.show()
 
 
 # @func_line_time
@@ -226,29 +235,37 @@ def display():
   # 可视化统计滤波后的点云和噪声点云
   # display_inlier_outlier(pcd, ind)
 
+
   pcd = sor_pcd
   points = pcd.points
   point = np.asarray(points)
 
   # 转化xy轴
   h1, h2, h3 = xyz1.Router(v)
-  R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
-  R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
-  pcd.rotate(R1)        # 旋转
-  pcd.rotate(R2)
+  h1=h1/180*np.pi
+  h2=h2/180*np.pi
+  h3=h3/180*np.pi
+  print(h1, h2, h3)
+  R1 = pcd.get_rotation_matrix_from_xyz((h1, 0, h3))
+  R2 = pcd.get_rotation_matrix_from_xyz((np.pi / 2 , np.pi / 2 , 0))
+  # R2 = pcd.get_rotation_matrix_from_xyz((np.pi,0 , 0))
+
+  pcd.rotate(R1,center=(0,0,0))        # 旋转
+  # pcd.rotate(R2,center=(0,0,0))
   poi = np.asarray(pcd.points)  #转换数组
 
+  mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
   axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
   pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
   # 可视化
-  o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view, mesh], point_show_normal=True)
 
 
 
   # 计算要切割的值
   P2 = np.array([0, 0, 0])  # zyx
   # a, b, c, d = plane_param(point_cloud_vector,P2)
-  a, b, c, d = plane_param(v[:, 2], P2)
+  a, b, c, d = plane_param(v[:, 1], P2)
   point_size = point.shape[0]
   idx = []
   # 3.设置切片厚度阈值，此值为切片厚度的一半
@@ -290,7 +307,7 @@ def display():
   # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
 
   poi = np.asarray(slicing_cloud.points)  #转换数组
-  xyz1.Point_Show(poi)
+  Point_Show(poi)
   poi_x = poi[:, 0]     #切片  第一列
   pre_sort_x = sorted(enumerate(poi_x), key=lambda poi_x: poi_x[1])     #以第二个值X[1]进行排序
   sorted_poi = np.zeros((poi.shape))
@@ -316,7 +333,7 @@ def display():
   x = sorted_poi[:, 0]
   #print(x)
   # print(sorted_poi,sorted_poi)
-  y = sorted_poi[:, 1]
+  y = sorted_poi[:, 2]
   x = x - x[0]
   y = y - y[0]
 
@@ -334,7 +351,7 @@ def display():
 
 
   plt.plot(x[sorrrayiex:sorrrayiey], y[sorrrayiex:sorrrayiey], '*', label='original values')
-  plt.show()
+  # plt.show()
 
 
   # print(np.polyval(p1, kneedle.elbow))

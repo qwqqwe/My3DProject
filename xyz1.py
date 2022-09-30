@@ -153,11 +153,11 @@ def rotate_mat(axis, radian):
 
 def Router(v):
     #求向量V与标准xyz坐标的角度
-    x1=np.array((0,0,1))
+    x1=np.array((1,0,0))
     y1=v[:, 0]
     x2=np.array((0,1,0))
     y2=v[:, 1]
-    x3 = np.array((1, 0, 0))
+    x3 = np.array((0, 0, 1))
     y3 =v[:, 2]
     l_x1 = np.sqrt(x1.dot(x1))
     l_y1 = np.sqrt(y1.dot(y1))

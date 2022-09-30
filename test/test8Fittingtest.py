@@ -127,6 +127,30 @@ def Point_Show(pca_point_cloud):
   plt.scatter(x, y)
   plt.show()
 
+def Router(v):
+  # 求向量V与标准xyz坐标的角度
+  x1 = np.array((1, 0, 0))
+  y1 = v[:, 0]
+  x2 = np.array((0, 1, 0))
+  y2 = v[:, 1]
+  x3 = np.array((0, 0, 1))
+  y3 = v[:, 2]
+  l_x1 = np.sqrt(x1.dot(x1))
+  l_y1 = np.sqrt(y1.dot(y1))
+  dian1 = x1.dot(y1)  # x1点积y1
+  cos_1 = dian1 / (l_x1 * l_y1)
+  angle_hu1 = np.arccos(cos_1)
+  l_x2 = np.sqrt(x2.dot(x2))
+  l_y2 = np.sqrt(y2.dot(y2))
+  dian2 = x2.dot(y2)
+  cos_2 = dian2 / (l_x2 * l_y2)
+  angle_hu2 = np.arccos(cos_2)
+  l_x3 = np.sqrt(x3.dot(x3))
+  l_y3 = np.sqrt(y3.dot(y3))
+  dian3 = x3.dot(y3)
+  cos_3 = dian3 / (l_x3 * l_y3)
+  angle_hu3 = np.arccos(cos_3)
+  return angle_hu1, angle_hu2, angle_hu3
 
 # @func_line_time
 # 定义一个测试函数
@@ -137,7 +161,7 @@ def display():
   # #save_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/Filter_{}.png"
   # saveeeee_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/".format(a)
   # save_path=saveeeee_path+"Filter_{}.png"
-  txt_path= '../txtcouldpoint/Finalzhengzheng5.txt'
+  txt_path= '../txtcouldpoint/Finalzhengzheng1.txt'
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
   # fp = open('AllOutPutNom/O777/2.txt', 'w')
   # save_path="../test/AllOutPutNom/O777/Filter_{}.png"
@@ -241,13 +265,15 @@ def display():
   point = np.asarray(points)
 
   # 转化xy轴
-  h1, h2, h3 = xyz1.Router(v)
-  h1=h1/180*np.pi
-  h2=h2/180*np.pi
-  h3=h3/180*np.pi
-  print(h1, h2, h3)
+  h1, h2, h3 = Router(v)
+  # h1=h1/180*np.pi
+  # h2=h2/180*np.pi
+  # h3=h3/180*np.pi
+  print(np.pi/2)
+  print(h1,h2,h3)
+  print(h1-np.pi / 2, h2, h3-np.pi / 2)
   R1 = pcd.get_rotation_matrix_from_xyz((h1, 0, h3))
-  R2 = pcd.get_rotation_matrix_from_xyz((np.pi / 2 , np.pi / 2 , 0))
+  R2 = pcd.get_rotation_matrix_from_xyz((0 , np.pi / 2 , np.pi / 2))
   # R2 = pcd.get_rotation_matrix_from_xyz((np.pi,0 , 0))
 
   pcd.rotate(R1,center=(0,0,0))        # 旋转
@@ -294,7 +320,7 @@ def display():
 
 
   # # 转化xy轴
-  # h1, h2, h3 = xyz1.Router(v)
+  # h1, h2, h3 = Router(v)
   # R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
   # R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
   # pcd.rotate(R1)        # 旋转
@@ -442,7 +468,7 @@ def display():
     point_size = point.shape[0]
     idx = []
     # 3.设置切片厚度阈值，此值为切片厚度的一半
-    Delta = 0.1
+    Delta = 0.2
     # 4.循环迭代查找满足切片的点
     for i in range(point_size):
     # for i in range(displaynou(point_size,tank1,6),displayu(point_size,tank1,3)):
@@ -465,7 +491,7 @@ def display():
     # xyz1.Point_Show(points_new)
     # xyz1.visualizer_cloud(pc_view)
     # 转化xy轴
-    h1, h2, h3 = xyz1.Router(v)
+    h1, h2, h3 = Router(v)
     # R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
     # R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
     # pc_view.rotate(R1)

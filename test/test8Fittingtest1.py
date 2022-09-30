@@ -1,7 +1,8 @@
 '''
 
-将图像按照不同方式进行对齐
-测试，尝试用拐点对齐
+尝试对拐点进行更加精确的查找
+
+
 '''
 import json
 import line_profiler
@@ -107,15 +108,7 @@ def mean_std(input):
   s = np.std(input)
   return mm,s
 
-def Point_Cloud_Show(points):
-  fig = plt.figure(dpi=150)
-  ax = fig.add_subplot(111, projection='3d')
-  ax.scatter(points[:, 0], points[:, 1], points[:, 2], cmap='spectral', s=2, linewidths=0, alpha=1, marker=".")
-  plt.title('Point Cloud')
-  ax.set_xlabel('x')
-  ax.set_ylabel('y')
-  ax.set_zlabel('z')
-  plt.show()
+
 
 
 
@@ -128,15 +121,15 @@ def display():
   # #save_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/Filter_{}.png"
   # saveeeee_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/".format(a)
   # save_path=saveeeee_path+"Filter_{}.png"
-  txt_path= '../txtcouldpoint/Finalzhengzheng5.txt'
+  txt_path='../txtcouldpoint/Third_3.txt'
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
   # fp = open('AllOutPutNom/O777/2.txt', 'w')
   # save_path="../test/AllOutPutNom/O777/Filter_{}.png"
-  fp = open('FinalOutPut/zhengzheng5/20.txt', 'w')
-  f3 = open('FinalOutPut/zhengzheng5/30.txt', 'a+')
-  f4 = open('FinalOutPut/zhengzheng5/40.txt', 'a+')
+  fp = open('AllOutPutNom/O10/2.txt', 'w')
+  f3 = open('AllOutPutNom/O10/3.txt', 'a+')
+  f4 = open('AllOutPutNom/O10/4.txt', 'a+')
 
-  save_path = "../test/FinalOutPut/zhengzheng5/Filter_{}.png"
+  save_path = "../test/AllOutPutNom/O10/Filter_{}.png"
 
   # np.set_printoptions(precision=5)
   np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
@@ -146,39 +139,17 @@ def display():
   # 通过numpy读取txt点云
   pcd_1 = np.genfromtxt(txt_path, delimiter=",")
   # pcd_11 = np.genfromtxt()
-
   pcd = o3d.geometry.PointCloud()
-  pcd_50percent = o3d.geometry.PointCloud()
-
-  # pre_pcd_50percent =pcd_1[(pcd_1.shape[0]//4):((pcd_1.shape[0]//4)*3)]
-  # pcd_50percent.points=pre_pcd_50percent
-  # print(pcd_50percent)
-  # o3d.visualization.draw_geometries([pcd_50percent])
-  # print(pre_pcd_50percent.shape)
+  print(pcd_1.shape)
 
   # 加载点坐标
   pcd.points = o3d.utility.Vector3dVector(pcd_1)
 
-  pcd_50percent.points=pcd.points[(pcd_1.shape[0]//4):((pcd_1.shape[0]//4)*3)]
-  # o3d.visualization.draw_geometries([pcd_50percent])
   end_time = time.time()
   print(end_time - start_time)
-  # print(pcd.get_center())
 
-  pcd = pcd.translate(-pcd_50percent.get_center(), relative=True)  #平移
-  # pcd = pcd.translate((73.01027, 6.58959, 1.69584), relative=False)  #平移
-  # time.sleep(1000)
-  # o3d.visualization.draw_geometries([pcd])
-  # print(pretransform.points[0]-pcd.points[0])
-  # time.sleep(1000)
-  # pre_pcd_50percent =pcd.points[(pcd_1.shape[0]//4):((pcd_1.shape[0]//4)*3)]
-  # print(pre_pcd_50percent.shape)
+  pcd = pcd.translate((0, 0, 0), relative=True)  #平移
 
-  # print(pcd_50percent.get_center())
-
-  # o3d.visualization.draw_geometries([pcd_50percent])
-  # time.sleep(1000)
-  # pcd_50percent = pcd[]
 
   # 用PCA分析点云主方向
   w, v = xyz1.PCA(pcd.points)  # PCA方法得到对应的特征值和特征向量
@@ -230,25 +201,12 @@ def display():
   points = pcd.points
   point = np.asarray(points)
 
-  # 转化xy轴
-  h1, h2, h3 = xyz1.Router(v)
-  R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
-  R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
-  pcd.rotate(R1)        # 旋转
-  pcd.rotate(R2)
-  poi = np.asarray(pcd.points)  #转换数组
-
-  axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
-  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
-  # 可视化
-  o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
-
-
+  # -62.235174832472566 63.63087516752742
 
   # 计算要切割的值
   P2 = np.array([0, 0, 0])  # zyx
   # a, b, c, d = plane_param(point_cloud_vector,P2)
-  a, b, c, d = plane_param(v[:, 2], P2)
+  a, b, c, d = plane_param(v[:, 1], P2)
   point_size = point.shape[0]
   idx = []
   # 3.设置切片厚度阈值，此值为切片厚度的一半
@@ -259,7 +217,7 @@ def display():
   for i in range(point_size):
     Wr = a * point[i][0] + b * point[i][1] + c * point[i][2] + d - Delta
     Wl = a * point[i][0] + b * point[i][1] + c * point[i][2] + d + Delta
-    if ((Wr < 0)and(Wl>0)) or ((Wr>0) and (Wl <0)):
+    if Wr * Wl <= 0:
       idx.append(i)
   # 5.提取切片点云
   slicing_cloud = (pcd.select_by_index(idx))
@@ -270,27 +228,22 @@ def display():
     slicing_min = slicing_points[-1][0]
     slicing_max = slicing_points[0][0]
 
-  axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
-  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(slicing_cloud.points))
-  # 可视化
-  o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
+  # 转化xy轴
+  h1, h2, h3 = xyz1.Router(v)
+  R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
+  R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
+  slicing_cloud.rotate(R1)        # 旋转
+  slicing_cloud.rotate(R2)
+  poi = np.asarray(slicing_cloud.points)  #转换数组
 
-
-  # # 转化xy轴
-  # h1, h2, h3 = xyz1.Router(v)
-  # R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
-  # R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
-  # pcd.rotate(R1)        # 旋转
-  # pcd.rotate(R2)
-  # poi = np.asarray(pcd.points)  #转换数组
-  #
   # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
   # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(slicing_cloud.points))
   # # 可视化
   # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
 
-  poi = np.asarray(slicing_cloud.points)  #转换数组
-  xyz1.Point_Show(poi)
+
+
+  # xyz1.Point_Show(poi)
   poi_x = poi[:, 0]     #切片  第一列
   pre_sort_x = sorted(enumerate(poi_x), key=lambda poi_x: poi_x[1])     #以第二个值X[1]进行排序
   sorted_poi = np.zeros((poi.shape))
@@ -334,9 +287,6 @@ def display():
 
 
   plt.plot(x[sorrrayiex:sorrrayiey], y[sorrrayiex:sorrrayiey], '*', label='original values')
-  plt.show()
-
-
   # print(np.polyval(p1, kneedle.elbow))
   # kkk=time.time()
   akb=signal.argrelmin(y[sorrrayiex:sorrrayiey], order=15)    #局部相对最小
@@ -402,7 +352,7 @@ def display():
   # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
   # # 可视化
   # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
-  # visualizer_cloud(pcd)
+  #visualizer_cloud(pcd)
 
   # return 0
 
@@ -431,7 +381,7 @@ def display():
     # for i in range(displaynou(point_size,tank1,6),displayu(point_size,tank1,3)):
       Wr = a * point[i][0] + b * point[i][1] + c * point[i][2] + d - Delta
       Wl = a * point[i][0] + b * point[i][1] + c * point[i][2] + d + Delta
-      if ((Wr < 0)and(Wl>0)) or ((Wr>0) and (Wl <0)):
+      if Wr * Wl <= 0:
         idx.append(i)
     # 5.提取切片点云
     slicing_cloud = (pcd.select_by_index(idx))
@@ -449,8 +399,8 @@ def display():
     # xyz1.visualizer_cloud(pc_view)
     # 转化xy轴
     h1, h2, h3 = xyz1.Router(v)
-    # R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
-    # R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
+    R1 = pcd.get_rotation_matrix_from_xyz((h1, h2, h3))
+    R2 = pcd.get_rotation_matrix_from_xyz((0, np.pi / 2, 0))
     # pc_view.rotate(R1)
 
     # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
@@ -478,7 +428,7 @@ def display():
     # plt.plot(x, y, '*')
     # plt.show()
     ymax_index = np.argmax(y)
-    akb1 = signal.argrelmax(y, order=40)  # 局部相对最大
+    akb1 = signal.argrelmax(y, order=10)  # 局部相对最大
     # print(num)
     # x = x - x[ymax_index]
     # y = y - y[ymax_index]
@@ -486,12 +436,6 @@ def display():
     # y = y - y[median]
     # x = x - x[0]
     # y = y - y[0]
-
-
-
-    #现在是没有对齐，就是初始的状态的曲线拟合
-
-
 
     if np.size(akb1)<=1:
       # x = x - x[akb1]
@@ -501,7 +445,7 @@ def display():
       median = int(len(poi_x) / 2)
       # x = x - x[median]
       # y = y - y[median]
-      z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
+      z1 = np.polyfit(x, y, 7)  # 曲线拟合，返回值为多项式的各项系数
 
     p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
     # print(z1)
@@ -530,7 +474,7 @@ def display():
     # saveName=tank1
     if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
       # plt.savefig("../test/AllOutPutNom/O8/Filter_One_{}.png".format(tank1))
-      plt.savefig("../test/FinalOutPut/zhengzheng5/Filter_One_{}.png".format(tank1))
+      plt.savefig("../test/AllOutPutNom/O10/Filter_One_{}.png".format(tank1))
       plt.clf()
     else:
       if np.size(akb1)<=1:
@@ -550,6 +494,7 @@ def display():
         data_list.append(z2[2])
         data_list.append(z2[3])
         data_list.append(z2[4])
+        data_list.append(z2[5])
         list1 = json.dumps(data_list)
         f4.write(list1 + "\n")
 
@@ -560,10 +505,10 @@ def display():
     # print(z2[0])
     # poly3 = poly3.append(z2[0])
 
-    poly3.append(z2[0])
-    poly2.append(z2[1])
-    poly1.append(z2[2])
-    poly0.append(z2[3])
+    # poly3.append(z2[0])
+    # poly2.append(z2[1])
+    # poly1.append(z2[2])
+    # poly0.append(z2[3])
 
     print(z2, file=fp)
     tank1 += 1

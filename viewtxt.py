@@ -3,7 +3,7 @@ import time
 import open3d as o3d
 import numpy as np
 y_threshold = 0.1
-txt_path = 'txtcouldpoint/Third_6.txt'
+txt_path = 'txtcouldpoint/Finalzhengzheng5.txt'
 # txt_path = 'txtcouldpoint/Original/Third_146.txt'
 
 start_time = time.time()

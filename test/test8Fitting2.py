@@ -120,7 +120,7 @@ def display():
   # #save_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/Filter_{}.png"
   # saveeeee_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/".format(a)
   # save_path=saveeeee_path+"Filter_{}.png"
-  txt_path='../txtcouldpoint/Third_1.txt'
+  txt_path= '../txtcouldpoint/old/Third_1.txt'
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
   # fp = open('AllOutPutNom/O777/2.txt', 'w')
   # save_path="../test/AllOutPutNom/O777/Filter_{}.png"

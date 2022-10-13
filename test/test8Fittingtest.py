@@ -161,14 +161,16 @@ def display():
   # #save_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/Filter_{}.png"
   # saveeeee_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/".format(a)
   # save_path=saveeeee_path+"Filter_{}.png"
-  txt_path= '../txtcouldpoint/Finalzhengzheng1.txt'
+  txt_path= '../txtcouldpoint/Finalzhengfan3.txt'#负的h1, h2, h3,但是后面的所有的都是对的
+  # txt_path= '../txtcouldpoint/Finalzhengzheng5.txt'#正的h1, h2, h3,但是后面的所有的都是反的,所以这个要旋转180度
+
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
   # fp = open('AllOutPutNom/O777/2.txt', 'w')
   # save_path="../test/AllOutPutNom/O777/Filter_{}.png"
   fp = open('FinalOutPut/zhengzheng5/20.txt', 'w')
   f3 = open('FinalOutPut/zhengzheng5/30.txt', 'a+')
   f4 = open('FinalOutPut/zhengzheng5/40.txt', 'a+')
-
+  #.........··············
   save_path = "../test/FinalOutPut/zhengzheng5/Filter_{}.png"
 
   # np.set_printoptions(precision=5)
@@ -199,6 +201,7 @@ def display():
   # print(pcd.get_center())
 
   pcd = pcd.translate(-pcd_50percent.get_center(), relative=True)  #平移
+  pcd_50percent = pcd_50percent.translate(-pcd_50percent.get_center(), relative=True)
   # pcd = pcd.translate((73.01027, 6.58959, 1.69584), relative=False)  #平移
   # time.sleep(1000)
   # o3d.visualization.draw_geometries([pcd])
@@ -214,18 +217,34 @@ def display():
   # pcd_50percent = pcd[]
 
   # 用PCA分析点云主方向
-  w, v = xyz1.PCA(pcd.points)  # PCA方法得到对应的特征值和特征向量
+  firstime=time.time()
+  w, v = xyz1.PCA(pcd_50percent.points)  # PCA方法得到对应的特征值和特征向量
+  # w, v = xyz1.PCA(pcd.points)  # PCA方法得到对应的特征值和特征向量
+  second_time = time.time()
+  print('firstime',second_time-firstime)
   point_cloud_vector = v[:, 0]  # 点云主方向对应的向量为最大特征值对应的特征向量
   print('the main orientation of this pointcloud is: ', point_cloud_vector)
-  print('v',v)
-  if(v[0][0]<0):
-    v[:,0]=-v[:,0]
-
+  # print('v',v)
+  # if(v[0][0]<0):
+  #   v[:,0]=-v[:,0]
+  #   v[:,1]=-v[:,1]
+  # if(v[0][1]>0):
+  #   pre_v=1
+  # else:
+  #   pre_v=-1
+  # print('vvv',v)
   # 三个特征向量组成了三个坐标轴
+  mesh_1 = o3d.geometry.TriangleMesh.create_coordinate_frame()
   axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
-  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+  mesh_1.scale(20, center=(0, 0, 0))
+  axis.scale(20, center=(0, 0, 0))
+  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd_50percent.points))
   # 可视化
-  o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view, mesh_1], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view, axis, mesh_1], point_show_normal=True)
+
+
+
 
   # 下采样
   pcd = pcd.uniform_down_sample(50) #均匀下采样，50个点取一个点
@@ -264,16 +283,45 @@ def display():
   points = pcd.points
   point = np.asarray(points)
 
+  firstime=time.time()
+  # w, v = xyz1.PCA(pcd.points)  # PCA方法得到对应的特征值和特征向量
+  second_time = time.time()
+  print('second',second_time-firstime)
+  mesh_1 = o3d.geometry.TriangleMesh.create_coordinate_frame()
+  axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+  mesh_1.scale(20, center=(0, 0, 0))
+  axis.scale(20, center=(0, 0, 0))
+  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+  # 可视化
+  o3d.visualization.draw_geometries([pc_view, axis, mesh_1], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view, mesh_1], point_show_normal=True)
+
   # 转化xy轴
   h1, h2, h3 = Router(v)
-  # h1=h1/180*np.pi
-  # h2=h2/180*np.pi
-  # h3=h3/180*np.pi
-  print(np.pi/2)
+  # print(np.pi/2)
   print(h1,h2,h3)
-  print(h1-np.pi / 2, h2, h3-np.pi / 2)
-  R1 = pcd.get_rotation_matrix_from_xyz((h1, 0, h3))
-  R2 = pcd.get_rotation_matrix_from_xyz((0 , np.pi / 2 , np.pi / 2))
+  if ( h1 > 1 ):
+    h1=np.pi-h1
+  print(h1,h2,h3)
+
+  # pre_v=-1
+
+  # print('pre_v',pre_v)
+  #
+  # if (pre_v == -1):
+  #   R1 = pcd.get_rotation_matrix_from_xyz((-h1, 0, -h3))
+  # else:
+  #   R1 = pcd.get_rotation_matrix_from_xyz((h1, 0, h3))
+
+  # R1 = pcd.get_rotation_matrix_from_xyz((h1/2, 0, h3/2))
+  R1 = pcd.get_rotation_matrix_from_xyz((0, 0, -h1))
+
+
+
+
+
+
+  # R2 = pcd.get_rotation_matrix_from_xyz((0 , np.pi / 2 , np.pi / 2))
   # R2 = pcd.get_rotation_matrix_from_xyz((np.pi,0 , 0))
 
   pcd.rotate(R1,center=(0,0,0))        # 旋转
@@ -281,17 +329,20 @@ def display():
   poi = np.asarray(pcd.points)  #转换数组
 
   mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
-  axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
-  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+
+  mesh.scale(20, center=(0,0,0))
+  # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+  pc_view_1 = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
   # 可视化
-  o3d.visualization.draw_geometries([pc_view, mesh], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view_1,pc_view_1, mesh], point_show_normal=True)
 
 
 
   # 计算要切割的值
-  P2 = np.array([0, 0, 0])  # zyx
+  P2 = np.array([0, 0, 0])  # xyz
   # a, b, c, d = plane_param(point_cloud_vector,P2)
-  a, b, c, d = plane_param(v[:, 1], P2)
+  # a, b, c, d = plane_param(v[:, 1], P2)#因为已经旋转好了，所以不用v了，直接用原始的就行了
+  a, b, c, d = plane_param([0,1,0], P2)#因为已经旋转好了，所以不用v了，直接用原始的就行了
   point_size = point.shape[0]
   idx = []
   # 3.设置切片厚度阈值，此值为切片厚度的一半
@@ -314,9 +365,10 @@ def display():
     slicing_max = slicing_points[0][0]
 
   axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+  mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
   pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(slicing_cloud.points))
   # 可视化
-  o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view, mesh], point_show_normal=True)
 
 
   # # 转化xy轴
@@ -464,7 +516,8 @@ def display():
     tank=slicing_min + 1+tank1*2/10      #tank切的位置
     P2 = np.array([tank, 0, 0])  # xyz
     # a, b, c, d = plane_param(point_cloud_vector,P2)
-    a, b, c, d = xyz1.plane_param(v[:, 0], P2)
+    # a, b, c, d = xyz1.plane_param(v[:, 0], P2)#因为已经旋转好了，所以直接使用原始值就行了.
+    a, b, c, d = xyz1.plane_param([-1,0,0], P2)#因为已经旋转好了，所以直接使用原始值就行了.
     point_size = point.shape[0]
     idx = []
     # 3.设置切片厚度阈值，此值为切片厚度的一半

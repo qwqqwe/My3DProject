@@ -161,7 +161,7 @@ def display():
   # #save_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/Filter_{}.png"
   # saveeeee_path="C:/Users/Administrator/PycharmProjects/My3DProject/test/AllOutPutNom/O{}/".format(a)
   # save_path=saveeeee_path+"Filter_{}.png"
-  txt_path= '../txtcouldpoint/Finalzhengfan3.txt'#负的h1, h2, h3,但是后面的所有的都是对的
+  txt_path= '../txtcouldpoint/Finalfanfan3.txt'#负的h1, h2, h3,但是后面的所有的都是对的
   # txt_path= '../txtcouldpoint/Finalzhengzheng5.txt'#正的h1, h2, h3,但是后面的所有的都是反的,所以这个要旋转180度
 
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
@@ -224,15 +224,15 @@ def display():
   print('firstime',second_time-firstime)
   point_cloud_vector = v[:, 0]  # 点云主方向对应的向量为最大特征值对应的特征向量
   print('the main orientation of this pointcloud is: ', point_cloud_vector)
-  # print('v',v)
-  # if(v[0][0]<0):
-  #   v[:,0]=-v[:,0]
-  #   v[:,1]=-v[:,1]
-  # if(v[0][1]>0):
-  #   pre_v=1
-  # else:
-  #   pre_v=-1
-  # print('vvv',v)
+  print('v',v)
+  if(v[0][0]<0):
+    v[:,0]=-v[:,0]
+    v[:,1]=-v[:,1]
+  if(v[0][1]>0):
+    pre_v=1
+  else:
+    pre_v=-1
+  print('vvv',v)
   # 三个特征向量组成了三个坐标轴
   mesh_1 = o3d.geometry.TriangleMesh.create_coordinate_frame()
   axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
@@ -300,20 +300,10 @@ def display():
   h1, h2, h3 = Router(v)
   # print(np.pi/2)
   print(h1,h2,h3)
-  if ( h1 > 1 ):
-    h1=np.pi-h1
-  print(h1,h2,h3)
+  # if ( h1 > 1 ):
+  #   h1=np.pi-h1
+  # print(h1,h2,h3)
 
-  # pre_v=-1
-
-  # print('pre_v',pre_v)
-  #
-  # if (pre_v == -1):
-  #   R1 = pcd.get_rotation_matrix_from_xyz((-h1, 0, -h3))
-  # else:
-  #   R1 = pcd.get_rotation_matrix_from_xyz((h1, 0, h3))
-
-  # R1 = pcd.get_rotation_matrix_from_xyz((h1/2, 0, h3/2))
   R1 = pcd.get_rotation_matrix_from_xyz((0, 0, -h1))
 
 

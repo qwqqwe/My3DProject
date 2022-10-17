@@ -110,15 +110,16 @@ def Router(v):
 # 定义一个测试函数
 def display():
 
-  a='zhengfan3'
-  # txt_path= '../txtcouldpoint/Finalzhengfan5.txt'#负的h1, h2, h3,但是后面的所有的都是对的,设fan为我们的正确的方向
+  afile='fanfan1'
+  #设fan为我们的正确的方向
+  # txt_path= '../txtcouldpoint/Finalzhengfan5.txt'#负的h1, h2, h3,但是后面的所有的都是对的
   # txt_path= '../txtcouldpoint/Finalzhengzheng1.txt'#正的h1, h2, h3,但是后面的所有的都是反的,所以这个要旋转180度
-  txt_path= 'txtcouldpoint/Final{}.txt'.format(a)
+  txt_path= 'txtcouldpoint/Final{}.txt'.format(afile)
 
-  fp = open('test/FinalOutPut/{}/20.txt'.format(a), 'w')
-  f3 = open('test/FinalOutPut/{}/30.txt'.format(a), 'a+')
-  f4 = open('test/FinalOutPut/{}/40.txt'.format(a), 'a+')
-  save_path = "test/FinalOutPut/{}/".format(a)+"Filter_{}.png"
+  fp = open('test/FinalOutPut/{}/20.txt'.format(afile), 'w')
+  f3 = open('test/FinalOutPut/{}/30.txt'.format(afile), 'a+')
+  f4 = open('test/FinalOutPut/{}/40.txt'.format(afile), 'a+')
+  save_path = "test/FinalOutPut/{}/".format(afile)+"Filter_{}.png"
 
   np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
 
@@ -142,6 +143,19 @@ def display():
   print('firstime',second_time-firstime)
   point_cloud_vector = v[:, 0]  # 点云主方向对应的向量为最大特征值对应的特征向量
   print('the main orientation of this pointcloud is: ', point_cloud_vector)
+  print('v',v)
+  if(v[0][0]<0):
+    v[:,0]=-v[:,0]
+    v[:,1]=-v[:,1]
+  # if(v[0][1]>0):
+  #   pre_v=1
+  # else:
+  #   pre_v=-1
+  # print('pre_v',pre_v)
+  print('v', v)
+
+
+
 
   pcd = pcd.uniform_down_sample(50) #均匀下采样，50个点取一个点
 
@@ -176,13 +190,17 @@ def display():
 
   # 转化xy轴
   h1, h2, h3 = Router(v)
-  print(h1, h2, h3)
-  if ( h1 > 1 ):
-    h1=np.pi-h1
+  # print(h1, h2, h3)
+  # if ( h1 > 1 ):
+  #   h1=np.pi-h1
   print(h1,h2,h3)
-
-  R1 = pcd.get_rotation_matrix_from_xyz((0, 0, -h1))
-
+  print(v[1][0])
+  if(v[1][0]>0):
+    R1 = pcd.get_rotation_matrix_from_xyz((0, 0, -h1))
+  else:
+    R1 = pcd.get_rotation_matrix_from_xyz((0, 0, h1))
+  # R2= pcd.get_rotation_matrix_from_xyz((0, 0,np.pi))
+  # pcd.rotate(R2,center=(0,0,0))        # 旋转
   pcd.rotate(R1,center=(0,0,0))        # 旋转
   mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
   mesh.scale(20, center=(0,0,0))
@@ -240,7 +258,7 @@ def display():
     if now_length >=sorted_poi[-1][0]-sorted_poi[0][0]-25 and sorrrayiex==0:    #最后2.5cm
       sorrrayiex = i    #标志位
     # if sorted_poi[i][0]-sorted_poi[0][0]>120:
-    if now_length > sorted_poi[-1][0]-sorted_poi[0][0]-4:  #去掉最后4mm，减少误差
+    if now_length > sorted_poi[-1][0]-sorted_poi[0][0]-5:  #去掉最后5mm，减少误差
       sorrrayiey = i    #标志位
       break
 
@@ -395,7 +413,7 @@ def display():
     # plt.show()
     # saveName=tank1
     if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
-      save_plt="test/FinalOutPut/{}/".format(a)
+      save_plt="test/FinalOutPut/{}/".format(afile)
       plt.savefig(save_plt+"Filter_One_{}.png".format(tank1))
       plt.clf()
     else:

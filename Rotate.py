@@ -110,7 +110,7 @@ def Router(v):
 # 定义一个测试函数
 def display():
 
-  afile='fanfan4'
+  afile='fanfan1'
   #设fan为我们的正确的方向
   # txt_path= '../txtcouldpoint/Finalzhengfan5.txt'#负的h1, h2, h3,但是后面的所有的都是对的
   # txt_path= '../txtcouldpoint/Finalzhengzheng1.txt'#正的h1, h2, h3,但是后面的所有的都是反的,所以这个要旋转180度

@@ -100,6 +100,7 @@ def statistics_4():
     print('Time cost = %fs' % (time_end - time_start))
     print(a)
 
+
 if __name__ == '__main__':
     # statistics_poly(
     # statistics_3()

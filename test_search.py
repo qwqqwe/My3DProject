@@ -111,24 +111,32 @@ def Rationality(input,pre):
   i = 0
   length = len(input)
   while(i<length):
-    if(abs(input[i]-pre[i])<=1.5e-16):
+    if(abs(input[i]-pre[i])<=0.04):
       temp += 1
     i += 1
 
   return np.double(temp)/length
 
 
-def optimize(x,y,ration):
+def optimize(x,y,z1,p1,ration):
   xx = x
   yy = y
+  temp_x = x
+  temp_y = y
+  best_p = z1
+  best_z = p1
   temp_ration = ration
   best_ration = ration
   i = 0
+  k = 0
   while i < 1:
+    k += 1
     temp_ration =best_ration
     for num in range(0,len(xx),5):
-      if (num + 4 <= len(xx)):
-        x_new = np.delete(xx, [num, num + 1, num + 2, num + 3, num + 4])#删除num开始的五个点
+      if (num + 3 < len(xx)):
+        # x_new = np.delete(xx, [num, num + 1, num + 2, num + 3, num + 4,num+5,num+6,num+7,num+8,num+9])#删除num开始的五个点
+        # y_new = np.delete(yy, [num, num + 1, num + 2, num + 3, num + 4,num+5,num+6,num+7,num+8,num+9])
+        x_new = np.delete(xx, [num, num + 1, num + 2, num + 3, num + 4])  # 删除num开始的五个点
         y_new = np.delete(yy, [num, num + 1, num + 2, num + 3, num + 4])
         z1_new = np.polyfit(x_new, y_new, 3)
         p1_new = np.poly1d(z1_new)  # 返回值为多项式的表达式，也就是函数式子
@@ -138,13 +146,16 @@ def optimize(x,y,ration):
           temp_x = x_new
           temp_y = y_new
           best_p = p1_new
+          best_z = z1_new
           best_ration = newrationality
     xx=temp_x
     yy=temp_y
     if temp_ration == best_ration:
       i = 1
+      print(best_ration)
+  print("k=",k)
 
-  return best_p
+  return best_p,best_z
 
 
 
@@ -354,7 +365,7 @@ def display():
   tank1=1   #每次切间隔距离（除以10为真实距离单位：mm）
   astart = time.time()
   while (slicing_min + 1+tank1*2/10 < slicing_max - 0.1):
-    if tank1==7:
+    if tank1==11:
 
       tank=slicing_min + 1+tank1*2/10      #tank切的位置
       P2 = np.array([tank, 0, 0])  # xyz
@@ -444,24 +455,29 @@ def display():
       p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
       y_pred = p1(x)  # 根据函数的多项式表达式，求解 y
       # print(y_pred-y)
-      dd = y_pred-y
+      dd = abs(y_pred-y)
       cc = np.mean(dd)
+      print(cc)
       rationality = Rationality(y,y_pred)
+      print("--------")
+      print(rationality)
 
-      if(abs(cc)>1.5e-16):
-        for num in range[0,len(cc),5]:
-          if(num+4<=len(cc)):
-            x_new = np.delete(x,[num,num+1,num+2,num+3,num+4])
-            y_new = np.delete(y,[num,num+1,num+2,num+3,num+4])
-            z1_new = np.polyfit(x_new, y_new, 3)
-            p1_new = np.poly1d(z1_new)  # 返回值为多项式的表达式，也就是函数式子
-            y_prednew = p1_new(x)  # 根据函数的多项式表达式，求解 y
-            # print(y_pred-y)
-            # dd_new = y_prednew - y
-            # cc_new = np.mean(dd_new)
-            newrationality = Rationality(y,y_prednew)
-
-          print("1")
+      if(abs(cc)>0.01):
+        p1, z1 = optimize(x, y, z1, p1, rationality)
+        y_pred = p1(x)
+        # for num in range[0,len(cc),5]:
+          # if(num+4<=len(cc)):
+          #   x_new = np.delete(x,[num,num+1,num+2,num+3,num+4])
+          #   y_new = np.delete(y,[num,num+1,num+2,num+3,num+4])
+          #   z1_new = np.polyfit(x_new, y_new, 3)
+          #   p1_new = np.poly1d(z1_new)  # 返回值为多项式的表达式，也就是函数式子
+          #   y_prednew = p1_new(x)  # 根据函数的多项式表达式，求解 y
+          #   # print(y_pred-y)
+          #   # dd_new = y_prednew - y
+          #   # cc_new = np.mean(dd_new)
+          #   newrationality = Rationality(y,y_prednew)
+          #
+          # print("1")
 
 
 
@@ -546,12 +562,12 @@ def display():
 
 if __name__ == "__main__":
 
-  # display()
-  x = [0,1,7,9,10]
-  y = [0,1,2,4,5]
-  z = np.delete(x,[1,2,3])
-  # x.pop(2,4)
-
-  # c=Rationality(x,y)
-  print(x)
-  print(z)
+  display()
+  # x = [0,1,7,9,10]
+  # y = [0,1,2,4,5]
+  # z = np.delete(x,[1,2,3])
+  # # x.pop(2,4)
+  #
+  # # c=Rationality(x,y)
+  # print(x)
+  # print(z)

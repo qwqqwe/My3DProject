@@ -106,6 +106,49 @@ def Router(v):
   angle_hu3 = np.arccos(cos_3)
   return angle_hu1, angle_hu2, angle_hu3
 
+def Rationality(input,pre):
+  temp = 0
+  i = 0
+  length = len(input)
+  while(i<length):
+    if(abs(input[i]-pre[i])<=1.5e-16):
+      temp += 1
+    i += 1
+
+  return np.double(temp)/length
+
+
+def optimize(x,y,ration):
+  xx = x
+  yy = y
+  temp_ration = ration
+  best_ration = ration
+  i = 0
+  while i < 1:
+    temp_ration =best_ration
+    for num in range(0,len(xx),5):
+      if (num + 4 <= len(xx)):
+        x_new = np.delete(xx, [num, num + 1, num + 2, num + 3, num + 4])#删除num开始的五个点
+        y_new = np.delete(yy, [num, num + 1, num + 2, num + 3, num + 4])
+        z1_new = np.polyfit(x_new, y_new, 3)
+        p1_new = np.poly1d(z1_new)  # 返回值为多项式的表达式，也就是函数式子
+        y_prednew = p1_new(x)  # 根据函数的多项式表达式，求解 y
+        newrationality = Rationality(y, y_prednew)
+        if newrationality> best_ration:
+          temp_x = x_new
+          temp_y = y_new
+          best_p = p1_new
+          best_ration = newrationality
+    xx=temp_x
+    yy=temp_y
+    if temp_ration == best_ration:
+      i = 1
+
+  return best_p
+
+
+
+
 # @func_line_time
 # 定义一个测试函数
 def display():
@@ -403,17 +446,39 @@ def display():
       # print(y_pred-y)
       dd = y_pred-y
       cc = np.mean(dd)
-      print(cc)
-      po = 3
-      while(abs(cc)>1.5e-16):
-        po += 1
-        zz = np.polyfit(x,y,po)
-        p1 = np.poly1d(zz)
-        y_pred=p1(x)
-        dd = y_pred - y
-        cc = np.mean(dd)
-      print("start add :")
-      print(po)
+      rationality = Rationality(y,y_pred)
+
+      if(abs(cc)>1.5e-16):
+        for num in range[0,len(cc),5]:
+          if(num+4<=len(cc)):
+            x_new = np.delete(x,[num,num+1,num+2,num+3,num+4])
+            y_new = np.delete(y,[num,num+1,num+2,num+3,num+4])
+            z1_new = np.polyfit(x_new, y_new, 3)
+            p1_new = np.poly1d(z1_new)  # 返回值为多项式的表达式，也就是函数式子
+            y_prednew = p1_new(x)  # 根据函数的多项式表达式，求解 y
+            # print(y_pred-y)
+            # dd_new = y_prednew - y
+            # cc_new = np.mean(dd_new)
+            newrationality = Rationality(y,y_prednew)
+
+          print("1")
+
+
+
+
+      # print(cc)
+      # po = 3
+      # while(abs(cc)>1.5e-16):
+      #   po += 1
+      #   zz = np.polyfit(x,y,po)
+      #   p1 = np.poly1d(zz)
+      #   y_pred=p1(x)
+      #   dd = y_pred - y
+      #   cc = np.mean(dd)
+      # print("start add :")
+      # print(po)
+
+
       z2 = np.asarray(z1)
 
       plt.plot(x[akb1], y[akb1], '+', markersize=20)
@@ -481,5 +546,12 @@ def display():
 
 if __name__ == "__main__":
 
-  display()
+  # display()
+  x = [0,1,7,9,10]
+  y = [0,1,2,4,5]
+  z = np.delete(x,[1,2,3])
+  # x.pop(2,4)
 
+  # c=Rationality(x,y)
+  print(x)
+  print(z)

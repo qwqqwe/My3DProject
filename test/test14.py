@@ -114,13 +114,13 @@ def display():
   #设fan为我们的正确的方向
   # txt_path= '../txtcouldpoint/Finalzhengfan5.txt'#负的h1, h2, h3,但是后面的所有的都是对的
   # txt_path= '../txtcouldpoint/Finalzhengzheng1.txt'#正的h1, h2, h3,但是后面的所有的都是反的,所以这个要旋转180度
-  txt_path= 'txtcouldpoint/Final{}.txt'.format(afile)
+  txt_path= '../txtcouldpoint/Final{}.txt'.format(afile)
 
-  fp = open('test/FinalOutPut/{}/20.txt'.format(afile), 'w')
-  f3 = open('test/FinalOutPut/{}/30.txt'.format(afile), 'a+')
-  f4 = open('test/FinalOutPut/{}/40.txt'.format(afile), 'a+')
-  f5 = open('test/FinalOutPut/{}/50none.txt'.format(afile), 'w')
-  save_path = "test/FinalOutPut/{}/".format(afile)+"Filter_{}.png"
+  fp = open('FinalOutPut/{}/20.txt'.format(afile), 'w')
+  f3 = open('FinalOutPut/{}/30.txt'.format(afile), 'a+')
+  f4 = open('FinalOutPut/{}/40.txt'.format(afile), 'a+')
+  f5 = open('FinalOutPut/{}/50none.txt'.format(afile), 'w')
+  save_path = "FinalOutPut/{}/".format(afile)+"Filter_{}.png"
 
   np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
 
@@ -148,6 +148,11 @@ def display():
   if(v[0][0]<0):
     v[:,0]=-v[:,0]
     v[:,1]=-v[:,1]
+  # if(v[0][1]>0):
+  #   pre_v=1
+  # else:
+  #   pre_v=-1
+  # print('pre_v',pre_v)
   print('v', v)
 
 
@@ -249,15 +254,18 @@ def display():
   sorrrayiex=0
   sorrrayiey=len(sorted_poi-1)
   for i in range(len(sorted_poi)):
+    #print(sorted_poi[i][0])
     now_length=sorted_poi[i][0]-sorted_poi[0][0]
     if now_length >=sorted_poi[-1][0]-sorted_poi[0][0]-25 and sorrrayiex==0:    #最后2.5cm
       sorrrayiex = i    #标志位
+    # if sorted_poi[i][0]-sorted_poi[0][0]>120:
     if now_length > sorted_poi[-1][0]-sorted_poi[0][0]-5:  #去掉最后5mm，减少误差
       sorrrayiey = i    #标志位
       break
 
 
 
+  #print(sorrrayiex,len(sorted_poi))
 
   x = sorted_poi[:, 0]
   y = sorted_poi[:, 2]
@@ -274,6 +282,7 @@ def display():
   xmin=x[akb[0][0]+sorrrayiex]
   ymin=y[akb[0][0]+sorrrayiex]
   for i in akb[0]:
+    # print(i)
     if (y[i+sorrrayiex]<ymin):
       ymin=y[i+sorrrayiex]
       xmin=x[i+sorrrayiex]
@@ -323,13 +332,23 @@ def display():
     slicing_cloud = (pcd.select_by_index(idx))
     slicing_points = np.asarray(slicing_cloud.points)
 
+    # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+    # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+    # # 可视化
+    # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
 
     project_pane = [a, b, c, d]
     points_new = xyz1.point_project_array(slicing_points, project_pane)
     pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(points_new))
+    # xyz1.Point_Show(points_new)
 
+    # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+    # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pc_view.points))
+    # # 可视化
+    # o3d.visualization.draw_geometries([pc_view, axis], point_show_normal=True)
 
     poi = np.asarray(pc_view.points)
+    # xyz1.Point_Show(poi)
     poi_x = poi[:, 1]
     pre_sort_x = sorted(enumerate(poi_x), key=lambda poi_x: poi_x[1])
     sorted_poi = np.zeros((poi.shape))
@@ -337,14 +356,7 @@ def display():
       sorted_poi[i] = poi[pre_sort_x[i][0]]
 
     #判断是否有空白#
-    #如果数据长度小于1.75的话，判断有点遗失，数据量不够
-    if (len(sorted_poi)==0):
-      no_data = 1
-      print("no_data")
-      tank1 += 1
-      print(tank1)
-      print(tank1, file=f5)
-    elif(-1.75<(sorted_poi[-1][1]- sorted_poi[0][1])<1.75):
+    if(-1.75<(sorted_poi[-1][1]- sorted_poi[0][1])<1.75):
       no_data = 1
       print("no_data")
       tank1 += 1
@@ -352,7 +364,6 @@ def display():
       print(tank1, file=f5)
     else:
       for i in range(len(poi_x)-1):
-        #如果两个点之间差距大于0.5的话，判断点有遗失，数据量不够
         if((sorted_poi[i+1][1]- sorted_poi[i][1])>0.5):
           no_data=1
           print("no_data")
@@ -370,12 +381,19 @@ def display():
       akb1 = signal.argrelmax(y, order=40)  # 局部相对最大
 
 
+
       #现在是没有对齐，就是初始的状态的曲线拟合
 
 
+
       if np.size(akb1)<=1:
+        # x = x - x[akb1]
+        # y = y - y[akb1]
         z1 = np.polyfit(x, y, 3)  # 曲线拟合，返回值为多项式的各项系数
       elif np.size(akb1)>1:
+        median = int(len(poi_x) / 2)
+        # x = x - x[median]
+        # y = y - y[median]
         z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
 
       p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
@@ -392,8 +410,10 @@ def display():
       plt.xlabel('')
       plt.ylabel('')
       plt.legend(loc=3, borderaxespad=0., bbox_to_anchor=(0, 0))
+      # plt.show()
+      # saveName=tank1
       if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
-        save_plt="test/FinalOutPut/{}/".format(afile)
+        save_plt="FinalOutPut/{}/".format(afile)
         plt.savefig(save_plt+"Filter_One_{}.png".format(tank1))
         plt.clf()
       else:
@@ -419,6 +439,10 @@ def display():
 
         plt.savefig(save_path.format(tank1))
         plt.clf()
+      # print('-----------------',tank1,'--------------------',file=fp)
+      # print(p1,file=fp)
+      # print(z2[0])
+      # poly3 = poly3.append(z2[0])
 
       poly3.append(z2[0])
       poly2.append(z2[1])
@@ -437,8 +461,9 @@ def display():
   f3.close()
   f4.close()
   f5.close()
-  #用于输出连在一起的区间
-  lines = np.genfromtxt('test/FinalOutPut/{}/50none.txt'.format(afile))
+
+  lines = np.genfromtxt('FinalOutPut/{}/50none.txt'.format(afile))
+  # print(lines)
   if len(lines) != 0:
     starta = lines[0]
     for line in range(len(lines) - 1):

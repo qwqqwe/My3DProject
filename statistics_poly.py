@@ -99,7 +99,19 @@ def statistics_4():
     time_end = time.time()
     print('Time cost = %fs' % (time_end - time_start))
     print(a)
+
+
 if __name__ == '__main__':
     # statistics_poly(
-    statistics_3()
-    statistics_4()
+    # statistics_3()
+    # statistics_4()
+    txt_path = 'txtcouldpoint/Third_3.txt'
+    t1=time.time()
+    # pcd_1 = np.genfromtxt(txt_path, delimiter=",")
+    pcd_2 = np.loadtxt(txt_path, delimiter=",")
+    t2=time.time()
+    pcd_1 = np.genfromtxt(txt_path, delimiter=",")
+    # pcd_2 = np.loadtxt(txt_path, delimiter=",")
+    t3=time.time()
+    print(t2-t1)
+    print(t3-t2)

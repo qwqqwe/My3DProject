@@ -111,7 +111,7 @@ def Rationality(input,pre):
   i = 0
   length = len(input)
   while(i<length):
-    if(abs(input[i]-pre[i])<=0.04):
+    if(abs(input[i]-pre[i])<=0.08):
       temp += 1
     i += 1
 
@@ -132,12 +132,12 @@ def optimize(x,y,z1,p1,ration):
   while i < 1:
     k += 1
     temp_ration =best_ration
-    for num in range(0,len(xx),5):
-      if (num + 3 < len(xx)):
-        # x_new = np.delete(xx, [num, num + 1, num + 2, num + 3, num + 4,num+5,num+6,num+7,num+8,num+9])#删除num开始的五个点
-        # y_new = np.delete(yy, [num, num + 1, num + 2, num + 3, num + 4,num+5,num+6,num+7,num+8,num+9])
-        x_new = np.delete(xx, [num, num + 1, num + 2, num + 3, num + 4])  # 删除num开始的五个点
-        y_new = np.delete(yy, [num, num + 1, num + 2, num + 3, num + 4])
+    for num in range(0,len(xx),10):
+      if (num + 8 < len(xx)):
+        x_new = np.delete(xx, [num, num + 1, num + 2, num + 3, num + 4,num+5,num+6,num+7,num+8,num+9])#删除num开始的五个点
+        y_new = np.delete(yy, [num, num + 1, num + 2, num + 3, num + 4,num+5,num+6,num+7,num+8,num+9])
+        # x_new = np.delete(xx, [num, num + 1, num + 2, num + 3, num + 4])  # 删除num开始的五个点
+        # y_new = np.delete(yy, [num, num + 1, num + 2, num + 3, num + 4])
         z1_new = np.polyfit(x_new, y_new, 3)
         p1_new = np.poly1d(z1_new)  # 返回值为多项式的表达式，也就是函数式子
         y_prednew = p1_new(x)  # 根据函数的多项式表达式，求解 y
@@ -156,6 +156,17 @@ def optimize(x,y,z1,p1,ration):
   print("k=",k)
 
   return best_p,best_z
+
+def roulette(input,pre,):
+  temp = 0
+  i = 0
+  length = len(input)
+  while (i < length):
+    if (abs(input[i] - pre[i]) <= 0.03):
+      temp += 1
+    i += 1
+
+  return np.double(temp) / length
 
 
 
@@ -365,7 +376,7 @@ def display():
   tank1=1   #每次切间隔距离（除以10为真实距离单位：mm）
   astart = time.time()
   while (slicing_min + 1+tank1*2/10 < slicing_max - 0.1):
-    if tank1==11:
+    if tank1==7:
 
       tank=slicing_min + 1+tank1*2/10      #tank切的位置
       P2 = np.array([tank, 0, 0])  # xyz
@@ -520,7 +531,7 @@ def display():
           data_list.append(z2[0])
           data_list.append(z2[1])
           data_list.append(z2[2])
-          data_list.append(z2[3])
+          # data_list.append(z2[3])
           list1 = json.dumps(data_list)
           f3.write(list1 + "\n")
 
@@ -544,7 +555,7 @@ def display():
       poly3.append(z2[0])
       poly2.append(z2[1])
       poly1.append(z2[2])
-      poly0.append(z2[3])
+      # poly0.append(z2[3])
 
       print(z2, file=fp)
       tank1 += 1

@@ -110,23 +110,29 @@ def Router(v):
 # 定义一个测试函数
 def display():
 
-  afile='distroy1'
+  afile='fanzheng5'
   #设fan为我们的正确的方向
-  # txt_path= '../txtcouldpoint/Finalzhengfan5.txt'#负的h1, h2, h3,但是后面的所有的都是对的
-  # txt_path= '../txtcouldpoint/Finalzhengzheng1.txt'#正的h1, h2, h3,但是后面的所有的都是反的,所以这个要旋转180度
   txt_path= 'txtcouldpoint/Final{}.txt'.format(afile)
 
-  fp = open('test/FinalOutPut/{}/20.txt'.format(afile), 'w')
-  f3 = open('test/FinalOutPut/{}/30.txt'.format(afile), 'a+')
-  f4 = open('test/FinalOutPut/{}/40.txt'.format(afile), 'a+')
+  # fp = open('test/FinalOutPut/{}/20.txt'.format(afile), 'w')
+  # f3 = open('test/FinalOutPut/{}/30.txt'.format(afile), 'w')
+  # f4 = open('test/FinalOutPut/{}/40.txt'.format(afile), 'w')
   f5 = open('test/FinalOutPut/{}/50none.txt'.format(afile), 'w')
+  # f6 = open('test/FinalOutPut/{}/60.txt'.format(afile), 'w')
+  f11 = open('test/FinalOutPut/{}/1_normal_x2_green_mid.txt'.format(afile), 'a+')
+  f22 = open('test/FinalOutPut/{}/2_normal_x2_red_side.txt'.format(afile), 'a+')
+  f33 = open('test/FinalOutPut/{}/3_guai_x2_green_mid.txt'.format(afile), 'a+')
+  f44 = open('test/FinalOutPut/{}/4_guai_x2_red_side.txt'.format(afile), 'a+')
+  f55 = open('test/FinalOutPut/{}/5_afterguai_x2_green_mid.txt'.format(afile), 'a+')
+  f66 = open('test/FinalOutPut/{}/6_afterguai_x2_red_side.txt'.format(afile), 'a+')
+
   save_path = "test/FinalOutPut/{}/".format(afile)+"Filter_{}.png"
 
   np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
 
   start_time = time.time()
   # 通过numpy读取txt点云
-  pcd_1 = np.genfromtxt(txt_path, delimiter=" ")
+  pcd_1 = np.genfromtxt(txt_path, delimiter=",")
   pcd = o3d.geometry.PointCloud()
   pcd_50percent = o3d.geometry.PointCloud()
 
@@ -186,17 +192,14 @@ def display():
 
   # 转化xy轴
   h1, h2, h3 = Router(v)
-  # print(h1, h2, h3)
-  # if ( h1 > 1 ):
-  #   h1=np.pi-h1
   print(h1,h2,h3)
   print(v[1][0])
   if(v[1][0]>0):
     R1 = pcd.get_rotation_matrix_from_xyz((0, 0, -h1))
   else:
     R1 = pcd.get_rotation_matrix_from_xyz((0, 0, h1))
-  # R2= pcd.get_rotation_matrix_from_xyz((0, 0,np.pi))
-  # pcd.rotate(R2,center=(0,0,0))        # 旋转
+  R2= pcd.get_rotation_matrix_from_xyz((0, 0,np.pi))#如果后缀是zheng的话，需要把这个启用
+  pcd.rotate(R2,center=(0,0,0))        # 旋转
   pcd.rotate(R1,center=(0,0,0))        # 旋转
   mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
   mesh.scale(20, center=(0,0,0))
@@ -300,6 +303,7 @@ def display():
   poly1 = list()
   poly0 = list()
 
+  start_guai=0#拐点的判断
   tank1=1   #每次切间隔距离（除以10为真实距离单位：mm）
   astart = time.time()
   while (slicing_min + 1+tank1*2/10 < slicing_max - 0.1):
@@ -367,20 +371,61 @@ def display():
       #将图像中点坐标转移到0，0,
       x = sorted_poi[:, 1]
       y = sorted_poi[:, 2]
+      xxx=x[0:len(x)//3]
+      xxx=np.hstack((xxx, x[len(x)*2//3:]))
+      yyy=y[0:len(y)//3]
+      yyy=np.hstack((yyy, y[len(y)*2//3:]))
+      xx = x[len(x) // 6:len(x) *5// 6]
+      yy = y[len(y) // 6:len(y) *5// 6]
       akb1 = signal.argrelmax(y, order=40)  # 局部相对最大
+
+
+
+
+
+
+
 
 
       #现在是没有对齐，就是初始的状态的曲线拟合
 
 
       if np.size(akb1)<=1:
-        z1 = np.polyfit(x, y, 3)  # 曲线拟合，返回值为多项式的各项系数
+        z1 = np.polyfit(xx, yy, 2)  # 曲线拟合，返回值为多项式的各项系数
+        zz1 = np.polyfit(xxx, yyy, 2)  # 曲线拟合，返回值为多项式的各项系数
+
       elif np.size(akb1)>1:
         z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
 
+      #找到函数的最高点并进行平移
+      # print('z1:',z1)
+      max_x=zz1[1]/(-zz1[0]*2)
+      ################################################################
+      pp1 = np.poly1d(zz1)  # 返回值为多项式的表达式，也就是函数式子
+      ################################################################
+      max_y=pp1(max_x)
+      x=x-max_x
+      y=y-max_y
+      xxx = x[0:len(x) // 3]
+      xxx = np.hstack((xxx, x[len(x) * 2 // 3:]))
+      yyy = y[0:len(y) // 3]
+      yyy = np.hstack((yyy, y[len(y) * 2 // 3:]))
+      xx = x[len(x) // 6:len(x) *5// 6]
+      yy = y[len(y) // 6:len(y) *5// 6]
+      z1 = np.polyfit(xx, yy, 2)  # 曲线拟合，返回值为多项式的各项系数
+      zz1 = np.polyfit(xxx, yyy, 2)  # 曲线拟合，返回值为多项式的各项系数
       p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
+      pp1 = np.poly1d(zz1)  # 返回值为多项式的表达式，也就是函数式子
+
       y_pred = p1(x)  # 根据函数的多项式表达式，求解 y
+      yy_pred = pp1(x)  # 根据函数的多项式表达式，求解 y
       z2 = np.asarray(z1)
+      zz2 = np.asarray(zz1)
+
+
+
+
+
 
       plt.plot(x[akb1], y[akb1], '+', markersize=20)
       plt.plot(x, y, '*', label='original values')
@@ -388,34 +433,64 @@ def display():
 
 
       plt.plot(x, y_pred, label='fit values')
+      plt.plot(x, yy_pred, label='fitttt values')
       plt.title('')
       plt.xlabel('')
       plt.ylabel('')
       plt.legend(loc=3, borderaxespad=0., bbox_to_anchor=(0, 0))
       if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
+        start_guai=1
         save_plt="test/FinalOutPut/{}/".format(afile)
         plt.savefig(save_plt+"Filter_One_{}.png".format(tank1))
         plt.clf()
+        # 保存拐点绿色中间的
+        data_list = []
+        data_list.append(z2[0])
+        data_list.append(z2[1])
+        data_list.append(z2[2])
+        list1 = json.dumps(data_list)
+        f33.write(list1 + "\n")
+        # 保存拐点红色两边的
+        data_list = []
+        data_list.append(zz2[0])
+        data_list.append(zz2[1])
+        data_list.append(zz2[2])
+        # data_list.append(z2[3])
+        list2 = json.dumps(data_list)
+        f44.write(list2 + "\n")
       else:
-        if np.size(akb1)<=1:
-          #保存3次拟合的各项系数
+        if(start_guai==0):
+          #保存正常绿色中间的
           data_list = []
           data_list.append(z2[0])
           data_list.append(z2[1])
           data_list.append(z2[2])
-          data_list.append(z2[3])
           list1 = json.dumps(data_list)
-          f3.write(list1 + "\n")
+          f11.write(list1 + "\n")
+          # 保存正常红色两边的
+          data_list = []
+          data_list.append(zz2[0])
+          data_list.append(zz2[1])
+          data_list.append(zz2[2])
+          list2 = json.dumps(data_list)
+          f22.write(list2 + "\n")
+        elif(start_guai==1):
+          # 保存拐点之后绿色中间的
+          data_list = []
+          data_list.append(z2[0])
+          data_list.append(z2[1])
+          data_list.append(z2[2])
+          list1 = json.dumps(data_list)
+          f55.write(list1 + "\n")
+          # 保存拐点之后红色两边的
+          data_list = []
+          data_list.append(zz2[0])
+          data_list.append(zz2[1])
+          data_list.append(zz2[2])
+          list2 = json.dumps(data_list)
+          f66.write(list2 + "\n")
 
-        else:
-          data_list = []
-          data_list.append(z2[0])
-          data_list.append(z2[1])
-          data_list.append(z2[2])
-          data_list.append(z2[3])
-          data_list.append(z2[4])
-          list1 = json.dumps(data_list)
-          f4.write(list1 + "\n")
+
 
         plt.savefig(save_path.format(tank1))
         plt.clf()
@@ -423,9 +498,9 @@ def display():
       poly3.append(z2[0])
       poly2.append(z2[1])
       poly1.append(z2[2])
-      poly0.append(z2[3])
+      # poly0.append(z2[3])
 
-      print(z2, file=fp)
+      # print(z2, file=fp)
       tank1 += 1
       print(tank1)
 
@@ -433,20 +508,29 @@ def display():
   bstart = time.time()
   print(bstart - astart)
 
-  fp.close()
-  f3.close()
-  f4.close()
+  # fp.close()
+  # f3.close()
+  # f4.close()
+  # f5.close()
+  # f6.close()
+  f11.close()
+  f22.close()
+  f33.close()
+  f44.close()
+  f55.close()
+  f66.close()
   f5.close()
   #用于输出连在一起的区间
+
   lines = np.genfromtxt('test/FinalOutPut/{}/50none.txt'.format(afile))
   if len(lines) != 0:
     starta = lines[0]
     for line in range(len(lines) - 1):
       if (lines[line] + 1 != lines[line + 1]):
         enda = lines[line]
-        print('start:', starta, 'end:', enda)
+        print('block start:', starta, 'block end:', enda)
         starta = lines[line + 1]
-    print('start:', starta, 'end:', lines[-1])
+    print('block start:', starta, 'block end:', lines[-1])
 
 
 if __name__ == "__main__":

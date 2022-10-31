@@ -397,7 +397,7 @@ def display():
         z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
 
       p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
-      y_pred = p1(x)  # 根据函数的多项式表达式，求解 y
+      y_pred = p1(x)  # 根据函数的多项式表达式，求解
       z2 = np.asarray(z1)
 
       plt.plot(x[akb1], y[akb1], '+', markersize=20)

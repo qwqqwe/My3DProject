@@ -171,6 +171,15 @@ def roulette(input,pre,):
 
   return np.double(temp) / length
 
+def function(x):
+  if abs(x)<=0.634:
+    y = -0.4556 * x * x - 0.0392
+  else:
+    y = -0.55248 * x * x
+  return y
+
+
+
 
 
 

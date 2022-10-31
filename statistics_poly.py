@@ -1,6 +1,7 @@
 import numpy as np
 import json
 import time
+import math
 
 
 def mean_std(input):
@@ -100,18 +101,47 @@ def statistics_4():
     print('Time cost = %fs' % (time_end - time_start))
     print(a)
 
+def statistics_2():
+    f = open('2normal_side.txt', 'r', encoding='utf-8')
+    lines = f.readlines()
+    a = 0
+    x2 = []
+    x1 = []
+    x0 = []
+    time_start = time.time()
+    for line in lines:
+        a += 1
+        out = json.loads(line)
+        if(out[0]<=-0.3):
+            x2.append(out[0])
+            x1.append(out[1])
+            x0.append(out[2])
+
+    mean2, std2 = mean_std(x2)
+    mean1, std1 = mean_std(x1)
+    mean0, std0 = mean_std(x0)
+
+    print("mean2 =", mean2, "std2 =", std2)
+    print("mean1 =", mean1, "std1 =", std1)
+    print("mean0 =", mean0, "std0 =", std0)
+    time_end = time.time()
+    print('Time cost = %fs' % (time_end - time_start))
+    print(a)
+def sove():
+  a=math.sqrt(0.039/0.0969)
+  print(a)
+  return a
+
+def function(x):
+  if abs(x)<=0.634:
+    y = -0.4556 * x * x - 0.0392
+  else:
+    y = -0.55248 * x * x
+  return y
 
 if __name__ == '__main__':
     # statistics_poly(
-    # statistics_3()
+    statistics_2()
+    c=sove()
+    print(c)
     # statistics_4()
-    txt_path = 'txtcouldpoint/Third_3.txt'
-    t1=time.time()
-    # pcd_1 = np.genfromtxt(txt_path, delimiter=",")
-    pcd_2 = np.loadtxt(txt_path, delimiter=",")
-    t2=time.time()
-    pcd_1 = np.genfromtxt(txt_path, delimiter=",")
-    # pcd_2 = np.loadtxt(txt_path, delimiter=",")
-    t3=time.time()
-    print(t2-t1)
-    print(t3-t2)

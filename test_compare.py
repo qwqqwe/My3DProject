@@ -46,16 +46,6 @@ def plane_param(point_cloud_vector, point):
   D = -A * point[0] - B * point[1] - C * point[2]
   return A, B, C, D
 
-def Point_Show(pca_point_cloud):
-  x = []
-  y = []
-  pca_point_cloud = np.asarray(pca_point_cloud)
-  for i in range(len(pca_point_cloud)):
-    x.append(pca_point_cloud[i][0])
-    y.append(pca_point_cloud[i][1])
-  plt.scatter(x, y)
-  plt.show()
-
 
 # 查询接口中每行代码执行的时间
 def func_line_time(f):
@@ -376,7 +366,6 @@ def display():
 
       print(sorted_poi[i+1][1]- sorted_poi[i][1])
     if (no_data!=1):
-      #将图像中点坐标转移到0，0,
       x = sorted_poi[:, 1]
       y = sorted_poi[:, 2]
       xxx=x[0:len(x)//3]
@@ -406,7 +395,7 @@ def display():
       max_y=pp1(max_x)
       x=x-max_x
       y=y-max_y
-      y_pred=y
+      y_pred=[]
       # y_pred = y
 
       '''
@@ -428,7 +417,7 @@ def display():
       zz2 = np.asarray(zz1)
       '''
       for num in range(0,len(x)):
-        y_pred[num]=function(x[num])
+        y_pred.append(function(x[num]))
 
 
 

@@ -96,7 +96,7 @@ def Router(v):
   angle_hu3 = np.arccos(cos_3)
   return angle_hu1, angle_hu2, angle_hu3
 
-@func_line_time
+# @func_line_time
 # 定义一个测试函数
 
 def display():
@@ -292,30 +292,51 @@ def display():
   start_guai=0#拐点的判断
   tank1=1   #每次切间隔距离（除以10为真实距离单位：mm）
   astart = time.time()
-  while (slicing_min + 1+tank1*2/10 < slicing_max - 0.1):
-    tank=slicing_min + 1+tank1*2/10      #tank切的位置
+
+  #改进切片
+  if(point[0][0]>0):
+    point=np.flipud(point)
+  tank = slicing_min + 1 + tank1 * 2 / 10  # tank切的位置
+  point_size = point.shape[0]
+  idx = []
+  idx_list=[]
+  # 3.设置切片厚度阈值，此值为切片厚度的一半
+  Delta = 0.2
+  now_i=0
+  for i in range(point_size):
+    Wr = -point[i][0] + tank - Delta
+    Wl = -point[i][0] + tank + Delta
+    if ((Wr < 0) and (Wl > 0)) or ((Wr > 0) and (Wl < 0)):
+      idx.append(i)
+      now_i=i
+  idx_list.append(idx)
+  idx=[]
+  tank1+=1
+  tank = slicing_min + 1 + tank1 * 2 / 10  # tank切的位置
+  for i in range(now_i,point_size):
+    if (point[i][0]<=tank+Delta):
+      idx.append(i)
+    else:
+      idx_list.append(idx)
+      idx=[]
+      tank1+=1
+      tank = slicing_min + 1 + tank1 * 2 / 10  # tank切的位置
+      if(tank>=slicing_max-0.1):
+        break
+  for tank1,recent_idx in enumerate(idx_list):
     no_data=0
-    point_size = point.shape[0]
-    idx = []
-    # 3.设置切片厚度阈值，此值为切片厚度的一半
-    Delta = 0.2
     # 4.循环迭代查找满足切片的点################################
     # 第二次切片 ##### ##### ##### ##### ##### ##### ##### ######  ##### ##### #####  ######  ##### ##### #####
-    # print(point)
-    for i in range(point_size):
-      Wr = -point[i][0]  + tank - Delta
-      Wl = -point[i][0]  + tank + Delta
-      if ((Wr < 0)and(Wl>0)) or ((Wr>0) and (Wl <0)):
-        idx.append(i)
     # 5.提取切片点云
-    slicing_cloud = (pcd.select_by_index(idx))
+    tank = slicing_min + 1 + tank1 * 2 / 10  # tank切的位置
+    slicing_cloud = (pcd.select_by_index(recent_idx))
     slicing_points = np.asarray(slicing_cloud.points)
 
 
     project_pane = [-1, 0, 0, tank]
     points_new = xyz1.point_project_array(slicing_points, project_pane)#这是投影的函数，投影到一个平面上
     pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(points_new))
-
+    # o3d.visualization.draw_geometries([pc_view], point_show_normal=True)
 
     poi = np.asarray(pc_view.points)
     poi_x = poi[:, 1]
@@ -329,13 +350,11 @@ def display():
     if (len(sorted_poi)==0):
       no_data = 1
       print("no_data")
-      tank1 += 1
       print(tank1)
       print(tank1, file=f5)
     elif(-1.75<(sorted_poi[-1][1]- sorted_poi[0][1])<1.75):
       no_data = 1
       print("no_data")
-      tank1 += 1
       print(tank1)
       print(tank1, file=f5)
     else:
@@ -344,7 +363,6 @@ def display():
         if((sorted_poi[i+1][1]- sorted_poi[i][1])>0.5):
           no_data=1
           print("no_data")
-          tank1 += 1
           print(tank1)
           print(tank1,file=f5)
           break
@@ -370,6 +388,7 @@ def display():
 
       elif np.size(akb1)>1:
         z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
+        zz1 = np.polyfit(xxx, yyy, 2)  # 曲线拟合，返回值为多项式的各项系数
 
       #找到函数的最高点并进行平移
       max_x=zz1[1]/(-zz1[0]*2)
@@ -463,7 +482,6 @@ def display():
       poly3.append(z2[0])
       poly2.append(z2[1])
       poly1.append(z2[2])
-      tank1 += 1
       print(tank1)
 
 

@@ -140,7 +140,7 @@ def point_project_array(points, para):
 
 
 def point_project_array(points, para):
-    #旋转？
+    #这是投影的函数，投影到一个平面上
     para  = np.array(para)
     d = para[0]**2 + para[1]**2 + para[2]**2
     t = -(np.matmul(points[:, :3], para[:3].T) + para[3])/d

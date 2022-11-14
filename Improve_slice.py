@@ -96,12 +96,12 @@ def Router(v):
   angle_hu3 = np.arccos(cos_3)
   return angle_hu1, angle_hu2, angle_hu3
 
-# @func_line_time
+@func_line_time
 # 定义一个测试函数
 
 def display():
 
-  afile='zhengzheng1'
+  afile='fanzheng1'
   #设fan为我们的正确的方向
   txt_path= 'txtcouldpoint/Final{}.txt'.format(afile)
 
@@ -295,7 +295,7 @@ def display():
 
   #改进切片
   if(point[0][0]>0):
-    point=np.flipud(point)
+    point=point[::-1]
   tank = slicing_min + 1 + tank1 * 2 / 10  # tank切的位置
   point_size = point.shape[0]
   idx = []

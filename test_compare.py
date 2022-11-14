@@ -4,7 +4,7 @@
 测试，尝试用拐点对齐
 '''
 import json
-import line_profiler
+
 import time
 import xyz1
 import cv2
@@ -47,6 +47,8 @@ def plane_param(point_cloud_vector, point):
   return A, B, C, D
 
 
+
+
 # 查询接口中每行代码执行的时间
 def func_line_time(f):
     @wraps(f)
@@ -70,6 +72,17 @@ def Point_Show(pca_point_cloud):
     y.append(pca_point_cloud[i][2])
   plt.scatter(x, y)
   plt.show()
+
+def Rationality(input,pre,findbest):
+  temp = 0
+  i = 0
+  length = len(input)
+  while(i<length):
+    if(abs(input[i]-pre[i])<=findbest):
+      temp += 1
+    i += 1
+
+  return np.double(temp)/length
 
 def Router(v):
   # 求向量V与标准xyz坐标的角度
@@ -131,7 +144,8 @@ def display():
 
   start_time = time.time()
   # 通过numpy读取txt点云
-  pcd_1 = np.genfromtxt(txt_path, delimiter=",")
+  # pcd_1 = np.genfromtxt(txt_path, delimiter=",")
+  pcd_1 = np.loadtxt(txt_path, delimiter=",")
   pcd = o3d.geometry.PointCloud()
   pcd_50percent = o3d.geometry.PointCloud()
 
@@ -304,22 +318,23 @@ def display():
 
   start_guai=0#拐点的判断
   tank1=1   #每次切间隔距离（除以10为真实距离单位：mm）
+  step=0  #记录连续出现缺陷的长度
   astart = time.time()
   while (slicing_min + 1+tank1*2/10 < slicing_max - 0.1):
     tank=slicing_min + 1+tank1*2/10      #tank切的位置
     no_data=0
-    P2 = np.array([tank, 0, 0])  # xyz
+    # P2 = np.array([tank, 0, 0])  # xyz
     # a, b, c, d = plane_param(point_cloud_vector,P2)
     # a, b, c, d = xyz1.plane_param(v[:, 0], P2)#因为已经旋转好了，所以直接使用原始值就行了.
-    a, b, c, d = xyz1.plane_param([-1,0,0], P2)#因为已经旋转好了，所以直接使用原始值就行了.
+    # a, b, c, d = xyz1.plane_param([-1,0,0], P2)#因为已经旋转好了，所以直接使用原始值就行了.
     point_size = point.shape[0]
     idx = []
     # 3.设置切片厚度阈值，此值为切片厚度的一半
     Delta = 0.2
     # 4.循环迭代查找满足切片的点
     for i in range(point_size):
-      Wr = a * point[i][0] + b * point[i][1] + c * point[i][2] + d - Delta
-      Wl = a * point[i][0] + b * point[i][1] + c * point[i][2] + d + Delta
+      Wr = -point[i][0]  + tank - Delta
+      Wl = -point[i][0]  + tank + Delta
       if ((Wr < 0)and(Wl>0)) or ((Wr>0) and (Wl <0)):
         idx.append(i)
     # 5.提取切片点云
@@ -327,7 +342,7 @@ def display():
     slicing_points = np.asarray(slicing_cloud.points)
 
 
-    project_pane = [a, b, c, d]
+    project_pane = [-1, 0, 0, tank]
     points_new = xyz1.point_project_array(slicing_points, project_pane)
     pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(points_new))
 
@@ -362,10 +377,16 @@ def display():
           tank1 += 1
           print(tank1)
           # print(tank1,file=f5)
+          if (tank + 0.2 >= slicing_max - 0.1):  # 焊缝末尾判断输出
+            if (step != 0):
+              print("缺陷起始位置", tank1 - step)
+              print("缺陷结束位置", tank1)
+
           break
 
       print(sorted_poi[i+1][1]- sorted_poi[i][1])
     if (no_data!=1):
+      #将图像中点坐标转移到0，0,
       x = sorted_poi[:, 1]
       y = sorted_poi[:, 2]
       xxx=x[0:len(x)//3]
@@ -396,6 +417,7 @@ def display():
       x=x-max_x
       y=y-max_y
       y_pred=[]
+
       # y_pred = y
 
       '''
@@ -418,6 +440,35 @@ def display():
       '''
       for num in range(0,len(x)):
         y_pred.append(function(x[num]))
+
+      y=y-np.mean(y-y_pred)
+      score=Rationality(y,y_pred,0.05)
+
+      if(score<=0.9):#得分低的，将重新进行2次拟合进行第二次判断
+        z1 = np.polyfit(x,y,2)
+        p1 = np.poly1d(z1)
+        y_pred=p1(x)
+        score=Rationality(y,y_pred,0.05)
+        if(score<=0.9):
+          print("输出图像")
+          step += 1
+        else:
+          if (step != 0):#输出缺陷位置
+            print("缺陷起始位置", tank1 - step)
+            print("缺陷结束位置", tank1)
+          step = 0
+
+      else:
+        if (step!=0):#输出缺陷位置
+          print("缺陷起始位置",tank1-step)
+          print("缺陷结束位置", tank1)
+        step = 0
+
+      if(tank+0.2>=slicing_max - 0.1):#焊缝末尾判断输出
+        if (step!=0):
+          print("缺陷起始位置",tank1-step)
+          print("缺陷结束位置", tank1)
+
 
 
 
@@ -503,6 +554,7 @@ def display():
       # print(z2, file=fp)
       tank1 += 1
       print(tank1)
+
 
 
   bstart = time.time()

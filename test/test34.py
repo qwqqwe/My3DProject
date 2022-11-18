@@ -146,12 +146,13 @@ hCamera = target.SgCreateCamera()
 target.SgConnect2CameraSyn(hCamera, b'169.254.215.237', b'169.254.215.101')
 
 ########################################################################
-camconfig=SGEXPORT_CAMCONFIG()
+camconfig=SGEXPORT_CAMCONFIG(_fYScaling=0.0384912,_usFramePeriod=833)
 target.SgGetConfigSyn(hCamera,camconfig)
-camconfig._usFramePeriod=1833
-camconfig._fYScaling=0.0384912
-target.SgSetCamConfigsSyn.argtypes=[c_int,SGEXPORT_CAMCONFIG]
-target.SgSetCamConfigsSyn(hCamera,camconfig)
+# camconfig._usFramePeriod=1833
+# camconfig._fYScaling=0.0384912
+# # print(camconfig)
+# target.SgSetCamConfigsSyn.argtypes=[c_int,SGEXPORT_CAMCONFIG]
+# target.SgSetCamConfigsSyn(hCamera,camconfig)
 # camconfig=target.SgGetConfigSyn(hCamera,camconfig)
 ########################################################################
 
@@ -161,13 +162,25 @@ roi=SGEXPORT_ROI()
 target.SgGetRoiAndMediaSyn(hCamera,roi)
 mod=SGEXPORT_MOD()
 target.SgGetModSyn(hCamera,mod)
-cfg=SGEXPORT_CFG()
-cfg._fYScaling=0.0384912
-target.SgGetCfgSyn.argtypes=[c_int,SGEXPORT_CFG]
+cfg=SGEXPORT_CFG(_fYScaling=0.0384912)
+# cfg._fYScaling=0.0384912
+# target.SgGetCfgSyn.argtypes=[c_int,SGEXPORT_CFG]
 target.SgGetCfgSyn(hCamera,cfg)
-
 productinfo=SGEXPORT_PRODUCTINFO()
 target.SgGetProductSyn(hCamera,productinfo)
+
+
+
+
+
+
+
+
+
+
+
+
+
 ################################四位一体#################################
 
 
@@ -185,6 +198,11 @@ target.SgSetModSyn(hCamera,mod)
 target.SgStartCapture(hCamera)
 
 target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
+# target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
+# target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
+# target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
+# target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
+# target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
 
 target.SgStopCaptureSyn(hCamera)
 

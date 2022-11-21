@@ -202,17 +202,17 @@ target.SgGetProductSyn(hCamera,productinfo)
 # mod=targe1t.SEG_CHANGE_MOD(c_ubyte(0),c_ubyte(1),c_uint(2000))
 # mod._ucCaptureMode=c_ubyte(1)
 
-targe1t.SGE_CHANGE_MODE.restype=SGEXPORT_MODE
-mode=targe1t.SGE_CHANGE_MODE()
+# targe1t.SGE_CHANGE_MODE.restype=SGEXPORT_MODE
+# mode=targe1t.SGE_CHANGE_MODE()
 # mode=SGEXPORT_MODE()
-target.SgGetModeSyn(hCamera,mode)
+# target.SgGetModeSyn(hCamera,mode)
 # mode=SGEXPORT_MODE()
-print(target.SgSetCamModeSyn(hCamera,mode))
-print(target.SgSetModSyn(hCamera,mod))#無效參數-2
+# print(target.SgSetCamModeSyn(hCamera,mode))
+# print(target.SgSetModSyn(hCamera,mod))#無效參數-2
 target.SgSetModSyn(hCamera,mod)
 
-test=SGEXPORT_MOD()
-target.SgGetModSyn(hCamera,test)
+# test=SGEXPORT_MOD()
+# target.SgGetModSyn(hCamera,test)
 
 
 target.SgStartCapture(hCamera)
@@ -224,5 +224,5 @@ target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
 # target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
 # target.SgSendGrabSignalToCamera(hCamera,bGrabEnd = False)
 
-target.SgStopCaptureSyn(hCamera)
+# target.SgStopCaptureSyn(hCamera)
 

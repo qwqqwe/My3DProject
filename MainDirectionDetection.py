@@ -9,9 +9,9 @@ from matplotlib import pyplot as plt
 from mayavi import mlab
 if __name__ == '__main__':
     #加载点云
-    txt_path = 'txtcouldpoint/Depth_L5000_t220802_104306_01111.txt'
+    txt_path = 'txtcouldpoint/Others/Cloud_2.txt'
     start_time = time.time()
-    pcd_1 = np.genfromtxt(txt_path, delimiter=",")
+    pcd_1 = np.loadtxt(txt_path, delimiter=" ")
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(pcd_1[:, :3])
     #pcd=pcd.uniform_down_sample(2)

@@ -1,30 +1,17 @@
-import numpy as np
 from ctypes import *
-class stPoint(BigEndianStructure):
-    _pack_ = 1
-    _fields_ = [
-        ('x',c_float),
-        ('y',c_float),
-        ('z',c_float),
-    ]
-
-
-def fillprototype(f, restype, argtypes):
-    f.restype = restype
-    f.argtypes = argtypes
-
-
-# main decleration
-# fillprototype(mylib.dot_product, c_double, [POINTER(vector_double), POINTER(vector_double)])
-
 
 target = windll.LoadLibrary("C:/Users/Administrator/Documents/WeChat Files/wxid_bj5u8pz1th8e12/FileStorage/File/2022-08/v2.1.15.138(1)/G56N_SDK_DEMO_2.1.15.138_20220121_1748/CamWrapper/bins/X64/Debug/SgCamWrapper.dll")
-#targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
-targe1t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\Dll6\x64\Debug\Dll6.dll")
-# targe2t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\ClassLibrary2\ClassLibrary2\bin\Debug\ClassLibrary2.dll")
-# target.onDepth()
+targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
 print('return',targe1t.PrepareToCatch())
+#完成Prepare之後再進行Catch，Catch可以進行多次，Prepare只用進行一次
 print('return',targe1t.Catch())
+#出錯碼是
+# -1相機連接失敗
+# -2屬性設定失敗
+# -3相機開啟失敗
+# -4開始抓取失敗
+# -5關閉相機失敗
+#這裡的函數是返回我們的數組，在Catch之後再抓，要不然會出錯
 targe1t.Reportx.restype = POINTER(c_float)
 targe1t.Reporty.restype = POINTER(c_float)
 targe1t.Reportz.restype = POINTER(c_float)
@@ -34,14 +21,11 @@ y=targe1t.Reporty()
 z=targe1t.Reportz()
 sizeoflen=targe1t.ReportSizeoflen()
 for i in range(0,sizeoflen):
-    print(x[i])
+    print(x[i],',',y[i],',',z[i])
+print('return',targe1t.Stop())
 
-# xx = np.array(np.fromiter(x, dtype=np.float64))
-# yy = np.array(np.fromiter(y, dtype=np.float64))
-# zz = np.array(np.fromiter(z, dtype=np.float64))
-# print(xx)
-# print('return',targe1t.SGE_CG_MODE())
-# print('returne',targe2t.SENGO)
+
+
 
 
 

@@ -14,7 +14,7 @@ def func_line_time(f):
         return func_return
 
     return decorator
-# @func_line_time
+@func_line_time
 # 定义一个测试函数
 def Py_Catch(targe1t):
     targe1t.Catch()
@@ -27,8 +27,9 @@ def Py_Catch(targe1t):
     z = targe1t.Reportz()
     sizeoflen = targe1t.ReportSizeoflen()
     xxx = np.empty([sizeoflen,3], dtype = float)
-    for i in range(0, sizeoflen):
-        xxx[i]=[x[i], y[i], z[i]]
+    xxx[:, 0]=x[:sizeoflen]
+    xxx[:, 1]=y[:sizeoflen]
+    xxx[:, 2]=z[:sizeoflen]
     targe1t.FreeMemory()
     return xxx
 def Py_PrepareToCatch(targe1t):
@@ -38,8 +39,8 @@ def Py_Stop(targe1t):
     a=targe1t.Stop()
     return a
 windll.LoadLibrary("C:/Users/Administrator/Documents/WeChat Files/wxid_bj5u8pz1th8e12/FileStorage/File/2022-08/v2.1.15.138(1)/G56N_SDK_DEMO_2.1.15.138_20220121_1748/CamWrapper/bins/X64/Debug/SgCamWrapper.dll")
-targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
-# targe1t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\Dll6\x64\Debug\Dll6.dll")
+# targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
+targe1t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\Dll6\x64\Debug\Dll6.dll")
 #  完成Prepare之後再進行Catch，Catch可以進行多次，Prepare只用進行一次
 #  出錯碼是
 # -1相機連接失敗

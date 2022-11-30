@@ -47,6 +47,25 @@ def plane_param(point_cloud_vector, point):
   D = -A * point[0] - B * point[1] - C * point[2]
   return A, B, C, D
 
+def Rationality(input,pre,findbest):
+  temp = 0
+  i = 0
+  length = len(input)
+  while(i<length):
+    if(abs(input[i]-pre[i])<=findbest):
+      temp += 1
+    i += 1
+
+  return np.double(temp)/length
+
+def function(x):
+  if abs(x)<=0.634:
+    asd = -0.4556 * x * x - 0.0392
+  else:
+    asd = -0.55248 * x * x
+  return asd
+
+
 
 # 查询接口中每行代码执行的时间
 def func_line_time(f):
@@ -109,7 +128,7 @@ def display():
   # f3 = open('test/FinalOutPut/{}/30.txt'.format(afile), 'w')
   # # f4 = open('test/FinalOutPut/{}/40.txt'.format(afile), 'w')
   # f5 = open('test/FinalOutPut/{}/50none.txt'.format(afile), 'w')
-  # # f6 = open('test/FinalOutPut/{}/60.txt'.format(afile), 'w')
+  f6 = open('test/FinalOutPut/{}/60.txt'.format(afile), 'w')
   # f11 = open('test/FinalOutPut/{}/1_normal_x2_green_mid.txt'.format(afile), 'a+')
   # f22 = open('test/FinalOutPut/{}/2_normal_x2_red_side.txt'.format(afile), 'a+')
   # f33 = open('test/FinalOutPut/{}/3_guai_x2_green_mid.txt'.format(afile), 'a+')
@@ -292,6 +311,9 @@ def display():
   start_guai=0#拐点的判断
   tank1=1   #每次切间隔距离（除以10为真实距离单位：mm）
   astart = time.time()
+  step = 0
+  indx = 0
+  list_all = []
 
   #改进切片
   if(point[0][0]>0):
@@ -371,33 +393,49 @@ def display():
     if (no_data!=1):
 
       #将图像中点坐标转移到0，0,
-      x = sorted_poi[:, 1]
-      y = sorted_poi[:, 2]
-      xxx=x[0:len(x)//3]
-      xxx=np.hstack((xxx, x[len(x)*2//3:]))
-      yyy=y[0:len(y)//3]
-      yyy=np.hstack((yyy, y[len(y)*2//3:]))
-      xx = x[len(x) // 6:len(x) *5// 6]
-      yy = y[len(y) // 6:len(y) *5// 6]
-      akb1 = signal.argrelmax(y, order=40)  # 局部相对最大
 
+      # x = sorted_poi[:, 1]
+      # y = sorted_poi[:, 2]
+      # xxx=x[0:len(x)//3]
+      # xxx=np.hstack((xxx, x[len(x)*2//3:]))
+      # yyy=y[0:len(y)//3]
+      # yyy=np.hstack((yyy, y[len(y)*2//3:]))
+      # xx = x[len(x) // 6:len(x) *5// 6]
+      # yy = y[len(y) // 6:len(y) *5// 6]
+      # akb1 = signal.argrelmax(y, order=40)  # 局部相对最大
+
+      x_original = sorted_poi[:, 0]
+      y_original = sorted_poi[:, 1]
+      z_original = sorted_poi[:, 2]
+      yyy = y_original[0:len(y_original) // 3]
+      yyy = np.hstack((yyy, y_original[len(y_original) * 2 // 3:]))
+      zzz = z_original[0:len(z_original) // 3]
+      zzz = np.hstack((zzz, z_original[len(z_original) * 2 // 3:]))  # 边缘部分
+      yy = y_original[len(y_original) // 6:len(y_original) *5// 6]#中间段
+      zz = z_original[len(z_original) // 6:len(z_original) *5// 6]
+      akb1 = signal.argrelmax(z_original, order=40)  # 局部相对最大
 
       if np.size(akb1)<=1:
-        z1 = np.polyfit(xx, yy, 2)  # 曲线拟合，返回值为多项式的各项系数
-        zz1 = np.polyfit(xxx, yyy, 2)  # 曲线拟合，返回值为多项式的各项系数
+        z1 = np.polyfit(yy, zz, 2)  # 曲线拟合，返回值为多项式的各项系数
+        zz1 = np.polyfit(yyy, zzz, 2)  # 曲线拟合，返回值为多项式的各项系数
 
       elif np.size(akb1)>1:
-        z1 = np.polyfit(x, y, 4)  # 曲线拟合，返回值为多项式的各项系数
-        zz1 = np.polyfit(xxx, yyy, 2)  # 曲线拟合，返回值为多项式的各项系数
+        z1 = np.polyfit(y_original, z_original, 4)  # 曲线拟合，返回值为多项式的各项系数
+        zz1 = np.polyfit(yyy, zzz, 2)  # 曲线拟合，返回值为多项式的各项系数
 
       #找到函数的最高点并进行平移
-      max_x=zz1[1]/(-zz1[0]*2)
+      max_y=zz1[1]/(-zz1[0]*2)
       ################################################################
       pp1 = np.poly1d(zz1)  # 返回值为多项式的表达式，也就是函数式子
       ################################################################
-      max_y=pp1(max_x)
-      x=x-max_x
-      y=y-max_y
+
+      max_z = pp1(max_y)
+      y_adjusted = y_original - max_y
+      z_adjusted = z_original - max_z  # 减去最高点
+      z_pred = []
+
+
+      '''
       xxx = x[0:len(x) // 3]
       xxx = np.hstack((xxx, x[len(x) * 2 // 3:]))
       yyy = y[0:len(y) // 3]
@@ -413,7 +451,98 @@ def display():
       yy_pred = pp1(x)  # 根据函数的多项式表达式，求解 y
       z2 = np.asarray(z1)
       zz2 = np.asarray(zz1)
+      '''
+      for num in range(0,len(y_adjusted)):
+        z_pred.append(function(y_adjusted[num]))
 
+      z_adjusted=z_adjusted-np.mean(z_adjusted-z_pred)
+      score=Rationality(z_adjusted,z_pred,0.05)
+
+      if(score<=0.9):#得分低的，将重新进行2次拟合进行第二次判断
+        z1 = np.polyfit(y_adjusted,z_adjusted,2)
+        p1 = np.poly1d(z1)
+        z_pred=p1(y_adjusted)
+        score=Rationality(z_adjusted,z_pred,0.05)
+        if(score<=0.9):
+          # print("输出图像")
+          step += 1
+        else:
+          if (step != 0):#输出缺陷位置
+            print("缺陷起始位置", tank1 - step)
+            print("缺陷结束位置", tank1)
+          step = 0
+
+        for i in range(len(z_adjusted)):
+          list_1=[]
+          if(abs(z_adjusted[i]-z_pred[i])<=0.01):
+            list_1.append(x_original[i])
+            list_1.append(y_original[i])
+            list_1.append(z_original[i])
+            # list_1.append(1)
+            # point_result[indx][0]=x_original[i]
+            # point_result[indx][1] = y_original[i]
+            # point_result[indx][2] = z_original[i]
+            # point_result[indx][3] = 1
+            indx += 1
+            list_all.append(list_1)
+            ll = json.dumps(list_1)
+            f6.write(ll + "\n")
+          else:
+            list_1.append(x_original[i])
+            list_1.append(y_original[i])
+            list_1.append(z_original[i])
+            # list_1.append(0.5)
+            # point_result[indx][0] = x_original[i]
+            # point_result[indx][1] = y_original[i]
+            # point_result[indx][2] = z_original[i]
+            # point_result[indx][3] = 0.5
+            indx += 1
+            list_all.append(list_1)
+            ll = json.dumps(list_1)
+            f6.write(ll + "\n")
+
+      else:
+        if (step!=0):#输出缺陷位置
+          print("缺陷起始位置",tank1-step)
+          print("缺陷结束位置", tank1)
+        step = 0
+
+        for i in range(len(z_adjusted)):
+          list_1=[]
+          if(abs(z_adjusted[i]-z_pred[i])<=0.01):
+            list_1.append(x_original[i])
+            list_1.append(y_original[i])
+            list_1.append(z_original[i])
+            # list_1.append(1)
+            # point_result[indx][0]=x_original[i]
+            # point_result[indx][1] = y_original[i]
+            # point_result[indx][2] = z_original[i]
+            # point_result[indx][3] = 1
+            indx += 1
+            list_all.append(list_1)
+            ll = json.dumps(list_1)
+            # f6.write(ll + "\n")
+          else:
+            list_1.append(x_original[i])
+            list_1.append(y_original[i])
+            list_1.append(z_original[i])
+            # list_1.append(0.5)
+            # point_result[indx][0] = x_original[i]
+            # point_result[indx][1] = y_original[i]
+            # point_result[indx][2] = z_original[i]
+            # point_result[indx][3] = 0.5
+            indx += 1
+            list_all.append(list_1)
+            ll=json.dumps(list_1)
+            # f6.write(ll + "\n")
+
+
+
+
+      if(tank+0.2>=slicing_max - 0.1):#焊缝末尾判断输出
+        if (step!=0):
+          print("缺陷起始位置",tank1-step)
+          print("缺陷结束位置", tank1)
 
       # plt.plot(x[akb1], y[akb1], '+', markersize=20)
       # plt.plot(x, y, '*', label='original values')
@@ -485,9 +614,14 @@ def display():
       # poly1.append(z2[2])
       print(tank1)
 
-
+  result = np.array(list_all)
   bstart = time.time()
   print(bstart - astart)
+  pcd_vector = o3d.geometry.PointCloud()
+  # 加载点坐标
+  pcd_vector.points = o3d.utility.Vector3dVector(result[:, :3])
+
+  o3d.visualization.draw_geometries([pcd_vector])
 
   # fp.close()
   # f3.close()
@@ -512,6 +646,7 @@ def display():
   #       print('block start:', starta, 'block end:', enda)
   #       starta = lines[line + 1]
   #   print('block start:', starta, 'block end:', lines[-1])
+  return result
 
 
 if __name__ == "__main__":

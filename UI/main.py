@@ -3,14 +3,16 @@ import Demo
 from PyQt5.QtWidgets import QApplication, QMainWindow
 import numpy as np
 import open3d as o3d
+import opengl_widget
 class MainWindows(QMainWindow, Demo.Ui_MainWindow):
 
   def __init__(self, parent=None):
       QMainWindow.__init__(self, parent)
       self.setupUi(self)
 
-      self.pushButton.clicked.connect(self.viewtxt)
+      # self.pushButton.clicked.connect(self.viewtxt)
 
+      self.pushButton.clicked.connect(opengl_widget.openGl_widget.paintGL)
   def viewtxt(self):
     y_threshold = 0.1
     print("1")

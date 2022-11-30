@@ -5,13 +5,21 @@ import numpy as np
 
 from PyQt5 import QtCore, QtGui, QtWidgets, QtOpenGL
 
-txt_path = '..//txtcouldpoint//Finalzhengzheng5.txt'
-pcd = np.loadtxt(txt_path, delimiter=",")
-
+# txt_path = '..//txtcouldpoint//Finalzhengzheng5.txt'
+# pcd = np.loadtxt(txt_path, delimiter=",")
+remark =2
 class openGl_widget(QtWidgets.QOpenGLWidget):
+    # remark = 2
+    txt_path = '..//txtcouldpoint//Finalzhengzheng5.txt'
+    # txt_path = 'txtcouldpoint/Original/Third_146.txt'
+    # txt_path = 'heidian.txt'
+    # remark = 2
+    # start_time = time.time()
+    # 通过numpy读取txt点云
+    pcd = np.loadtxt(txt_path, delimiter=",")
     def __init__(self, parent=None):
         super().__init__(parent)
-
+        # remark = 2
         # 这个三个是虚函数, 需要重写
         # paintGL
         # initializeGL
@@ -31,8 +39,27 @@ class openGl_widget(QtWidgets.QOpenGLWidget):
 
 	# 绘图函数
     def paintGL(self):
+        print("1")
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+        remark += 1
+        glBegin(GL_POINTS)
+        if remark==6:
+            c = self.pcd.shape[0]
+            self.remark -= 1
+            # glColor3f(1.0, 0.0, 0.0)
+            for i in range(0, c):
+                x = (self.pcd[i][0] - 70) / 70
+                y = self.pcd[i][1] / 70
+                z = self.pcd[i][2] / 3
+                glColor3f(z, 0.0, 0.0)
+                glVertex3f(x, y, z)
 
+
+        glEnd()
+
+    def paintGL1(self):
+        print("2")
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
 
         glBegin(GL_POINTS)
 
@@ -45,6 +72,8 @@ class openGl_widget(QtWidgets.QOpenGLWidget):
             z = pcd[i][2] / 3
             glColor3f(z, 0.0, 0.0)
             glVertex3f(x, y, z)
+
+        print("3")
         glEnd()
 
     def resizeGL(self, w, h):

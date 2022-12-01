@@ -1,42 +1,50 @@
 import sys
 import Demo
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5.QtCore import pyqtSignal,QObject
 import numpy as np
 import open3d as o3d
-import opengl_widget
-class MainWindows(QMainWindow, Demo.Ui_MainWindow):
+from ctypes import *
+from opengl_widget import *
 
+
+# import ConnectToCamere
+
+
+
+
+class MainWindows(QMainWindow, Demo.Ui_MainWindow):
+  a=pyqtSignal()
   def __init__(self, parent=None):
       QMainWindow.__init__(self, parent)
       self.setupUi(self)
 
       # self.pushButton.clicked.connect(self.viewtxt)
+      # self.widget1=openGl_widget
+      self.pushButton.clicked.connect(self.pushButton_display_click)
+      self.pushButton_PrepareToCatch.clicked.connect(self.pushButton_PrepareToCatch_display_click)
+      self.pushButton_ToCatch.clicked.connect(self.pushButton_ToCatch_display_click)
 
-      self.pushButton.clicked.connect(opengl_widget.openGl_widget.paintGL)
-  def viewtxt(self):
-    y_threshold = 0.1
-    print("1")
-    txt_path = '..//txtcouldpoint//Finalzhengzheng5.txt'
-    # txt_path = 'txtcouldpoint/Original/Third_146.txt'
-    # txt_path = 'heidian.txt'
+  def pushButton_display_click(self):
+      # self.textEdit_display.setText("你点击了按钮")
+      bbb1=self.widget.ToCatch()
+      self.widget.change()
+      self.widget.cccc()
+      self.widget.update()  # 刷新图像
 
+  def pushButton_PrepareToCatch_display_click(self):
+      # return_prepare = ConnectToCamere.Py_PrepareToCatch(targe1t)
+      # print('return_prepare', return_prepare)
+      self.widget.Pre_ToCatch()
 
-    # start_time = time.time()
-    # 通过numpy读取txt点云
-    pcd = np.loadtxt(txt_path, delimiter=",")
-    print("25")
-    pcd_vector = o3d.geometry.PointCloud()
-    # print(pcd.shape)
+  def pushButton_ToCatch_display_click(self):
+      # bbb1 = ConnectToCamere.Py_Catch(targe1t)
+      self.widget.ToCatch()
 
-    # 加载点坐标
-    pcd_vector.points = o3d.utility.Vector3dVector(pcd[:, :3])
+  def diaoyong(self):
+      # openGl_widget.set_remark()
+      self.a.emit()
 
-    #pcd_vector = pcd_vector.select_by_index(np.where(pcd[:, 2] <= y_threshold)[0])
-    print("1")
-    # end_time = time.time()
-    # print(end_time-start_time)
-    o3d.visualization.draw_geometries([pcd_vector])
-    print("1")
 
 # 创建槽函数 槽函数直接使用元件的名称即可
 

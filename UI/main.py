@@ -5,7 +5,7 @@ from PyQt5.QtCore import pyqtSignal,QObject
 import numpy as np
 import open3d as o3d
 from ctypes import *
-from opengl_widget import *
+# from opengl_widget import *
 
 
 # import ConnectToCamere
@@ -21,6 +21,7 @@ class MainWindows(QMainWindow, Demo.Ui_MainWindow):
 
       # self.pushButton.clicked.connect(self.viewtxt)
       # self.widget1=openGl_widget
+
       self.pushButton.clicked.connect(self.pushButton_display_click)
       self.pushButton_PrepareToCatch.clicked.connect(self.pushButton_PrepareToCatch_display_click)
       self.pushButton_ToCatch.clicked.connect(self.pushButton_ToCatch_display_click)
@@ -37,15 +38,19 @@ class MainWindows(QMainWindow, Demo.Ui_MainWindow):
   def pushButton_ToCatch_display_click(self):
       # bbb1 = ConnectToCamere.Py_Catch(targe1t)
       # self.widget.ToCatch()
-      bbb1=self.widget.ToCatch()
+      # bbb1=self.widget.ToCatch()
+      # self.widget.change()
+      # self.widget.cccc(bbb1)
+      # self.widget.update()  # 刷新图像'''
+
+      bbb1 = self.widget.ToCatch()
       self.widget.change()
-      self.widget.cccc(bbb1)
-      self.widget.update()  # 刷新图像
+      dmessage=self.widget.dddd(bbb1)
+      self.textBrowser.setText(str(dmessage))
+      self.widget.update()  # 刷新图像'''
 
 
-  def diaoyong(self):
-      # openGl_widget.set_remark()
-      self.a.emit()
+
 
 
 # 创建槽函数 槽函数直接使用元件的名称即可

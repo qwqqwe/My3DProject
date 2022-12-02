@@ -48,7 +48,8 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(MainWindow)
-        self.pushButton.clicked.connect(MainWindow.close)
+        # self.pushButton.clicked.connect(MainWindow.close)
+        self.pushButton.clicked.connect(self.settext)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
         # self.pushButton_start.clicked.connect(viewtxt1.viewtxt)
         # QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -58,3 +59,13 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.pushButton_start.setText(_translate("MainWindow", "开始"))
         self.pushButton.setText(_translate("MainWindow", "PushButton"))
+
+    def settext(self):
+        asd = [1,2,3,4]
+        asd.append("6")
+        asdd= ["sssz"]
+        # self.textBrowser.append(asd)
+        # self.textBrowser.insertPlainText(asd)
+        # self.text_browser.setText(self.text_edit.toPlainText())
+        # self.text_browser.setText(asd)
+        self.textBrowser.setText(str(asd))

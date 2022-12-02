@@ -27,10 +27,7 @@ class MainWindows(QMainWindow, Demo.Ui_MainWindow):
 
   def pushButton_display_click(self):
       # self.textEdit_display.setText("你点击了按钮")
-      bbb1=self.widget.ToCatch()
-      self.widget.change()
-      self.widget.cccc()
-      self.widget.update()  # 刷新图像
+      self.widget.ToStop()
 
   def pushButton_PrepareToCatch_display_click(self):
       # return_prepare = ConnectToCamere.Py_PrepareToCatch(targe1t)
@@ -39,7 +36,12 @@ class MainWindows(QMainWindow, Demo.Ui_MainWindow):
 
   def pushButton_ToCatch_display_click(self):
       # bbb1 = ConnectToCamere.Py_Catch(targe1t)
-      self.widget.ToCatch()
+      # self.widget.ToCatch()
+      bbb1=self.widget.ToCatch()
+      self.widget.change()
+      self.widget.cccc(bbb1)
+      self.widget.update()  # 刷新图像
+
 
   def diaoyong(self):
       # openGl_widget.set_remark()

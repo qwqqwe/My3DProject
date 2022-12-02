@@ -1,3 +1,5 @@
+
+
 # -*- coding: utf-8 -*-
 
 # Form implementation generated from reading ui file 'Demo.ui'
@@ -69,6 +71,6 @@ class Ui_MainWindow(object):
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
         self.label.setText(_translate("MainWindow", "Test !!!!"))
         self.pushButton_PrepareToCatch.setText(_translate("MainWindow", "开始连接相机"))
-        self.pushButton_ToCatch.setText(_translate("MainWindow", "开始扫描"))
-        self.pushButton.setText(_translate("MainWindow", "开始检测"))
+        self.pushButton_ToCatch.setText(_translate("MainWindow", "开始检测"))
+        self.pushButton.setText(_translate("MainWindow", "停止相机"))
 from opengl_widget import openGl_widget

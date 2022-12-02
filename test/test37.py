@@ -1,21 +1,8 @@
 import time
 from ctypes import *
+import open3d as o3d
 import numpy as np
-from line_profiler import LineProfiler
-from functools import wraps
-def func_line_time(f):
-    @wraps(f)
-    def decorator(*args, **kwargs):
-        func_return = f(*args, **kwargs)
-        lp = LineProfiler()
-        lp_wrap = lp(f)
-        lp_wrap(*args, **kwargs)
-        lp.print_stats()
-        return func_return
 
-    return decorator
-# @func_line_time
-# 定义一个测试函数
 def Py_Catch(targe1t):
     targe1t.Catch()
     targe1t.Reportx.restype = POINTER(c_float)
@@ -39,8 +26,8 @@ def Py_Stop(targe1t):
     a=targe1t.Stop()
     return a
 windll.LoadLibrary("C:/Users/Administrator/Documents/WeChat Files/wxid_bj5u8pz1th8e12/FileStorage/File/2022-08/v2.1.15.138(1)/G56N_SDK_DEMO_2.1.15.138_20220121_1748/CamWrapper/bins/X64/Debug/SgCamWrapper.dll")
-# targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
-targe1t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\Dll6\x64\Debug\Dll6.dll")
+targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
+# targe1t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\Dll6\x64\Debug\Dll6.dll")
 #  完成Prepare之後再進行Catch，Catch可以進行多次，Prepare只用進行一次
 #  出錯碼是
 # -1相機連接失敗
@@ -48,27 +35,17 @@ targe1t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\Dll6\x64\Debug\
 # -3相機開啟失敗
 # -4開始抓取失敗
 # -5關閉相機失敗
-print('return',Py_PrepareToCatch(targe1t))
-a=time.time()
+return_prepare=Py_PrepareToCatch(targe1t)
+print('return_prepare',return_prepare)
+
 bbb1=Py_Catch(targe1t)
-bbb2=Py_Catch(targe1t)
-# bbb3=Py_Catch(targe1t)
-b=time.time()
-# print(b-a)
-print('return',Py_Stop(targe1t))
+# bbb2=Py_Catch(targe1t)
 
+return_stop=Py_Stop(targe1t)
+print('return_stop',return_stop)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+pcd = o3d.geometry.PointCloud()
+pcd.points = o3d.utility.Vector3dVector(bbb1)
+pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+# 可视化
+o3d.visualization.draw_geometries([pc_view], point_show_normal=True)

@@ -189,6 +189,14 @@ def display1(pcd_1):
   pcd = sor_pcd
   points = pcd.points
   point = np.asarray(points)
+  temp_point=point
+  # np_temp_array=np.array([point.shape[0],4])
+  # np_temp_array[:,0]=point[:,0]
+  # np_temp_array[:,1]=point[:,1]
+  # np_temp_array[:,2]=point[:,2]
+  # np_temp_array[:,3]=1
+
+
 
   mesh_1 = o3d.geometry.TriangleMesh.create_coordinate_frame()
   axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
@@ -477,10 +485,12 @@ def display1(pcd_1):
   bstart = time.time()
   print(bstart - astart)
 
-  return result11
+  # return result11
+  return temp_point
 
 class openGl_widget(QtWidgets.QOpenGLWidget):
     remark = 0
+
     pcd =None
     # txt_path = '..//txtcouldpoint//Finalzhengzheng5.txt'
     # txt_path = 'txtcouldpoint/Original/Third_146.txt'
@@ -520,13 +530,15 @@ class openGl_widget(QtWidgets.QOpenGLWidget):
         if self.remark==1:
             print("3")
             c = self.pcd.shape[0]
+            print(c)
             # pcd1 = display1()
             # self.pcd=result11
             for i in range(0, c):
                 x = (self.pcd[i][0]) / 75
                 y = (self.pcd[i][1]) / 75
                 z = (self.pcd[i][2]) / 75
-                ccc = self.pcd[i][3]
+                # ccc = self.pcd[i][3]
+                ccc = 1
                 if ccc == 1:
                     glColor3f(0, 1, 0.0)
                 else:
@@ -569,6 +581,9 @@ class openGl_widget(QtWidgets.QOpenGLWidget):
         # self.pcd = bbb1
         return bbb1
 
+
+    def ToStop(self):
+      Py_Stop(targe1t)
     def change(self):
         self.remark=1
 

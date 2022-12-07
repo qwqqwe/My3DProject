@@ -84,7 +84,7 @@ targe1t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\Dll6\x64\Debug\
 lista=Py_Detect_IP(targe1t)#探測IP返回的是IP的list,
 print('lista', lista)#######前面那個是本機，後面那個是相機
 # lista[0]='1.1.1.1'
-########連接時m_sHostIp(本機)是前面那個
+########連接時m_sHostIp(本機)是前面那個,m_CameraIP(相機)是後面那個
 targe1t.PrepareToCatch.argtypes = [c_char_p,c_char_p]
 hostip=lista[0].encode("UTF-8")
 camip=lista[1].encode("UTF-8")
@@ -95,7 +95,7 @@ print('return_prepare',return_prepare)
 
 
 ########开始设置参数，这个函数一定要有，但是参数不一定，因为我设定了默认值是3000
-return_set=targe1t.SetInfo(3000)
+return_set=targe1t.SetInfo(300)
 print('return_set',return_set)
 ########开始启动抓取
 return_start=targe1t.StartCap()

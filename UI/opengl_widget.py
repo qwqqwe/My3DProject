@@ -17,9 +17,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets, QtOpenGL
 # pcd = np.loadtxt(txt_path, delimiter=",")
 remark =2
 # global result11
-windll.LoadLibrary("C:/Users/Administrator/Documents/WeChat Files/wxid_bj5u8pz1th8e12/FileStorage/File/2022-08/v2.1.15.138(1)/G56N_SDK_DEMO_2.1.15.138_20220121_1748/CamWrapper/bins/X64/Debug/SgCamWrapper.dll")
+windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\SgCamWrapper.dll")
 # targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
-targe1t=windll.LoadLibrary(r"C:\Users\Administrator\source\repos\Dll6\x64\Debug\Dll6.dll")
+targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
 
 def Py_Catch(targe1t):
     targe1t.Catch()
@@ -51,7 +51,7 @@ def display_inlier_outlier(cloud, ind):
   print("Showing outliers (red) and inliers (gray): ")
   outlier_cloud.paint_uniform_color([1, 0, 0])
   inlier_cloud.paint_uniform_color([0, 1, 0])
-  o3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
+  # o3d.visualization.draw_geometries([inlier_cloud, outlier_cloud])
 
 def Rationality(input,pre,findbest):
   temp = 0
@@ -577,7 +577,7 @@ def display2(pcd_1):
   pc_view_1 = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
   # 可视化
   # o3d.visualization.draw_geometries([pc_view_1,pc_view_1, mesh], point_show_normal=True)
-
+  #
   # 计算要切割的值
   point_size = point.shape[0]
   idx = []
@@ -716,7 +716,7 @@ def display2(pcd_1):
       print(tank1)
       defect_meassage.append("no_data:"+str(tank1))
       # print(tank1, file=f5)
-    elif(-1.75<(sorted_poi[-1][1]- sorted_poi[0][1])<1.75):
+    elif(-0.75<(sorted_poi[-1][1]- sorted_poi[0][1])<0.75):
       no_data = 1
       print("no_data")
       print(tank1)
@@ -725,7 +725,7 @@ def display2(pcd_1):
     else:
       for i in range(len(poi_x)-1):
         #如果两个点之间差距大于0.5的话，判断点有遗失，数据量不够
-        if((sorted_poi[i+1][1]- sorted_poi[i][1])>0.5):
+        if((sorted_poi[i+1][1]- sorted_poi[i][1])>1.5):
           no_data=1
           print("no_data")
           print(tank1)
@@ -734,6 +734,7 @@ def display2(pcd_1):
           break
 
       print(sorted_poi[i+1][1]- sorted_poi[i][1])
+
     if (no_data!=1):
 
       x_original = sorted_poi[:, 0]
@@ -748,11 +749,11 @@ def display2(pcd_1):
       akb1 = signal.argrelmax(z_original, order=40)  # 局部相对最大
 
       if np.size(akb1)<=1:
-        z1 = np.polyfit(yy, zz, 2)  # 曲线拟合，返回值为多项式的各项系数
+        # z1 = np.polyfit(yy, zz, 2)  # 曲线拟合，返回值为多项式的各项系数
         zz1 = np.polyfit(yyy, zzz, 2)  # 曲线拟合，返回值为多项式的各项系数
 
       elif np.size(akb1)>1:
-        z1 = np.polyfit(y_original, z_original, 4)  # 曲线拟合，返回值为多项式的各项系数
+        # z1 = np.polyfit(y_original, z_original, 4)  # 曲线拟合，返回值为多项式的各项系数
         zz1 = np.polyfit(yyy, zzz, 2)  # 曲线拟合，返回值为多项式的各项系数
 
       #找到函数的最高点并进行平移
@@ -849,13 +850,13 @@ def display2(pcd_1):
   bstart = time.time()
   print(bstart - astart)
 
-  # return result11
-  return temp_point,defect_meassage
+  return result11,defect_meassage
+  # return temp_point,defect_meassage
 
 class openGl_widget(QtWidgets.QOpenGLWidget):
     remark = 0
 
-    pcd =None
+    pcddd =None
     # txt_path = '..//txtcouldpoint//Finalzhengzheng5.txt'
     # txt_path = 'txtcouldpoint/Original/Third_146.txt'
     # txt_path = 'heidian.txt'
@@ -893,16 +894,16 @@ class openGl_widget(QtWidgets.QOpenGLWidget):
         glBegin(GL_POINTS)
         if self.remark==1:
             print("3")
-            c = self.pcd.shape[0]
+            c = self.pcddd.shape[0]
             print(c)
             # pcd1 = display1()
             # self.pcd=result11
             for i in range(0, c):
-                x = (self.pcd[i][0]) / 75
-                y = (self.pcd[i][1]) / 75
-                z = (self.pcd[i][2]) / 75
-                # ccc = self.pcd[i][3]
-                ccc = 1
+                x = (self.pcddd[i][0]) / 75
+                y = (self.pcddd[i][1]) / 75
+                z = (self.pcddd[i][2]) / 75
+                ccc = self.pcddd[i][3]
+                # ccc = 1
                 if ccc == 1:
                     glColor3f(0, 1, 0.0)
                 else:
@@ -955,5 +956,5 @@ class openGl_widget(QtWidgets.QOpenGLWidget):
         self.pcd=display1(bbb1)
 
     def dddd(self,bbb1):
-        self.pcd,message=display2(bbb1)
+        self.pcddd,message=display2(bbb1)
         return message

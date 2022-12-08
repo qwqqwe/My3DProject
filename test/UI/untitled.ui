@@ -19,17 +19,17 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>651</width>
-      <height>461</height>
+      <width>691</width>
+      <height>551</height>
      </rect>
     </property>
     <widget class="QWidget" name="formLayoutWidget">
      <property name="geometry">
       <rect>
-       <x>20</x>
-       <y>10</y>
-       <width>621</width>
-       <height>441</height>
+       <x>0</x>
+       <y>0</y>
+       <width>691</width>
+       <height>551</height>
       </rect>
      </property>
      <layout class="QFormLayout" name="formLayout"/>

@@ -966,7 +966,9 @@ def display1():
       for num in range(0,len(y_adjusted)):
         z_pred.append(function(y_adjusted[num]))
 
+
       z_adjusted=z_adjusted-np.mean(z_adjusted-z_pred)
+
       score=Rationality(z_adjusted,z_pred,0.05)
 
       if(score<=0.9):#得分低的，将重新进行2次拟合进行第二次判断

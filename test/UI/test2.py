@@ -21,15 +21,22 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ren = vtk.vtkRenderer()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
+        self.iren.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
 
         # Create source
         txt_path = '../../txtcouldpoint/Finalzhengzheng5.txt'
         pcd = np.loadtxt(txt_path, delimiter=",")
 
+
         poins = vtk.vtkPoints()
         for i in range(pcd.shape[0]):
             dp = pcd[i]
             poins.InsertNextPoint(dp[0], dp[1], dp[2])
+        # for i in range(pcd.shape[0]):
+        #     dp = pcd[i]
+        #     if dp[0]>70:
+        #         poins.InsertNextPoint(dp[0], dp[1], dp[2])
+
 
         polydata = vtk.vtkPolyData()
         polydata.SetPoints(poins)

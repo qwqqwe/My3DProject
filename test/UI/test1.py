@@ -18,6 +18,7 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ren = vtk.vtkRenderer()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
+        self.iren.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
 
         # Create source
         source = vtk.vtkConeSource()

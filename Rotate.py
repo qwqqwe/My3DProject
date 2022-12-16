@@ -17,7 +17,7 @@ from matplotlib import pyplot as plt
 from mayavi import mlab
 from pyinstrument import Profiler
 from line_profiler import LineProfiler
-import heartrate
+# import heartrate
 import random
 from scipy import signal
 from kneed import KneeLocator
@@ -96,7 +96,7 @@ def Router(v):
   angle_hu3 = np.arccos(cos_3)
   return angle_hu1, angle_hu2, angle_hu3
 
-@func_line_time
+# @func_line_time
 # 定义一个测试函数
 
 def display():
@@ -166,7 +166,7 @@ def display():
   bstartime = time.time()
   print("统计滤波", bstartime - astart)
   # 可视化统计滤波后的点云和噪声点云
-  # display_inlier_outlier(pcd, ind)
+  display_inlier_outlier(pcd, ind)
 
 
   pcd = sor_pcd
@@ -179,8 +179,8 @@ def display():
   axis.scale(20, center=(0, 0, 0))
   pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
   # 可视化
-  # o3d.visualization.draw_geometries([pc_view, axis, mesh_1], point_show_normal=True)
-  # o3d.visualization.draw_geometries([pc_view, mesh_1], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view, axis, mesh_1], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view, mesh_1], point_show_normal=True)
 
   # 转化xy轴
   h1, h2, h3 = Router(v)
@@ -197,7 +197,7 @@ def display():
   mesh.scale(20, center=(0,0,0))
   pc_view_1 = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
   # 可视化
-  # o3d.visualization.draw_geometries([pc_view_1,pc_view_1, mesh], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view_1,pc_view_1, mesh], point_show_normal=True)
 
 
   # 计算要切割的值
@@ -225,7 +225,7 @@ def display():
   mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
   pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(slicing_cloud.points))
   # 可视化
-  # o3d.visualization.draw_geometries([pc_view, mesh], point_show_normal=True)
+  o3d.visualization.draw_geometries([pc_view, mesh], point_show_normal=True)
 
 
   poi = np.asarray(slicing_cloud.points)  #转换数组

@@ -23,6 +23,10 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
         self.iren.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
 
+        self.iren.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
+        #####這行很重要，因為vtk有兩種交互方式，一種是trackball模式，還有一種是joystick模式，trackball模式才和open3d的操作模式一樣
+        #####joystick模式下的操作一般人做不來
+
         # Create source
         txt_path = '../../txtcouldpoint/Finalzhengzheng5.txt'
         pcd = np.loadtxt(txt_path, delimiter=",")

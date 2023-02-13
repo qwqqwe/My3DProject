@@ -20,7 +20,8 @@ class VtkPointCloud:
     def addPoint(self, point):
         if self.vtkPoints.GetNumberOfPoints() < self.maxNumPoints:
             pointId = self.vtkPoints.InsertNextPoint(point[:])
-            self.vtkDepth.InsertNextValue(point[2])
+            # self.vtkDepth.InsertNextValue(point[2])
+            self.vtkDepth.InsertNextValue(-255+pointId*0.5)
             self.vtkCells.InsertNextCell(1)
             self.vtkCells.InsertCellPoint(pointId)
         else:

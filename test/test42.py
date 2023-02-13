@@ -4,6 +4,9 @@ import vtk
 from PyQt5 import QtCore, QtGui, QtWidgets
 from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from untitled import Ui_MainWindow
+import open3d as o3d
+import numpy as np
+
 class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
 
     def __init__(self):
@@ -18,30 +21,36 @@ class Mywindow(QtWidgets.QMainWindow, Ui_MainWindow):
         self.ren = vtk.vtkRenderer()
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
+
         self.iren.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
-        self.iren.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
+        #####這行很重要，因為vtk有兩種交互方式，一種是trackball模式，還有一種是joystick模式，trackball模式才和open3d的操作模式一樣
+        #####joystick模式下的操作一般人做不來
+
         # Create source
-        source = vtk.vtkConeSource()
-        source.SetCenter(0, 0, 0)
-        source.SetRadius(0.1)
+        txt_path = '../txtcouldpoint/Finalzhengzheng5.txt'
+        pcd = np.loadtxt(txt_path, delimiter=",")
 
-        source1 = vtk.vtkSphereSource()
-        source1.SetCenter(0, 0, 0)
-        source1.SetRadius(0.3)
+        poins = vtk.vtkPoints()
+        for i in range(pcd.shape[0]):
+            dp = pcd[i]
+            poins.InsertNextPoint(dp[0], dp[1], dp[2])
 
-        # Create a mapper
-        mapper = vtk.vtkPolyDataMapper()
-        mapper.SetInputConnection(source.GetOutputPort())
+        polydata = vtk.vtkPolyData()
+        polydata.SetPoints(poins)
 
-        mapper1 = vtk.vtkPolyDataMapper()
-        mapper1.SetInputConnection(source1.GetOutputPort())
+        glyphFilter = vtk.vtkVertexGlyphFilter()
+        glyphFilter.SetInputData(polydata)
+        glyphFilter.Update()
+
+        dataMapper = vtk.vtkPolyDataMapper()
+        dataMapper.SetInputConnection(glyphFilter.GetOutputPort())
 
         # Create an actor
         actor = vtk.vtkActor()
-        actor.SetMapper(mapper)
+        actor.SetMapper(dataMapper)
 
         actor1 = vtk.vtkActor()
-        actor1.SetMapper(mapper1)
+        actor1.SetMapper(dataMapper)
 
         self.ren.AddActor(actor)
         self.ren.AddActor(actor1)

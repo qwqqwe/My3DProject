@@ -15,7 +15,10 @@
 ################################################################################
 
 ## ==> GUI FILE
-from main import *
+
+from test3 import *
+from PyQt5.QtCore import QRect, QPropertyAnimation
+from PyQt5 import QtWidgets
 
 ## ==> GLOBALS
 GLOBAL_STATE = 0
@@ -24,7 +27,7 @@ GLOBAL_TITLE_BAR = True
 ## ==> COUT INITIAL MENU
 count = 1
 
-class UIFunctions(MainWindow):
+class UIFunctions(mywindow):
 
     ## ==> GLOBALS
     GLOBAL_STATE = 0
@@ -80,7 +83,7 @@ class UIFunctions(MainWindow):
     def toggleMenu(self, maxWidth, enable):
         if enable:
             # GET WIDTH
-            width = self.ui.frame_left_menu.width()
+            width = self.frame_left_menu.width()
             maxExtend = maxWidth
             standard = 70
 
@@ -91,7 +94,7 @@ class UIFunctions(MainWindow):
                 widthExtended = standard
 
             # ANIMATION
-            self.animation = QPropertyAnimation(self.ui.frame_left_menu, b"minimumWidth")
+            self.animation = QPropertyAnimation(self.frame_left_menu, b"minimumWidth")
             self.animation.setDuration(300)
             self.animation.setStartValue(width)
             self.animation.setEndValue(widthExtended)
@@ -145,28 +148,36 @@ class UIFunctions(MainWindow):
     def selectMenu(getStyle):
         select = getStyle + ("QPushButton { border-right: 7px solid rgb(44, 49, 60); }")
         return select
+        # pass
 
     ## ==> DESELECT
     def deselectMenu(getStyle):
         deselect = getStyle.replace("QPushButton { border-right: 7px solid rgb(44, 49, 60); }", "")
+        deselect = deselect.replace("QPushButton { border-right: 5px solid rgb(44, 49, 60); }", "")
+        # deselect = getStyle.replace("QPushButton { border-right: 5px solid rgb(44, 49, 60); }", "")
         return deselect
 
     ## ==> START SELECTION
     def selectStandardMenu(self, widget):
-        for w in self.ui.frame_left_menu.findChildren(QPushButton):
+        for w in self.frame_left_menu.findChildren(QtWidgets.QPushButton):
             if w.objectName() == widget:
                 w.setStyleSheet(UIFunctions.selectMenu(w.styleSheet()))
 
     ## ==> RESET SELECTION
     def resetStyle(self, widget):
-        for w in self.ui.frame_left_menu.findChildren(QPushButton):
+        abk=self.frame_left_menu.findChildren(QtWidgets.QPushButton)
+        for w in self.frame_left_menu.findChildren(QtWidgets.QPushButton):
+            aaa= w.objectName()
+            widget1=widget
+            a = w.styleSheet()
+            # w.styleSheet().
             if w.objectName() != widget:
                 w.setStyleSheet(UIFunctions.deselectMenu(w.styleSheet()))
 
     ## ==> CHANGE PAGE LABEL TEXT
     def labelPage(self, text):
         newText = '| ' + text.upper()
-        self.ui.label_top_info_2.setText(newText)
+        self.label_top_info_2.setText(newText)
 
     ## ==> USER ICON
     ########################################################################

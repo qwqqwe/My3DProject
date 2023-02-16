@@ -416,6 +416,7 @@ class Ui_MainWindow(object):
         self.label_top_info_1.setFont(font)
         self.label_top_info_1.setMouseTracking(False)
         self.label_top_info_1.setStyleSheet("color: rgb(98, 103, 111);")
+        self.label_top_info_1.setText("")
         self.label_top_info_1.setObjectName("label_top_info_1")
         self.horizontalLayout_8.addWidget(self.label_top_info_1)
         self.label_top_info_2 = QtWidgets.QLabel(self.frame_top_info)
@@ -470,25 +471,25 @@ class Ui_MainWindow(object):
         self.layout_menus.setContentsMargins(0, 0, 0, 0)
         self.layout_menus.setSpacing(0)
         self.layout_menus.setObjectName("layout_menus")
-        self.btn_open_file = QtWidgets.QPushButton(self.frame_menus)
+        self.btn_running = QtWidgets.QPushButton(self.frame_menus)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Expanding, QtWidgets.QSizePolicy.Fixed)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.btn_open_file.sizePolicy().hasHeightForWidth())
-        self.btn_open_file.setSizePolicy(sizePolicy)
-        self.btn_open_file.setMinimumSize(QtCore.QSize(0, 60))
+        sizePolicy.setHeightForWidth(self.btn_running.sizePolicy().hasHeightForWidth())
+        self.btn_running.setSizePolicy(sizePolicy)
+        self.btn_running.setMinimumSize(QtCore.QSize(0, 60))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        self.btn_open_file.setFont(font)
-        self.btn_open_file.setMouseTracking(False)
-        self.btn_open_file.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.btn_open_file.setStyleSheet("QPushButton {    \n"
+        self.btn_running.setFont(font)
+        self.btn_running.setMouseTracking(False)
+        self.btn_running.setLayoutDirection(QtCore.Qt.LeftToRight)
+        self.btn_running.setStyleSheet("QPushButton {    \n"
 "    background-image: url(:/16x16/icons/16x16/cil-caret-right.png);\n"
 "    background-position: left center;\n"
 "    background-repeat: no-repeat;\n"
 "    border: none;\n"
 "    border-left: 28px solid rgb(27, 29, 35);\n"
-"    border-right: 5px solid rgb(44, 49, 60);\n"
+"    \n"
 "    background-color: rgb(27, 29, 35);\n"
 "    text-align: left;\n"
 "    padding-left: 45px;\n"
@@ -501,8 +502,8 @@ class Ui_MainWindow(object):
 "    background-color: rgb(85, 170, 255);\n"
 "    border-left: 28px solid rgb(85, 170, 255);\n"
 "}")
-        self.btn_open_file.setObjectName("btn_open_file")
-        self.layout_menus.addWidget(self.btn_open_file)
+        self.btn_running.setObjectName("btn_running")
+        self.layout_menus.addWidget(self.btn_running)
         self.verticalLayout_5.addWidget(self.frame_menus, 0, QtCore.Qt.AlignTop)
         self.frame_extra_menus = QtWidgets.QFrame(self.frame_left_menu)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
@@ -705,7 +706,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -715,15 +716,14 @@ class Ui_MainWindow(object):
         self.btn_minimize.setToolTip(_translate("MainWindow", "Minimize"))
         self.btn_maximize_restore.setToolTip(_translate("MainWindow", "Maximize"))
         self.btn_close.setToolTip(_translate("MainWindow", "Close"))
-        self.label_top_info_1.setText(_translate("MainWindow", "C:\\Program Files\\Blender Foundation\\Blender 2.82"))
         self.label_top_info_2.setText(_translate("MainWindow", "| HOME"))
-        self.btn_open_file.setText(_translate("MainWindow", "Open File"))
+        self.btn_running.setText(_translate("MainWindow", "运行"))
         self.label_user_icon.setText(_translate("MainWindow", "WM"))
-        self.btn_settings.setText(_translate("MainWindow", "Open File"))
+        self.btn_settings.setText(_translate("MainWindow", "设置"))
         self.label_6.setText(_translate("MainWindow", "HOME"))
         self.label_7.setText(_translate("MainWindow", "Page Index 0"))
         self.label_9.setText(_translate("MainWindow", "Page Index 1"))
         self.label_8.setText(_translate("MainWindow", "SETTINGS"))
-        self.label_credits.setText(_translate("MainWindow", "Registered by: Wanderson M. Pimenta"))
+        self.label_credits.setText(_translate("MainWindow", "Registered by: 蘿蔔"))
         self.label_version.setText(_translate("MainWindow", "v1.0.0"))
 import files_rc

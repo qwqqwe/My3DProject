@@ -2,6 +2,12 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from My_Setting_UI import Ui_MainWindow
+import sys
+from ui_functions import *
+from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect, QSize, QTime, QUrl, Qt, QEvent)
+from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
+from PySide2.QtWidgets import *
+
 
 class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
@@ -13,23 +19,35 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.btn_minimize.clicked.connect(self.showMinimized)
         self.btn_maximize_restore.clicked.connect(self.max_recv)
         self.btn_close.clicked.connect(self.close)
-
-
-        # kkk=self.centralwidget.parent().objectName()
-
-        # self.setMouseTracking(True)
-        # self.centralwidget.setMouseTracking(True)
-        # self.setMouseTracking(True)
-
-        # QtWidgets.QMainWindow.setMouseTracking(QtWidgets.QMainWindow,True)
-        # self.setMouseTracking(True) # 设置widget鼠标跟踪
-        # self.setCentralWidget(self.MainWindow)
-        # self.MainWindow.setMouseTracking(True)
-
-
         self._padding = 5  # 设置边界宽度为5
         self.initDrag() # 设置鼠标跟踪判断默认值
         self._tracking = False
+        ## ==> TOGGLE MENU SIZE
+        self.btn_toggle_menu.clicked.connect(lambda: UIFunctions.toggleMenu(self, 220, True))#设置动画
+        UIFunctions.selectStandardMenu(self, "btn_running")
+        self.stackedWidget.setCurrentWidget(self.page_home)
+        self.btn_running.clicked.connect(self.Button)
+        self.btn_settings.clicked.connect(self.Button)
+        # abk=self.frame_left_menu.findChildren(QtWidgets.QPushButton)
+        # print(abk)
+
+    def Button(self):
+        # GET BT CLICKED
+        btnWidget = self.sender()
+        # PAGE HOME
+        if btnWidget.objectName() == "btn_running":
+            print(1)
+            self.stackedWidget.setCurrentWidget(self.page_home)
+            UIFunctions.resetStyle(self, "btn_running")
+            UIFunctions.labelPage(self, "Home")
+            btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
+
+        if btnWidget.objectName() == "btn_settings":
+            print(2)
+            self.stackedWidget.setCurrentWidget(self.page_settings)
+            UIFunctions.resetStyle(self, "btn_settings")
+            UIFunctions.labelPage(self, "Custom Widgets")
+            btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
 
     def initDrag(self):
         # 设置鼠标跟踪判断扳机默认值
@@ -37,13 +55,8 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self._corner_drag = False
         self._bottom_drag = False
         self._right_drag = False
+
     def resizeEvent(self, QResizeEvent):
-        # print(123)
-        a=self.centralwidget.width()
-        b=self.centralwidget.height()
-        c=self._padding
-
-
         # 重新调整边界范围以备实现鼠标拖放缩放窗口大小，采用三个列表生成式生成三个列表
         self._right_rect = [QtCore.QPoint(x, y) for x in range(self.centralwidget.width() - self._padding, self.centralwidget.width() + 1)
                             for y in range(1, self.centralwidget.height() - self._padding)]
@@ -51,25 +64,19 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
                              for y in range(self.centralwidget.height() - self._padding, self.centralwidget.height() + 1)]
         self._corner_rect = [QtCore.QPoint(x, y) for x in range(self.centralwidget.width() - self._padding, self.centralwidget.width() + 1)
                              for y in range(self.centralwidget.height() - self._padding, self.centralwidget.height() + 1)]
-        print(self._right_rect)
+
     def max_recv(self):
         if self.isMaximized():
             self.showNormal()
         else:
             self.showMaximized()
 
-
     def mouseMoveEvent(self, e: QtGui.QMouseEvent):  # 重写移动事件
-        # a=self._tracking
-        # print(a)
-        # print(e.pos())
-        # print(self._right_rect)
         if self._tracking:
             self._endPos = e.pos() - self._startPos
             self.move(self.pos() + self._endPos)
         if e.pos() in self._corner_rect:
             self.setCursor(QtCore.Qt.SizeFDiagCursor)
-
         elif e.pos() in self._bottom_rect:
             self.setCursor(QtCore.Qt.SizeVerCursor)
         elif e.pos() in self._right_rect:
@@ -92,13 +99,9 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
             e.accept()
 
     def mousePressEvent(self, e: QtGui.QMouseEvent):
-        a=self.centralwidget.height()
-        b=self.centralwidget.width()
-        print(a)
         if (e.button() == QtCore.Qt.LeftButton) and (self.frame_top_btns.underMouse()):
             self._startPos = QtCore.QPoint(e.x(), e.y())
             self._tracking = True
-
         if (e.button() == QtCore.Qt.LeftButton) and (e.pos() in self._corner_rect):
             # 鼠标左键点击右下角边界区域
             self._corner_drag = True
@@ -111,7 +114,6 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
             # 鼠标左键点击下侧边界区域
             self._bottom_drag = True
             e.accept()
-
 
     def mouseReleaseEvent(self, e: QtGui.QMouseEvent):
         if e.button() == QtCore.Qt.LeftButton:

@@ -153,8 +153,6 @@ class UIFunctions(mywindow):
     ## ==> DESELECT
     def deselectMenu(getStyle):
         deselect = getStyle.replace("QPushButton { border-right: 7px solid rgb(44, 49, 60); }", "")
-        deselect = deselect.replace("QPushButton { border-right: 5px solid rgb(44, 49, 60); }", "")
-        # deselect = getStyle.replace("QPushButton { border-right: 5px solid rgb(44, 49, 60); }", "")
         return deselect
 
     ## ==> START SELECTION
@@ -165,12 +163,7 @@ class UIFunctions(mywindow):
 
     ## ==> RESET SELECTION
     def resetStyle(self, widget):
-        abk=self.frame_left_menu.findChildren(QtWidgets.QPushButton)
         for w in self.frame_left_menu.findChildren(QtWidgets.QPushButton):
-            aaa= w.objectName()
-            widget1=widget
-            a = w.styleSheet()
-            # w.styleSheet().
             if w.objectName() != widget:
                 w.setStyleSheet(UIFunctions.deselectMenu(w.styleSheet()))
 

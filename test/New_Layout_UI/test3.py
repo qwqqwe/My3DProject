@@ -36,14 +36,12 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         btnWidget = self.sender()
         # PAGE HOME
         if btnWidget.objectName() == "btn_running":
-            print(1)
             self.stackedWidget.setCurrentWidget(self.page_home)
             UIFunctions.resetStyle(self, "btn_running")
             UIFunctions.labelPage(self, "Home")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
 
         if btnWidget.objectName() == "btn_settings":
-            print(2)
             self.stackedWidget.setCurrentWidget(self.page_settings)
             UIFunctions.resetStyle(self, "btn_settings")
             UIFunctions.labelPage(self, "Custom Widgets")

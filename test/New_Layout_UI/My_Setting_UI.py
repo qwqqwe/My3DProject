@@ -205,10 +205,9 @@ class Ui_MainWindow(object):
         self.centralwidget.setStyleSheet("background: transparent;\n"
 "color: rgb(210, 210, 210);")
         self.centralwidget.setObjectName("centralwidget")
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
-        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
-        self.horizontalLayout.setSpacing(0)
-        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
+        self.gridLayout.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout.setObjectName("gridLayout")
         self.frame_main = QtWidgets.QFrame(self.centralwidget)
         self.frame_main.setMouseTracking(True)
         self.frame_main.setStyleSheet("")
@@ -602,7 +601,11 @@ class Ui_MainWindow(object):
         self.page_home.setObjectName("page_home")
         self.verticalLayout_10 = QtWidgets.QVBoxLayout(self.page_home)
         self.verticalLayout_10.setObjectName("verticalLayout_10")
-        self.label_6 = QtWidgets.QLabel(self.page_home)
+        self.above_page = QtWidgets.QWidget(self.page_home)
+        self.above_page.setObjectName("above_page")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.above_page)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.label_6 = QtWidgets.QLabel(self.above_page)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(40)
@@ -610,8 +613,66 @@ class Ui_MainWindow(object):
         self.label_6.setMouseTracking(True)
         self.label_6.setAlignment(QtCore.Qt.AlignCenter)
         self.label_6.setObjectName("label_6")
-        self.verticalLayout_10.addWidget(self.label_6)
-        self.label_7 = QtWidgets.QLabel(self.page_home)
+        self.horizontalLayout.addWidget(self.label_6)
+        self.button_list1 = QtWidgets.QWidget(self.above_page)
+        self.button_list1.setObjectName("button_list1")
+        self.verticalLayout_6 = QtWidgets.QVBoxLayout(self.button_list1)
+        self.verticalLayout_6.setObjectName("verticalLayout_6")
+        self.btn_down_view = QtWidgets.QPushButton(self.button_list1)
+        self.btn_down_view.setMinimumSize(QtCore.QSize(120, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        self.btn_down_view.setFont(font)
+        self.btn_down_view.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-arrow-circle-bottom.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_down_view.setIcon(icon3)
+        self.btn_down_view.setObjectName("btn_down_view")
+        self.verticalLayout_6.addWidget(self.btn_down_view)
+        self.btn_left_view = QtWidgets.QPushButton(self.button_list1)
+        self.btn_left_view.setMinimumSize(QtCore.QSize(120, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        self.btn_left_view.setFont(font)
+        self.btn_left_view.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon4 = QtGui.QIcon()
+        icon4.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-arrow-circle-left.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_left_view.setIcon(icon4)
+        self.btn_left_view.setObjectName("btn_left_view")
+        self.verticalLayout_6.addWidget(self.btn_left_view)
+        self.horizontalLayout.addWidget(self.button_list1)
+        self.horizontalLayout.setStretch(0, 7)
+        self.horizontalLayout.setStretch(1, 1)
+        self.verticalLayout_10.addWidget(self.above_page)
+        self.down_page = QtWidgets.QWidget(self.page_home)
+        self.down_page.setObjectName("down_page")
+        self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.down_page)
+        self.horizontalLayout_11.setObjectName("horizontalLayout_11")
+        self.label_7 = QtWidgets.QLabel(self.down_page)
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
         font.setPointSize(15)
@@ -619,7 +680,84 @@ class Ui_MainWindow(object):
         self.label_7.setMouseTracking(True)
         self.label_7.setAlignment(QtCore.Qt.AlignCenter)
         self.label_7.setObjectName("label_7")
-        self.verticalLayout_10.addWidget(self.label_7)
+        self.horizontalLayout_11.addWidget(self.label_7)
+        self.button_list2 = QtWidgets.QWidget(self.down_page)
+        self.button_list2.setObjectName("button_list2")
+        self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.button_list2)
+        self.verticalLayout_7.setObjectName("verticalLayout_7")
+        self.btn_connect = QtWidgets.QPushButton(self.button_list2)
+        self.btn_connect.setMinimumSize(QtCore.QSize(120, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        self.btn_connect.setFont(font)
+        self.btn_connect.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon5 = QtGui.QIcon()
+        icon5.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-camera.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_connect.setIcon(icon5)
+        self.btn_connect.setObjectName("btn_connect")
+        self.verticalLayout_7.addWidget(self.btn_connect)
+        self.btn_detect = QtWidgets.QPushButton(self.button_list2)
+        self.btn_detect.setMinimumSize(QtCore.QSize(120, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        self.btn_detect.setFont(font)
+        self.btn_detect.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-media-play.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_detect.setIcon(icon6)
+        self.btn_detect.setObjectName("btn_detect")
+        self.verticalLayout_7.addWidget(self.btn_detect)
+        self.btn_stop = QtWidgets.QPushButton(self.button_list2)
+        self.btn_stop.setMinimumSize(QtCore.QSize(120, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        self.btn_stop.setFont(font)
+        self.btn_stop.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        self.btn_stop.setIcon(icon2)
+        self.btn_stop.setObjectName("btn_stop")
+        self.verticalLayout_7.addWidget(self.btn_stop)
+        self.horizontalLayout_11.addWidget(self.button_list2)
+        self.horizontalLayout_11.setStretch(0, 7)
+        self.horizontalLayout_11.setStretch(1, 1)
+        self.verticalLayout_10.addWidget(self.down_page)
+        self.verticalLayout_10.setStretch(0, 2)
+        self.verticalLayout_10.setStretch(1, 1)
         self.stackedWidget.addWidget(self.page_home)
         self.page_settings = QtWidgets.QWidget()
         self.page_settings.setMouseTracking(True)
@@ -702,7 +840,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.frame_grip)
         self.horizontalLayout_2.addWidget(self.frame_content_right)
         self.verticalLayout.addWidget(self.frame_center)
-        self.horizontalLayout.addWidget(self.frame_main)
+        self.gridLayout.addWidget(self.frame_main, 0, 0, 1, 1)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -721,7 +859,12 @@ class Ui_MainWindow(object):
         self.label_user_icon.setText(_translate("MainWindow", "WM"))
         self.btn_settings.setText(_translate("MainWindow", "设置"))
         self.label_6.setText(_translate("MainWindow", "HOME"))
+        self.btn_down_view.setText(_translate("MainWindow", "下视图"))
+        self.btn_left_view.setText(_translate("MainWindow", "左视图"))
         self.label_7.setText(_translate("MainWindow", "Page Index 0"))
+        self.btn_connect.setText(_translate("MainWindow", "连接相机"))
+        self.btn_detect.setText(_translate("MainWindow", "开始检测"))
+        self.btn_stop.setText(_translate("MainWindow", "停止相机"))
         self.label_9.setText(_translate("MainWindow", "Page Index 1"))
         self.label_8.setText(_translate("MainWindow", "SETTINGS"))
         self.label_credits.setText(_translate("MainWindow", "Registered by: 蘿蔔"))

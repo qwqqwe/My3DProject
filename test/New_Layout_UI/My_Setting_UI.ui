@@ -568,10 +568,7 @@ QToolTip {
     <string notr="true">background: transparent;
 color: rgb(210, 210, 210);</string>
    </property>
-   <layout class="QHBoxLayout" name="horizontalLayout">
-    <property name="spacing">
-     <number>0</number>
-    </property>
+   <layout class="QGridLayout" name="gridLayout">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -584,7 +581,7 @@ color: rgb(210, 210, 210);</string>
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item>
+    <item row="0" column="0">
      <widget class="QFrame" name="frame_main">
       <property name="mouseTracking">
        <bool>true</bool>
@@ -1460,43 +1457,252 @@ QPushButton:pressed {
                    <property name="mouseTracking">
                     <bool>true</bool>
                    </property>
-                   <layout class="QVBoxLayout" name="verticalLayout_10">
+                   <layout class="QVBoxLayout" name="verticalLayout_10" stretch="2,1">
                     <item>
-                     <widget class="QLabel" name="label_6">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>40</pointsize>
-                       </font>
-                      </property>
-                      <property name="mouseTracking">
-                       <bool>true</bool>
-                      </property>
-                      <property name="text">
-                       <string>HOME</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignCenter</set>
-                      </property>
+                     <widget class="QWidget" name="above_page" native="true">
+                      <layout class="QHBoxLayout" name="horizontalLayout" stretch="7,1">
+                       <item>
+                        <widget class="QLabel" name="label_6">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>40</pointsize>
+                          </font>
+                         </property>
+                         <property name="mouseTracking">
+                          <bool>true</bool>
+                         </property>
+                         <property name="text">
+                          <string>HOME</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="button_list1" native="true">
+                         <layout class="QVBoxLayout" name="verticalLayout_6">
+                          <item>
+                           <widget class="QPushButton" name="btn_down_view">
+                            <property name="minimumSize">
+                             <size>
+                              <width>120</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}</string>
+                            </property>
+                            <property name="text">
+                             <string>下视图</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="files.qrc">
+                              <normaloff>:/16x16/icons/16x16/cil-arrow-circle-bottom.png</normaloff>:/16x16/icons/16x16/cil-arrow-circle-bottom.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="btn_left_view">
+                            <property name="minimumSize">
+                             <size>
+                              <width>120</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}</string>
+                            </property>
+                            <property name="text">
+                             <string>左视图</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="files.qrc">
+                              <normaloff>:/16x16/icons/16x16/cil-arrow-circle-left.png</normaloff>:/16x16/icons/16x16/cil-arrow-circle-left.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLabel" name="label_7">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>15</pointsize>
-                       </font>
-                      </property>
-                      <property name="mouseTracking">
-                       <bool>true</bool>
-                      </property>
-                      <property name="text">
-                       <string>Page Index 0</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignCenter</set>
-                      </property>
+                     <widget class="QWidget" name="down_page" native="true">
+                      <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="7,1">
+                       <item>
+                        <widget class="QLabel" name="label_7">
+                         <property name="font">
+                          <font>
+                           <family>Segoe UI</family>
+                           <pointsize>15</pointsize>
+                          </font>
+                         </property>
+                         <property name="mouseTracking">
+                          <bool>true</bool>
+                         </property>
+                         <property name="text">
+                          <string>Page Index 0</string>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="button_list2" native="true">
+                         <layout class="QVBoxLayout" name="verticalLayout_7" stretch="0,0,0">
+                          <item>
+                           <widget class="QPushButton" name="btn_connect">
+                            <property name="minimumSize">
+                             <size>
+                              <width>120</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}</string>
+                            </property>
+                            <property name="text">
+                             <string>连接相机</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="files.qrc">
+                              <normaloff>:/16x16/icons/16x16/cil-camera.png</normaloff>:/16x16/icons/16x16/cil-camera.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="btn_detect">
+                            <property name="minimumSize">
+                             <size>
+                              <width>120</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}</string>
+                            </property>
+                            <property name="text">
+                             <string>开始检测</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="files.qrc">
+                              <normaloff>:/16x16/icons/16x16/cil-media-play.png</normaloff>:/16x16/icons/16x16/cil-media-play.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QPushButton" name="btn_stop">
+                            <property name="minimumSize">
+                             <size>
+                              <width>120</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}</string>
+                            </property>
+                            <property name="text">
+                             <string>停止相机</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="files.qrc">
+                              <normaloff>:/16x16/icons/16x16/cil-x.png</normaloff>:/16x16/icons/16x16/cil-x.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                    </layout>

@@ -1080,7 +1080,7 @@ QPushButton:pressed {
                    <string notr="true">color: rgb(98, 103, 111);</string>
                   </property>
                   <property name="text">
-                   <string>| HOME</string>
+                   <string>| 运行</string>
                   </property>
                   <property name="alignment">
                    <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
@@ -1462,22 +1462,12 @@ QPushButton:pressed {
                      <widget class="QWidget" name="above_page" native="true">
                       <layout class="QHBoxLayout" name="horizontalLayout" stretch="7,1">
                        <item>
-                        <widget class="QLabel" name="label_6">
-                         <property name="font">
-                          <font>
-                           <family>Segoe UI</family>
-                           <pointsize>40</pointsize>
-                          </font>
-                         </property>
-                         <property name="mouseTracking">
-                          <bool>true</bool>
-                         </property>
-                         <property name="text">
-                          <string>HOME</string>
-                         </property>
-                         <property name="alignment">
-                          <set>Qt::AlignCenter</set>
-                         </property>
+                        <widget class="QWidget" name="widget" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_12">
+                          <item>
+                           <layout class="QFormLayout" name="cloud_point"/>
+                          </item>
+                         </layout>
                         </widget>
                        </item>
                        <item>

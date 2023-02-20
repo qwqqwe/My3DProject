@@ -2,11 +2,74 @@ import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5 import QtCore, QtGui, QtWidgets
 from My_Setting_UI import Ui_MainWindow
-import sys
-from ui_functions import *
 from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect, QSize, QTime, QUrl, Qt, QEvent)
 from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
+from ui_functions import *
+import time
+import vtk
+from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
+import open3d as o3d
+import numpy as np
+from pathlib import Path
+
+
+from vtkmodules.vtkIOImage import (
+    vtkBMPWriter,
+    vtkJPEGWriter,
+    vtkPNGWriter,
+    vtkPNMWriter,
+    vtkPostScriptWriter,
+    vtkTIFFWriter
+)
+from vtkmodules.vtkRenderingCore import vtkWindowToImageFilter
+
+def write_image(file_name, ren_win, rgba=True):
+
+    if file_name:
+        valid_suffixes = ['.bmp', '.jpg', '.png', '.pnm', '.ps', '.tiff']
+        # Select the writer to use.
+        parent = Path(file_name).resolve().parent
+        path = Path(parent) / file_name
+        if path.suffix:
+            ext = path.suffix.lower()
+        else:
+            ext = '.png'
+            path = Path(str(path)).with_suffix(ext)
+        if path.suffix not in valid_suffixes:
+            print(f'No writer for this file suffix: {ext}')
+            return
+        if ext == '.bmp':
+            writer = vtkBMPWriter()
+        elif ext == '.jpg':
+            writer = vtkJPEGWriter()
+        elif ext == '.pnm':
+            writer = vtkPNMWriter()
+        elif ext == '.ps':
+            if rgba:
+                rgba = False
+            writer = vtkPostScriptWriter()
+        elif ext == '.tiff':
+            writer = vtkTIFFWriter()
+        else:
+            writer = vtkPNGWriter()
+
+        windowto_image_filter = vtkWindowToImageFilter()
+        windowto_image_filter.SetInput(ren_win)
+        windowto_image_filter.SetScale(1)  # image quality
+        if rgba:
+            windowto_image_filter.SetInputBufferTypeToRGBA()
+        else:
+            windowto_image_filter.SetInputBufferTypeToRGB()
+            # Read from the front buffer.
+            windowto_image_filter.ReadFrontBufferOff()
+            windowto_image_filter.Update()
+
+        writer.SetFileName(path)
+        writer.SetInputConnection(windowto_image_filter.GetOutputPort())
+        writer.Write()
+    else:
+        raise RuntimeError('Need a filename.')
 
 
 class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
@@ -28,8 +91,62 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.stackedWidget.setCurrentWidget(self.page_home)
         self.btn_running.clicked.connect(self.Button)
         self.btn_settings.clicked.connect(self.Button)
-        # abk=self.frame_left_menu.findChildren(QtWidgets.QPushButton)
-        # print(abk)
+        #vtk設置
+        self.frame = QtWidgets.QFrame()
+        self.vtkWidget = QVTKRenderWindowInteractor(self.frame)
+
+        self.cloud_point.addWidget(self.vtkWidget)
+        self.ren = vtk.vtkRenderer()
+        self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
+        self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
+        self.iren.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
+        #####這行很重要，因為vtk有兩種交互方式，一種是trackball模式，還有一種是joystick模式，trackball模式才和open3d的操作模式一樣
+        #####joystick模式下的操作一般人做不來
+        # Create source
+        txt_path = '../../txtcouldpoint/Finalzhengzheng5.txt'
+        pcd = np.loadtxt(txt_path, delimiter=",")
+
+        poins = vtk.vtkPoints()
+        for i in range(pcd.shape[0]):
+            dp = pcd[i]
+            poins.InsertNextPoint(dp[0], dp[1], dp[2])
+        a=time.time()
+        Temp_Mid_X=(np.max(pcd[:,0])+np.min(pcd[:,0]))/2
+        Temp_Mid_Y=(np.max(pcd[:,1])+np.min(pcd[:,1]))/2
+        Temp_Mid_Z=(np.max(pcd[:,2])+np.min(pcd[:,2]))/2
+        b=time.time()
+        print(b-a)
+        polydata = vtk.vtkPolyData()
+        polydata.SetPoints(poins)
+
+        glyphFilter = vtk.vtkVertexGlyphFilter()
+        glyphFilter.SetInputData(polydata)
+        glyphFilter.Update()
+
+        dataMapper = vtk.vtkPolyDataMapper()
+        dataMapper.SetInputConnection(glyphFilter.GetOutputPort())
+
+        # Create an actor
+        actor = vtk.vtkActor()
+        actor.SetMapper(dataMapper)
+        self.ren.AddActor(actor)
+        #这是上视图
+        camera = self.ren.GetActiveCamera()
+        self.up_view(camera,Temp_Mid_X,Temp_Mid_Y,Temp_Mid_Z)
+        #这是显示我们的坐标轴的
+        axesActor = vtk.vtkAxesActor()
+        self.axes_widget = vtk.vtkOrientationMarkerWidget()
+        self.axes_widget.SetOrientationMarker(axesActor)
+        self.axes_widget.SetInteractor(self.iren)
+        self.axes_widget.EnabledOn()
+        self.axes_widget.InteractiveOff()
+
+        self.show()
+        self.iren.Initialize()
+
+        self.btn_down_view.clicked.connect(lambda: self.up_view(camera, Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z))
+        self.btn_left_view.clicked.connect(lambda: self.left_view(camera, Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z))
+
 
     def Button(self):
         # GET BT CLICKED
@@ -38,13 +155,13 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         if btnWidget.objectName() == "btn_running":
             self.stackedWidget.setCurrentWidget(self.page_home)
             UIFunctions.resetStyle(self, "btn_running")
-            UIFunctions.labelPage(self, "Home")
+            UIFunctions.labelPage(self, "运行")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
 
         if btnWidget.objectName() == "btn_settings":
             self.stackedWidget.setCurrentWidget(self.page_settings)
             UIFunctions.resetStyle(self, "btn_settings")
-            UIFunctions.labelPage(self, "Custom Widgets")
+            UIFunctions.labelPage(self, "设置")
             btnWidget.setStyleSheet(UIFunctions.selectMenu(btnWidget.styleSheet()))
 
     def initDrag(self):
@@ -122,6 +239,45 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self._corner_drag = False
         self._bottom_drag = False
         self._right_drag = False
+
+    def up_view(self,camera,Temp_Mid_X,Temp_Mid_Y,Temp_Mid_Z):
+        print(111)
+        camera.SetViewUp(0, 1, 0)
+        camera.SetPosition(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z+250)
+        camera.SetFocalPoint(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z)
+        self.ren.ResetCameraClippingRange()
+        self.show()
+        self.iren.Initialize()
+
+    # 左視圖函數
+    def left_view(self,camera,Temp_Mid_X,Temp_Mid_Y,Temp_Mid_Z):
+        print(222)
+        camera.SetViewUp(0, 0, 1)
+        camera.SetPosition(Temp_Mid_X, Temp_Mid_Y-200, Temp_Mid_Z)
+        camera.SetFocalPoint(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z)
+        self.ren.ResetCameraClippingRange()
+        self.show()
+        self.iren.Initialize()
+
+    def saveToimage(self):
+        from vtkmodules.vtkRenderingCore import vtkWindowToImageFilter
+        from vtkmodules.vtkIOImage import (
+            vtkBMPWriter, vtkJPEGWriter, vtkPNGWriter,
+            vtkPNMWriter, vtkPostScriptWriter, vtkTIFFWriter
+        )
+        # 初始化
+        writer = vtkBMPWriter()
+        # writer = vtkPostScriptWriter()
+        windowto_image_filter = vtkWindowToImageFilter()
+        windowto_image_filter.SetInput(self.vtkWidget.GetRenderWindow())  # 你渲染窗口中的图片
+        windowto_image_filter.SetScale(5)                                  # 图像尺寸
+        windowto_image_filter.SetInputBufferTypeToRGBA()                   # 四通道
+        # 保存
+        writer.SetFileName('cs.jpg')
+        # writer.SetFileName('cs.ps')
+        writer.SetInputConnection(windowto_image_filter.GetOutputPort())
+        writer.Write()
+
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

@@ -14,8 +14,8 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1000, 720)
-        MainWindow.setMinimumSize(QtCore.QSize(1000, 720))
+        MainWindow.resize(1100, 792)
+        MainWindow.setMinimumSize(QtCore.QSize(1100, 792))
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(255, 255, 255))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -671,15 +671,20 @@ class Ui_MainWindow(object):
         self.down_page.setObjectName("down_page")
         self.horizontalLayout_11 = QtWidgets.QHBoxLayout(self.down_page)
         self.horizontalLayout_11.setObjectName("horizontalLayout_11")
-        self.label_7 = QtWidgets.QLabel(self.down_page)
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        font.setPointSize(15)
-        self.label_7.setFont(font)
-        self.label_7.setMouseTracking(True)
-        self.label_7.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_7.setObjectName("label_7")
-        self.horizontalLayout_11.addWidget(self.label_7)
+        self.textBrowser = QtWidgets.QTextBrowser(self.down_page)
+        self.textBrowser.setStyleSheet("QTextBrowser {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"}\n"
+"QTextBrowser:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QTextBrowser:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.textBrowser.setObjectName("textBrowser")
+        self.horizontalLayout_11.addWidget(self.textBrowser)
         self.button_list2 = QtWidgets.QWidget(self.down_page)
         self.button_list2.setObjectName("button_list2")
         self.verticalLayout_7 = QtWidgets.QVBoxLayout(self.button_list2)
@@ -859,7 +864,6 @@ class Ui_MainWindow(object):
         self.btn_settings.setText(_translate("MainWindow", "设置"))
         self.btn_down_view.setText(_translate("MainWindow", "下视图"))
         self.btn_left_view.setText(_translate("MainWindow", "左视图"))
-        self.label_7.setText(_translate("MainWindow", "Page Index 0"))
         self.btn_connect.setText(_translate("MainWindow", "连接相机"))
         self.btn_detect.setText(_translate("MainWindow", "开始检测"))
         self.btn_stop.setText(_translate("MainWindow", "停止相机"))

@@ -7,14 +7,14 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
-    <height>720</height>
+    <width>1100</width>
+    <height>792</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1000</width>
-    <height>720</height>
+    <width>1100</width>
+    <height>792</height>
    </size>
   </property>
   <property name="palette">
@@ -1557,21 +1557,19 @@ QPushButton:pressed {
                      <widget class="QWidget" name="down_page" native="true">
                       <layout class="QHBoxLayout" name="horizontalLayout_11" stretch="7,1">
                        <item>
-                        <widget class="QLabel" name="label_7">
-                         <property name="font">
-                          <font>
-                           <family>Segoe UI</family>
-                           <pointsize>15</pointsize>
-                          </font>
-                         </property>
-                         <property name="mouseTracking">
-                          <bool>true</bool>
-                         </property>
-                         <property name="text">
-                          <string>Page Index 0</string>
-                         </property>
-                         <property name="alignment">
-                          <set>Qt::AlignCenter</set>
+                        <widget class="QTextBrowser" name="textBrowser">
+                         <property name="styleSheet">
+                          <string notr="true">QTextBrowser {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	padding: 10px;
+}
+QTextBrowser:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QTextBrowser:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
                          </property>
                         </widget>
                        </item>

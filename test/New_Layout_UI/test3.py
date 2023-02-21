@@ -147,7 +147,6 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.btn_down_view.clicked.connect(lambda: self.up_view(camera, Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z))
         self.btn_left_view.clicked.connect(lambda: self.left_view(camera, Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z))
 
-
     def Button(self):
         # GET BT CLICKED
         btnWidget = self.sender()
@@ -241,7 +240,6 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self._right_drag = False
 
     def up_view(self,camera,Temp_Mid_X,Temp_Mid_Y,Temp_Mid_Z):
-        print(111)
         camera.SetViewUp(0, 1, 0)
         camera.SetPosition(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z+250)
         camera.SetFocalPoint(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z)
@@ -251,7 +249,6 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
     # 左視圖函數
     def left_view(self,camera,Temp_Mid_X,Temp_Mid_Y,Temp_Mid_Z):
-        print(222)
         camera.SetViewUp(0, 0, 1)
         camera.SetPosition(Temp_Mid_X, Temp_Mid_Y-200, Temp_Mid_Z)
         camera.SetFocalPoint(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z)

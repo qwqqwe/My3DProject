@@ -162,6 +162,11 @@ def function(x):
 
 # def display2(pcd_1):
 def display2(pcd_1):
+  if len(pcd_1)==0:
+    return np.zeros([1,4]),["扫描数据为空"]
+  # afile='fanzheng5'
+  #设fan为我们的正确的方向
+  # txt_path= '../txtcouldpoint/Final{}.txt'.format(afile)
 
   afile='fanzheng5'
   txt_path= '../../txtcouldpoint/Final{}.txt'.format(afile)
@@ -338,13 +343,13 @@ def display2(pcd_1):
     #TODO 将里面电脑缺陷判断进行替换，同时最好将函数放置到函数内部，方便修改阈值
     if (len(sorted_poi)==0):
       no_data = 1
-      print("no_data")
+      print("缺焊")
       print(tank1)
-      defect_meassage.append("no_data:"+str(tank1))
+      defect_meassage.append("缺焊:"+str(tank1))
       # print(tank1, file=f5)
     elif(-0.75<(sorted_poi[-1][1]- sorted_poi[0][1])<0.75):
       no_data = 1
-      print("no_data")
+      print("noda")
       print(tank1)
       # print(tank1, file=f5)
       defect_meassage.append("no_data:" + str(tank1))
@@ -372,7 +377,7 @@ def display2(pcd_1):
       zzz = np.hstack((zzz, z_original[len(z_original) * 2 // 3:]))  # 边缘部分
       yy = y_original[len(y_original) // 6:len(y_original) *5// 6]#中间段
       zz = z_original[len(z_original) // 6:len(z_original) *5// 6]
-      akb1 = signal.argrelmax(z_original, order=40)  # 局部相对最大
+      akb1 = signal.argrelmax(z_original, order=20)  # 局部相对最大
 
       if np.size(akb1)<=1:
         # z1 = np.polyfit(yy, zz, 2)  # 曲线拟合，返回值为多项式的各项系数
@@ -397,70 +402,113 @@ def display2(pcd_1):
       for num in range(0,len(y_adjusted)):
         z_pred.append(function(y_adjusted[num]))
 
-      z_adjusted=z_adjusted-np.mean(z_adjusted-z_pred)
-      score=Rationality(z_adjusted,z_pred,0.05)
+      if np.size(akb1)<=1:
 
-      if(score<=0.9):#得分低的，将重新进行2次拟合进行第二次判断
-        z1 = np.polyfit(y_adjusted,z_adjusted,2)
-        p1 = np.poly1d(z1)
-        z_pred=p1(y_adjusted)
+        z_adjusted=z_adjusted-np.mean(z_adjusted-z_pred)
         score=Rationality(z_adjusted,z_pred,0.05)
-        if(score<=0.9):
-          # print("输出图像")
-          step += 1
+
+        if(score<=0.9):#得分低的，将重新进行2次拟合进行第二次判断
+          z1 = np.polyfit(y_adjusted,z_adjusted,2)
+          p1 = np.poly1d(z1)
+          z_pred=p1(y_adjusted)
+          score=Rationality(z_adjusted,z_pred,0.05)
+          if(score<=0.9):
+            # print("输出图像")
+            step += 1
+          else:
+            if (step != 0):#输出缺陷位置
+              print("缺陷起始位置", tank1 - step)
+              print("缺陷结束位置", tank1)
+              defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+              defect_meassage.append("裂缝结束位置:" + str(tank1))
+            step = 0
+
+          for i in range(len(z_adjusted)):
+            list_1=[]
+            if(abs(z_adjusted[i]-z_pred[i])<=0.05):
+              list_1.append(x_original[i])
+              list_1.append(y_original[i])
+              list_1.append(z_original[i])
+              list_1.append(1)
+
+              indx += 1
+              list_all.append(list_1)
+
+            else:
+              list_1.append(x_original[i])
+              list_1.append(y_original[i])
+              list_1.append(z_original[i])
+              list_1.append(0.5)
+
+              indx += 1
+              list_all.append(list_1)
+
+
         else:
-          if (step != 0):#输出缺陷位置
-            print("缺陷起始位置", tank1 - step)
+          if (step!=0):#输出缺陷位置
+            print("缺陷起始位置",tank1-step)
             print("缺陷结束位置", tank1)
-            defect_meassage.append("缺陷起始位置:" + str(tank1 - step))
-            defect_meassage.append("缺陷结束位置:" + str(tank1))
+            defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+            defect_meassage.append("裂缝结束位置:" + str(tank1))
           step = 0
 
-        for i in range(len(z_adjusted)):
-          list_1=[]
-          if(abs(z_adjusted[i]-z_pred[i])<=0.05):
+          for i in range(len(z_adjusted)):
+            list_1=[]
             list_1.append(x_original[i])
             list_1.append(y_original[i])
             list_1.append(z_original[i])
             list_1.append(1)
-
             indx += 1
             list_all.append(list_1)
 
-          else:
-            list_1.append(x_original[i])
-            list_1.append(y_original[i])
-            list_1.append(z_original[i])
-            list_1.append(0.5)
 
-            indx += 1
-            list_all.append(list_1)
+        if(tank+0.2>=slicing_max - 0.1):#焊缝末尾判断输出
+          if (step!=0):
+            print("缺陷起始位置",tank1-step)
+            print("缺陷结束位置", tank1)
+            defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+            defect_meassage.append("裂缝结束位置:" + str(tank1))
 
+
+        # if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
+        #   start_guai=1
+        #   None
+        # else:
+        #   None
 
       else:
-        if (step!=0):#输出缺陷位置
-          print("缺陷起始位置",tank1-step)
-          print("缺陷结束位置", tank1)
-          defect_meassage.append("缺陷起始位置:" + str(tank1 - step))
-          defect_meassage.append("缺陷结束位置:" + str(tank1))
-        step = 0
+        huken=-np.mean(z_adjusted[len(z_adjusted)//2-2:len(z_adjusted)//2+2])
+        print(huken)
+        if huken>=0.3:
+          list_1.append(x_original[i])
+          list_1.append(y_original[i])
+          list_1.append(z_original[i])
+          list_1.append(0)
 
-        for i in range(len(z_adjusted)):
-          list_1=[]
+          step += 1
+        else:
+          if step!=0:
+            defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
           list_1.append(x_original[i])
           list_1.append(y_original[i])
           list_1.append(z_original[i])
           list_1.append(1)
-          indx += 1
-          list_all.append(list_1)
+          step=0
 
-
-      if(tank+0.2>=slicing_max - 0.1):#焊缝末尾判断输出
-        if (step!=0):
-          print("缺陷起始位置",tank1-step)
-          print("缺陷结束位置", tank1)
-          defect_meassage.append("缺陷起始位置:" + str(tank1 - step))
-          defect_meassage.append("缺陷结束位置:" + str(tank1))
+        if huken<-0.1:
+          list_1.append(x_original[i])
+          list_1.append(y_original[i])
+          list_1.append(z_original[i])
+          list_1.append(0.8)
+          step += 1
+        else:
+          if step!=0:
+            defect_meassage.append("焊瘤起始位置:" + str(tank1 - step))
+          list_1.append(x_original[i])
+          list_1.append(y_original[i])
+          list_1.append(z_original[i])
+          list_1.append(1)
+          step=0
 
       print(tank1)
 

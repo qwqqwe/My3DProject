@@ -205,9 +205,9 @@ class Ui_MainWindow(object):
         self.centralwidget.setStyleSheet("background: transparent;\n"
 "color: rgb(210, 210, 210);")
         self.centralwidget.setObjectName("centralwidget")
-        self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout.setObjectName("gridLayout")
+        self.verticalLayout_8 = QtWidgets.QVBoxLayout(self.centralwidget)
+        self.verticalLayout_8.setContentsMargins(0, 0, 0, 0)
+        self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.frame_main = QtWidgets.QFrame(self.centralwidget)
         self.frame_main.setMouseTracking(True)
         self.frame_main.setStyleSheet("")
@@ -768,24 +768,441 @@ class Ui_MainWindow(object):
         self.page_settings.setObjectName("page_settings")
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.page_settings)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        self.label_9 = QtWidgets.QLabel(self.page_settings)
+        self.left_page = QtWidgets.QWidget(self.page_settings)
+        self.left_page.setObjectName("left_page")
+        self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.left_page)
+        self.verticalLayout_11.setObjectName("verticalLayout_11")
+        self.Threshold = QtWidgets.QWidget(self.left_page)
+        self.Threshold.setObjectName("Threshold")
+        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.Threshold)
+        self.horizontalLayout_14.setObjectName("horizontalLayout_14")
+        self.Threshold_Lab = QtWidgets.QLabel(self.Threshold)
+        self.Threshold_Lab.setObjectName("Threshold_Lab")
+        self.horizontalLayout_14.addWidget(self.Threshold_Lab)
+        self.Threshold_SpinBox = QtWidgets.QDoubleSpinBox(self.Threshold)
+        self.Threshold_SpinBox.setMinimumSize(QtCore.QSize(0, 30))
+        self.Threshold_SpinBox.setStyleSheet("QDoubleSpinBox\n"
+"{\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"    font: 75 10pt \"Microsoft YaHei\";\n"
+"}\n"
+"QDoubleSpinBox:hover\n"
+"{\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+" \n"
+"QDoubleSpinBox:up-button \n"
+"{\n"
+"    subcontrol-origin:border;\n"
+"    subcontrol-position:right;\n"
+"    image: url(:/16x16/icons/16x16/cil-chevron-right.png);      \n"
+"}\n"
+"QDoubleSpinBox:down-button \n"
+"{\n"
+"    subcontrol-origin:border;\n"
+"    subcontrol-position:left;\n"
+"    image: url(:/16x16/icons/16x16/cil-chevron-left.png);\n"
+"}\n"
+"")
+        self.Threshold_SpinBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.Threshold_SpinBox.setObjectName("Threshold_SpinBox")
+        self.horizontalLayout_14.addWidget(self.Threshold_SpinBox)
+        self.verticalLayout_11.addWidget(self.Threshold)
+        self.Allowable_Error = QtWidgets.QWidget(self.left_page)
+        self.Allowable_Error.setObjectName("Allowable_Error")
+        self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.Allowable_Error)
+        self.horizontalLayout_13.setObjectName("horizontalLayout_13")
+        self.Allowable_Error_Lab = QtWidgets.QLabel(self.Allowable_Error)
+        self.Allowable_Error_Lab.setObjectName("Allowable_Error_Lab")
+        self.horizontalLayout_13.addWidget(self.Allowable_Error_Lab)
+        self.Allowable_Error_SpinBox = QtWidgets.QDoubleSpinBox(self.Allowable_Error)
+        self.Allowable_Error_SpinBox.setMinimumSize(QtCore.QSize(0, 30))
+        self.Allowable_Error_SpinBox.setStyleSheet("QDoubleSpinBox\n"
+"{\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"    font: 75 10pt \"Microsoft YaHei\";\n"
+"}\n"
+"QDoubleSpinBox:hover\n"
+"{\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+" \n"
+"QDoubleSpinBox:up-button \n"
+"{\n"
+"    subcontrol-origin:border;\n"
+"    subcontrol-position:right;\n"
+"    image: url(:/16x16/icons/16x16/cil-chevron-right.png);      \n"
+"}\n"
+"QDoubleSpinBox:down-button \n"
+"{\n"
+"    subcontrol-origin:border;\n"
+"    subcontrol-position:left;\n"
+"    image: url(:/16x16/icons/16x16/cil-chevron-left.png);\n"
+"}\n"
+"")
+        self.Allowable_Error_SpinBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.Allowable_Error_SpinBox.setObjectName("Allowable_Error_SpinBox")
+        self.horizontalLayout_13.addWidget(self.Allowable_Error_SpinBox)
+        self.verticalLayout_11.addWidget(self.Allowable_Error)
+        self.Pit_Threshold = QtWidgets.QWidget(self.left_page)
+        self.Pit_Threshold.setObjectName("Pit_Threshold")
+        self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.Pit_Threshold)
+        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
+        self.Pit_Threshold_Lab = QtWidgets.QLabel(self.Pit_Threshold)
+        self.Pit_Threshold_Lab.setObjectName("Pit_Threshold_Lab")
+        self.horizontalLayout_15.addWidget(self.Pit_Threshold_Lab)
+        self.Pit_Threshold_SpinBox = QtWidgets.QDoubleSpinBox(self.Pit_Threshold)
+        self.Pit_Threshold_SpinBox.setMinimumSize(QtCore.QSize(0, 30))
+        self.Pit_Threshold_SpinBox.setStyleSheet("QDoubleSpinBox\n"
+"{\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"    font: 75 10pt \"Microsoft YaHei\";\n"
+"}\n"
+"QDoubleSpinBox:hover\n"
+"{\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+" \n"
+"QDoubleSpinBox:up-button \n"
+"{\n"
+"    subcontrol-origin:border;\n"
+"    subcontrol-position:right;\n"
+"    image: url(:/16x16/icons/16x16/cil-chevron-right.png);      \n"
+"}\n"
+"QDoubleSpinBox:down-button \n"
+"{\n"
+"    subcontrol-origin:border;\n"
+"    subcontrol-position:left;\n"
+"    image: url(:/16x16/icons/16x16/cil-chevron-left.png);\n"
+"}\n"
+"")
+        self.Pit_Threshold_SpinBox.setAlignment(QtCore.Qt.AlignCenter)
+        self.Pit_Threshold_SpinBox.setObjectName("Pit_Threshold_SpinBox")
+        self.horizontalLayout_15.addWidget(self.Pit_Threshold_SpinBox)
+        self.verticalLayout_11.addWidget(self.Pit_Threshold)
+        self.Start_Train = QtWidgets.QWidget(self.left_page)
+        self.Start_Train.setObjectName("Start_Train")
+        self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.Start_Train)
+        self.verticalLayout_15.setObjectName("verticalLayout_15")
+        self.Start_Train_btn = QtWidgets.QPushButton(self.Start_Train)
+        self.Start_Train_btn.setMinimumSize(QtCore.QSize(120, 30))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(15)
-        self.label_9.setFont(font)
-        self.label_9.setMouseTracking(True)
-        self.label_9.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_9.setObjectName("label_9")
-        self.horizontalLayout_9.addWidget(self.label_9)
-        self.label_8 = QtWidgets.QLabel(self.page_settings)
+        self.Start_Train_btn.setFont(font)
+        self.Start_Train_btn.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-lightbulb.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Start_Train_btn.setIcon(icon7)
+        self.Start_Train_btn.setObjectName("Start_Train_btn")
+        self.verticalLayout_15.addWidget(self.Start_Train_btn)
+        self.verticalLayout_11.addWidget(self.Start_Train)
+        self.Host_IP = QtWidgets.QWidget(self.left_page)
+        self.Host_IP.setObjectName("Host_IP")
+        self.horizontalLayout_17 = QtWidgets.QHBoxLayout(self.Host_IP)
+        self.horizontalLayout_17.setObjectName("horizontalLayout_17")
+        self.Host_IP_Lab = QtWidgets.QLabel(self.Host_IP)
+        self.Host_IP_Lab.setObjectName("Host_IP_Lab")
+        self.horizontalLayout_17.addWidget(self.Host_IP_Lab)
+        self.Host_IP_Line = QtWidgets.QLineEdit(self.Host_IP)
+        self.Host_IP_Line.setMinimumSize(QtCore.QSize(0, 30))
+        self.Host_IP_Line.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.Host_IP_Line.setObjectName("Host_IP_Line")
+        self.horizontalLayout_17.addWidget(self.Host_IP_Line)
+        self.verticalLayout_11.addWidget(self.Host_IP)
+        self.Camera_IP = QtWidgets.QWidget(self.left_page)
+        self.Camera_IP.setObjectName("Camera_IP")
+        self.horizontalLayout_18 = QtWidgets.QHBoxLayout(self.Camera_IP)
+        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
+        self.Camera_IP_Lable = QtWidgets.QLabel(self.Camera_IP)
+        self.Camera_IP_Lable.setObjectName("Camera_IP_Lable")
+        self.horizontalLayout_18.addWidget(self.Camera_IP_Lable)
+        self.Camera_IP_Line = QtWidgets.QLineEdit(self.Camera_IP)
+        self.Camera_IP_Line.setMinimumSize(QtCore.QSize(0, 30))
+        self.Camera_IP_Line.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.Camera_IP_Line.setObjectName("Camera_IP_Line")
+        self.horizontalLayout_18.addWidget(self.Camera_IP_Line)
+        self.verticalLayout_11.addWidget(self.Camera_IP)
+        self.IP_Detect = QtWidgets.QWidget(self.left_page)
+        self.IP_Detect.setObjectName("IP_Detect")
+        self.horizontalLayout_20 = QtWidgets.QHBoxLayout(self.IP_Detect)
+        self.horizontalLayout_20.setObjectName("horizontalLayout_20")
+        self.IP_Detect_btn = QtWidgets.QPushButton(self.IP_Detect)
+        self.IP_Detect_btn.setMinimumSize(QtCore.QSize(120, 30))
         font = QtGui.QFont()
         font.setFamily("Segoe UI")
-        font.setPointSize(40)
-        self.label_8.setFont(font)
-        self.label_8.setMouseTracking(True)
-        self.label_8.setAlignment(QtCore.Qt.AlignCenter)
-        self.label_8.setObjectName("label_8")
-        self.horizontalLayout_9.addWidget(self.label_8)
+        self.IP_Detect_btn.setFont(font)
+        self.IP_Detect_btn.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon8 = QtGui.QIcon()
+        icon8.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-wifi-signal-1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.IP_Detect_btn.setIcon(icon8)
+        self.IP_Detect_btn.setObjectName("IP_Detect_btn")
+        self.horizontalLayout_20.addWidget(self.IP_Detect_btn)
+        self.IP_Detect_Text = QtWidgets.QTextBrowser(self.IP_Detect)
+        self.IP_Detect_Text.setStyleSheet("QTextBrowser {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"}\n"
+"QTextBrowser:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QTextBrowser:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.IP_Detect_Text.setObjectName("IP_Detect_Text")
+        self.horizontalLayout_20.addWidget(self.IP_Detect_Text)
+        self.verticalLayout_11.addWidget(self.IP_Detect)
+        self.verticalLayout_11.setStretch(0, 1)
+        self.verticalLayout_11.setStretch(1, 1)
+        self.verticalLayout_11.setStretch(2, 1)
+        self.verticalLayout_11.setStretch(3, 1)
+        self.verticalLayout_11.setStretch(4, 1)
+        self.verticalLayout_11.setStretch(5, 1)
+        self.verticalLayout_11.setStretch(6, 3)
+        self.horizontalLayout_9.addWidget(self.left_page)
+        self.right_page = QtWidgets.QWidget(self.page_settings)
+        self.right_page.setObjectName("right_page")
+        self.verticalLayout_12 = QtWidgets.QVBoxLayout(self.right_page)
+        self.verticalLayout_12.setObjectName("verticalLayout_12")
+        self.DataBase = QtWidgets.QWidget(self.right_page)
+        self.DataBase.setObjectName("DataBase")
+        self.verticalLayout_13 = QtWidgets.QVBoxLayout(self.DataBase)
+        self.verticalLayout_13.setObjectName("verticalLayout_13")
+        self.DB_Connet_Name = QtWidgets.QWidget(self.DataBase)
+        self.DB_Connet_Name.setObjectName("DB_Connet_Name")
+        self.horizontalLayout_19 = QtWidgets.QHBoxLayout(self.DB_Connet_Name)
+        self.horizontalLayout_19.setObjectName("horizontalLayout_19")
+        self.DB_Lab_Connet_Name = QtWidgets.QLabel(self.DB_Connet_Name)
+        self.DB_Lab_Connet_Name.setMinimumSize(QtCore.QSize(100, 0))
+        self.DB_Lab_Connet_Name.setObjectName("DB_Lab_Connet_Name")
+        self.horizontalLayout_19.addWidget(self.DB_Lab_Connet_Name)
+        self.DB_Line_Connet_Name = QtWidgets.QLineEdit(self.DB_Connet_Name)
+        self.DB_Line_Connet_Name.setMinimumSize(QtCore.QSize(0, 30))
+        self.DB_Line_Connet_Name.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.DB_Line_Connet_Name.setObjectName("DB_Line_Connet_Name")
+        self.horizontalLayout_19.addWidget(self.DB_Line_Connet_Name)
+        self.verticalLayout_13.addWidget(self.DB_Connet_Name)
+        self.DB_Host = QtWidgets.QWidget(self.DataBase)
+        self.DB_Host.setObjectName("DB_Host")
+        self.horizontalLayout_24 = QtWidgets.QHBoxLayout(self.DB_Host)
+        self.horizontalLayout_24.setObjectName("horizontalLayout_24")
+        self.DB_Lab_Host = QtWidgets.QLabel(self.DB_Host)
+        self.DB_Lab_Host.setMinimumSize(QtCore.QSize(100, 0))
+        self.DB_Lab_Host.setObjectName("DB_Lab_Host")
+        self.horizontalLayout_24.addWidget(self.DB_Lab_Host)
+        self.DB_Line_Host = QtWidgets.QLineEdit(self.DB_Host)
+        self.DB_Line_Host.setMinimumSize(QtCore.QSize(0, 30))
+        self.DB_Line_Host.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.DB_Line_Host.setObjectName("DB_Line_Host")
+        self.horizontalLayout_24.addWidget(self.DB_Line_Host)
+        self.verticalLayout_13.addWidget(self.DB_Host)
+        self.DB_Port = QtWidgets.QWidget(self.DataBase)
+        self.DB_Port.setObjectName("DB_Port")
+        self.horizontalLayout_22 = QtWidgets.QHBoxLayout(self.DB_Port)
+        self.horizontalLayout_22.setObjectName("horizontalLayout_22")
+        self.DB_Lab_Port = QtWidgets.QLabel(self.DB_Port)
+        self.DB_Lab_Port.setMinimumSize(QtCore.QSize(100, 0))
+        self.DB_Lab_Port.setObjectName("DB_Lab_Port")
+        self.horizontalLayout_22.addWidget(self.DB_Lab_Port)
+        self.DB_Line_Port = QtWidgets.QLineEdit(self.DB_Port)
+        self.DB_Line_Port.setMinimumSize(QtCore.QSize(0, 30))
+        self.DB_Line_Port.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.DB_Line_Port.setObjectName("DB_Line_Port")
+        self.horizontalLayout_22.addWidget(self.DB_Line_Port)
+        self.verticalLayout_13.addWidget(self.DB_Port)
+        self.DB_Userid = QtWidgets.QWidget(self.DataBase)
+        self.DB_Userid.setObjectName("DB_Userid")
+        self.horizontalLayout_23 = QtWidgets.QHBoxLayout(self.DB_Userid)
+        self.horizontalLayout_23.setObjectName("horizontalLayout_23")
+        self.DB_Lab_Userid = QtWidgets.QLabel(self.DB_Userid)
+        self.DB_Lab_Userid.setMinimumSize(QtCore.QSize(100, 0))
+        self.DB_Lab_Userid.setObjectName("DB_Lab_Userid")
+        self.horizontalLayout_23.addWidget(self.DB_Lab_Userid)
+        self.DB_Line_Userid = QtWidgets.QLineEdit(self.DB_Userid)
+        self.DB_Line_Userid.setMinimumSize(QtCore.QSize(0, 30))
+        self.DB_Line_Userid.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.DB_Line_Userid.setObjectName("DB_Line_Userid")
+        self.horizontalLayout_23.addWidget(self.DB_Line_Userid)
+        self.verticalLayout_13.addWidget(self.DB_Userid)
+        self.DB_Password = QtWidgets.QWidget(self.DataBase)
+        self.DB_Password.setObjectName("DB_Password")
+        self.horizontalLayout_25 = QtWidgets.QHBoxLayout(self.DB_Password)
+        self.horizontalLayout_25.setObjectName("horizontalLayout_25")
+        self.DB_Lab_Password = QtWidgets.QLabel(self.DB_Password)
+        self.DB_Lab_Password.setMinimumSize(QtCore.QSize(100, 0))
+        self.DB_Lab_Password.setObjectName("DB_Lab_Password")
+        self.horizontalLayout_25.addWidget(self.DB_Lab_Password)
+        self.DB_Line_Password = QtWidgets.QLineEdit(self.DB_Password)
+        self.DB_Line_Password.setMinimumSize(QtCore.QSize(0, 30))
+        self.DB_Line_Password.setStyleSheet("QLineEdit {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    border: 2px solid rgb(27, 29, 35);\n"
+"    padding-left: 10px;\n"
+"}\n"
+"QLineEdit:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QLineEdit:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.DB_Line_Password.setObjectName("DB_Line_Password")
+        self.horizontalLayout_25.addWidget(self.DB_Line_Password)
+        self.verticalLayout_13.addWidget(self.DB_Password)
+        self.DB_Signin = QtWidgets.QWidget(self.DataBase)
+        self.DB_Signin.setObjectName("DB_Signin")
+        self.verticalLayout_14 = QtWidgets.QVBoxLayout(self.DB_Signin)
+        self.verticalLayout_14.setObjectName("verticalLayout_14")
+        self.DB_Btn_Signin = QtWidgets.QPushButton(self.DB_Signin)
+        self.DB_Btn_Signin.setMinimumSize(QtCore.QSize(120, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        self.DB_Btn_Signin.setFont(font)
+        self.DB_Btn_Signin.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon9 = QtGui.QIcon()
+        icon9.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-user-female.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.DB_Btn_Signin.setIcon(icon9)
+        self.DB_Btn_Signin.setObjectName("DB_Btn_Signin")
+        self.verticalLayout_14.addWidget(self.DB_Btn_Signin)
+        self.verticalLayout_13.addWidget(self.DB_Signin)
+        self.verticalLayout_12.addWidget(self.DataBase)
+        self.FeedBack = QtWidgets.QWidget(self.right_page)
+        self.FeedBack.setObjectName("FeedBack")
+        self.horizontalLayout_21 = QtWidgets.QHBoxLayout(self.FeedBack)
+        self.horizontalLayout_21.setObjectName("horizontalLayout_21")
+        self.FeedBack_Lab = QtWidgets.QLabel(self.FeedBack)
+        self.FeedBack_Lab.setObjectName("FeedBack_Lab")
+        self.horizontalLayout_21.addWidget(self.FeedBack_Lab)
+        self.FeedBack_Text = QtWidgets.QTextBrowser(self.FeedBack)
+        self.FeedBack_Text.setStyleSheet("QTextBrowser {\n"
+"    background-color: rgb(27, 29, 35);\n"
+"    border-radius: 5px;\n"
+"    padding: 10px;\n"
+"}\n"
+"QTextBrowser:hover {\n"
+"    border: 2px solid rgb(64, 71, 88);\n"
+"}\n"
+"QTextBrowser:focus {\n"
+"    border: 2px solid rgb(91, 101, 124);\n"
+"}")
+        self.FeedBack_Text.setObjectName("FeedBack_Text")
+        self.horizontalLayout_21.addWidget(self.FeedBack_Text)
+        self.verticalLayout_12.addWidget(self.FeedBack)
+        self.verticalLayout_12.setStretch(1, 1)
+        self.horizontalLayout_9.addWidget(self.right_page)
+        self.horizontalLayout_9.setStretch(0, 1)
+        self.horizontalLayout_9.setStretch(1, 1)
         self.stackedWidget.addWidget(self.page_settings)
         self.verticalLayout_9.addWidget(self.stackedWidget)
         self.verticalLayout_4.addWidget(self.frame_content)
@@ -844,11 +1261,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.frame_grip)
         self.horizontalLayout_2.addWidget(self.frame_content_right)
         self.verticalLayout.addWidget(self.frame_center)
-        self.gridLayout.addWidget(self.frame_main, 0, 0, 1, 1)
+        self.verticalLayout_8.addWidget(self.frame_main)
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -867,8 +1284,27 @@ class Ui_MainWindow(object):
         self.btn_connect.setText(_translate("MainWindow", "连接相机"))
         self.btn_detect.setText(_translate("MainWindow", "开始检测"))
         self.btn_stop.setText(_translate("MainWindow", "停止相机"))
-        self.label_9.setText(_translate("MainWindow", "Page Index 1"))
-        self.label_8.setText(_translate("MainWindow", "SETTINGS"))
+        self.Threshold_Lab.setText(_translate("MainWindow", "阈值1"))
+        self.Allowable_Error_Lab.setText(_translate("MainWindow", "允许误差"))
+        self.Pit_Threshold_Lab.setText(_translate("MainWindow", "坑陷阈值"))
+        self.Start_Train_btn.setText(_translate("MainWindow", "开始训练"))
+        self.Host_IP_Lab.setText(_translate("MainWindow", "电脑IP"))
+        self.Host_IP_Line.setPlaceholderText(_translate("MainWindow", "电脑的IP地址"))
+        self.Camera_IP_Lable.setText(_translate("MainWindow", "相机IP"))
+        self.Camera_IP_Line.setPlaceholderText(_translate("MainWindow", "相机的IP地址"))
+        self.IP_Detect_btn.setText(_translate("MainWindow", "IP探测"))
+        self.DB_Lab_Connet_Name.setText(_translate("MainWindow", "数据库连接名称"))
+        self.DB_Line_Connet_Name.setPlaceholderText(_translate("MainWindow", "数据库的连接名称"))
+        self.DB_Lab_Host.setText(_translate("MainWindow", "数据库IP"))
+        self.DB_Line_Host.setPlaceholderText(_translate("MainWindow", "数据库的IP地址"))
+        self.DB_Lab_Port.setText(_translate("MainWindow", "数据库端口号"))
+        self.DB_Line_Port.setPlaceholderText(_translate("MainWindow", "数据库的端口号"))
+        self.DB_Lab_Userid.setText(_translate("MainWindow", "用户名"))
+        self.DB_Line_Userid.setPlaceholderText(_translate("MainWindow", "数据库的用户名"))
+        self.DB_Lab_Password.setText(_translate("MainWindow", "密码"))
+        self.DB_Line_Password.setPlaceholderText(_translate("MainWindow", "数据库的密码"))
+        self.DB_Btn_Signin.setText(_translate("MainWindow", "数据库登录"))
+        self.FeedBack_Lab.setText(_translate("MainWindow", "反馈信息"))
         self.label_credits.setText(_translate("MainWindow", "Registered by: 蘿蔔"))
         self.label_version.setText(_translate("MainWindow", "v1.0.0"))
 import files_rc

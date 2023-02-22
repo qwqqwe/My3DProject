@@ -568,7 +568,7 @@ QToolTip {
     <string notr="true">background: transparent;
 color: rgb(210, 210, 210);</string>
    </property>
-   <layout class="QGridLayout" name="gridLayout">
+   <layout class="QVBoxLayout" name="verticalLayout_8">
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -581,7 +581,7 @@ color: rgb(210, 210, 210);</string>
     <property name="bottomMargin">
      <number>0</number>
     </property>
-    <item row="0" column="0">
+    <item>
      <widget class="QFrame" name="frame_main">
       <property name="mouseTracking">
        <bool>true</bool>
@@ -1451,7 +1451,7 @@ QPushButton:pressed {
                    <string notr="true">background: transparent;</string>
                   </property>
                   <property name="currentIndex">
-                   <number>0</number>
+                   <number>1</number>
                   </property>
                   <widget class="QWidget" name="page_home">
                    <property name="mouseTracking">
@@ -1699,43 +1699,671 @@ QPushButton:pressed {
                    <property name="mouseTracking">
                     <bool>true</bool>
                    </property>
-                   <layout class="QHBoxLayout" name="horizontalLayout_9">
+                   <layout class="QHBoxLayout" name="horizontalLayout_9" stretch="1,1">
                     <item>
-                     <widget class="QLabel" name="label_9">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>15</pointsize>
-                       </font>
-                      </property>
-                      <property name="mouseTracking">
-                       <bool>true</bool>
-                      </property>
-                      <property name="text">
-                       <string>Page Index 1</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignCenter</set>
-                      </property>
+                     <widget class="QWidget" name="left_page" native="true">
+                      <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,1,1,1,1,1,3">
+                       <item>
+                        <widget class="QWidget" name="Threshold" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_14">
+                          <item>
+                           <widget class="QLabel" name="Threshold_Lab">
+                            <property name="text">
+                             <string>阈值1</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QDoubleSpinBox" name="Threshold_SpinBox">
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QDoubleSpinBox
+{
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+	font: 75 10pt &quot;Microsoft YaHei&quot;;
+}
+QDoubleSpinBox:hover
+{
+	border: 2px solid rgb(64, 71, 88);
+}
+ 
+QDoubleSpinBox:up-button 
+{
+    subcontrol-origin:border;
+    subcontrol-position:right;
+    image: url(:/16x16/icons/16x16/cil-chevron-right.png);      
+}
+QDoubleSpinBox:down-button 
+{
+    subcontrol-origin:border;
+    subcontrol-position:left;
+    image: url(:/16x16/icons/16x16/cil-chevron-left.png);
+}
+</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignCenter</set>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="Allowable_Error" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_13">
+                          <item>
+                           <widget class="QLabel" name="Allowable_Error_Lab">
+                            <property name="text">
+                             <string>允许误差</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QDoubleSpinBox" name="Allowable_Error_SpinBox">
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QDoubleSpinBox
+{
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+	font: 75 10pt &quot;Microsoft YaHei&quot;;
+}
+QDoubleSpinBox:hover
+{
+	border: 2px solid rgb(64, 71, 88);
+}
+ 
+QDoubleSpinBox:up-button 
+{
+    subcontrol-origin:border;
+    subcontrol-position:right;
+    image: url(:/16x16/icons/16x16/cil-chevron-right.png);      
+}
+QDoubleSpinBox:down-button 
+{
+    subcontrol-origin:border;
+    subcontrol-position:left;
+    image: url(:/16x16/icons/16x16/cil-chevron-left.png);
+}
+</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignCenter</set>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="Pit_Threshold" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_15">
+                          <item>
+                           <widget class="QLabel" name="Pit_Threshold_Lab">
+                            <property name="text">
+                             <string>坑陷阈值</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QDoubleSpinBox" name="Pit_Threshold_SpinBox">
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QDoubleSpinBox
+{
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+	font: 75 10pt &quot;Microsoft YaHei&quot;;
+}
+QDoubleSpinBox:hover
+{
+	border: 2px solid rgb(64, 71, 88);
+}
+ 
+QDoubleSpinBox:up-button 
+{
+    subcontrol-origin:border;
+    subcontrol-position:right;
+    image: url(:/16x16/icons/16x16/cil-chevron-right.png);      
+}
+QDoubleSpinBox:down-button 
+{
+    subcontrol-origin:border;
+    subcontrol-position:left;
+    image: url(:/16x16/icons/16x16/cil-chevron-left.png);
+}
+</string>
+                            </property>
+                            <property name="alignment">
+                             <set>Qt::AlignCenter</set>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="Start_Train" native="true">
+                         <layout class="QVBoxLayout" name="verticalLayout_15">
+                          <item>
+                           <widget class="QPushButton" name="Start_Train_btn">
+                            <property name="minimumSize">
+                             <size>
+                              <width>120</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}</string>
+                            </property>
+                            <property name="text">
+                             <string>开始训练</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="files.qrc">
+                              <normaloff>:/16x16/icons/16x16/cil-lightbulb.png</normaloff>:/16x16/icons/16x16/cil-lightbulb.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="Host_IP" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_17">
+                          <item>
+                           <widget class="QLabel" name="Host_IP_Lab">
+                            <property name="text">
+                             <string>电脑IP</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="Host_IP_Line">
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLineEdit {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+}
+QLineEdit:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                            </property>
+                            <property name="placeholderText">
+                             <string>电脑的IP地址</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="Camera_IP" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_18">
+                          <item>
+                           <widget class="QLabel" name="Camera_IP_Lable">
+                            <property name="text">
+                             <string>相机IP</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QLineEdit" name="Camera_IP_Line">
+                            <property name="minimumSize">
+                             <size>
+                              <width>0</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QLineEdit {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+}
+QLineEdit:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                            </property>
+                            <property name="placeholderText">
+                             <string>相机的IP地址</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="IP_Detect" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_20">
+                          <item>
+                           <widget class="QPushButton" name="IP_Detect_btn">
+                            <property name="minimumSize">
+                             <size>
+                              <width>120</width>
+                              <height>30</height>
+                             </size>
+                            </property>
+                            <property name="font">
+                             <font>
+                              <family>Segoe UI</family>
+                             </font>
+                            </property>
+                            <property name="styleSheet">
+                             <string notr="true">QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}</string>
+                            </property>
+                            <property name="text">
+                             <string>IP探测</string>
+                            </property>
+                            <property name="icon">
+                             <iconset resource="files.qrc">
+                              <normaloff>:/16x16/icons/16x16/cil-wifi-signal-1.png</normaloff>:/16x16/icons/16x16/cil-wifi-signal-1.png</iconset>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QTextBrowser" name="IP_Detect_Text">
+                            <property name="styleSheet">
+                             <string notr="true">QTextBrowser {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	padding: 10px;
+}
+QTextBrowser:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QTextBrowser:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                     <item>
-                     <widget class="QLabel" name="label_8">
-                      <property name="font">
-                       <font>
-                        <family>Segoe UI</family>
-                        <pointsize>40</pointsize>
-                       </font>
-                      </property>
-                      <property name="mouseTracking">
-                       <bool>true</bool>
-                      </property>
-                      <property name="text">
-                       <string>SETTINGS</string>
-                      </property>
-                      <property name="alignment">
-                       <set>Qt::AlignCenter</set>
-                      </property>
+                     <widget class="QWidget" name="right_page" native="true">
+                      <layout class="QVBoxLayout" name="verticalLayout_12" stretch="0,1">
+                       <item>
+                        <widget class="QWidget" name="DataBase" native="true">
+                         <layout class="QVBoxLayout" name="verticalLayout_13">
+                          <item>
+                           <widget class="QWidget" name="DB_Connet_Name" native="true">
+                            <layout class="QHBoxLayout" name="horizontalLayout_19">
+                             <item>
+                              <widget class="QLabel" name="DB_Lab_Connet_Name">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>0</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string>数据库连接名称</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="DB_Line_Connet_Name">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLineEdit {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+}
+QLineEdit:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                               </property>
+                               <property name="placeholderText">
+                                <string>数据库的连接名称</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="DB_Host" native="true">
+                            <layout class="QHBoxLayout" name="horizontalLayout_24">
+                             <item>
+                              <widget class="QLabel" name="DB_Lab_Host">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>0</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string>数据库IP</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="DB_Line_Host">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLineEdit {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+}
+QLineEdit:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                               </property>
+                               <property name="placeholderText">
+                                <string>数据库的IP地址</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="DB_Port" native="true">
+                            <layout class="QHBoxLayout" name="horizontalLayout_22">
+                             <item>
+                              <widget class="QLabel" name="DB_Lab_Port">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>0</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string>数据库端口号</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="DB_Line_Port">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLineEdit {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+}
+QLineEdit:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                               </property>
+                               <property name="placeholderText">
+                                <string>数据库的端口号</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="DB_Userid" native="true">
+                            <layout class="QHBoxLayout" name="horizontalLayout_23">
+                             <item>
+                              <widget class="QLabel" name="DB_Lab_Userid">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>0</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string>用户名</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="DB_Line_Userid">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLineEdit {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+}
+QLineEdit:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                               </property>
+                               <property name="placeholderText">
+                                <string>数据库的用户名</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="DB_Password" native="true">
+                            <layout class="QHBoxLayout" name="horizontalLayout_25">
+                             <item>
+                              <widget class="QLabel" name="DB_Lab_Password">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>100</width>
+                                 <height>0</height>
+                                </size>
+                               </property>
+                               <property name="text">
+                                <string>密码</string>
+                               </property>
+                              </widget>
+                             </item>
+                             <item>
+                              <widget class="QLineEdit" name="DB_Line_Password">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>0</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QLineEdit {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	border: 2px solid rgb(27, 29, 35);
+	padding-left: 10px;
+}
+QLineEdit:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QLineEdit:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                               </property>
+                               <property name="placeholderText">
+                                <string>数据库的密码</string>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QWidget" name="DB_Signin" native="true">
+                            <layout class="QVBoxLayout" name="verticalLayout_14">
+                             <item>
+                              <widget class="QPushButton" name="DB_Btn_Signin">
+                               <property name="minimumSize">
+                                <size>
+                                 <width>120</width>
+                                 <height>30</height>
+                                </size>
+                               </property>
+                               <property name="font">
+                                <font>
+                                 <family>Segoe UI</family>
+                                </font>
+                               </property>
+                               <property name="styleSheet">
+                                <string notr="true">QPushButton {
+	border: 2px solid rgb(52, 59, 72);
+	border-radius: 5px;	
+	background-color: rgb(52, 59, 72);
+}
+QPushButton:hover {
+	background-color: rgb(57, 65, 80);
+	border: 2px solid rgb(61, 70, 86);
+}
+QPushButton:pressed {	
+	background-color: rgb(35, 40, 49);
+	border: 2px solid rgb(43, 50, 61);
+}</string>
+                               </property>
+                               <property name="text">
+                                <string>数据库登录</string>
+                               </property>
+                               <property name="icon">
+                                <iconset resource="files.qrc">
+                                 <normaloff>:/16x16/icons/16x16/cil-user-female.png</normaloff>:/16x16/icons/16x16/cil-user-female.png</iconset>
+                               </property>
+                              </widget>
+                             </item>
+                            </layout>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                       <item>
+                        <widget class="QWidget" name="FeedBack" native="true">
+                         <layout class="QHBoxLayout" name="horizontalLayout_21">
+                          <item>
+                           <widget class="QLabel" name="FeedBack_Lab">
+                            <property name="text">
+                             <string>反馈信息</string>
+                            </property>
+                           </widget>
+                          </item>
+                          <item>
+                           <widget class="QTextBrowser" name="FeedBack_Text">
+                            <property name="styleSheet">
+                             <string notr="true">QTextBrowser {
+	background-color: rgb(27, 29, 35);
+	border-radius: 5px;
+	padding: 10px;
+}
+QTextBrowser:hover {
+	border: 2px solid rgb(64, 71, 88);
+}
+QTextBrowser:focus {
+	border: 2px solid rgb(91, 101, 124);
+}</string>
+                            </property>
+                           </widget>
+                          </item>
+                         </layout>
+                        </widget>
+                       </item>
+                      </layout>
                      </widget>
                     </item>
                    </layout>

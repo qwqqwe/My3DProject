@@ -5,6 +5,7 @@ from My_Setting_UI import Ui_MainWindow
 from PySide2.QtCore import (QCoreApplication, QPropertyAnimation, QDate, QDateTime, QMetaObject, QObject, QPoint, QRect, QSize, QTime, QUrl, Qt, QEvent)
 from PySide2.QtGui import (QBrush, QColor, QConicalGradient, QCursor, QFont, QFontDatabase, QIcon, QKeySequence, QLinearGradient, QPalette, QPainter, QPixmap, QRadialGradient)
 from PySide2.QtWidgets import *
+
 from ui_functions import *
 import time
 import vtk
@@ -12,6 +13,8 @@ from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 import open3d as o3d
 import numpy as np
 from pathlib import Path
+
+from function_detect import *
 
 
 from vtkmodules.vtkIOImage import (
@@ -23,6 +26,10 @@ from vtkmodules.vtkIOImage import (
     vtkTIFFWriter
 )
 from vtkmodules.vtkRenderingCore import vtkWindowToImageFilter
+
+windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\SgCamWrapper.dll")
+targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
+# targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
 
 def write_image(file_name, ren_win, rgba=True):
 
@@ -79,9 +86,6 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.setupUi(self)
         self.setWindowTitle('test_gui')
         self.setWindowFlags(QtCore.Qt.FramelessWindowHint)
-        self.btn_minimize.clicked.connect(self.showMinimized)
-        self.btn_maximize_restore.clicked.connect(self.max_recv)
-        self.btn_close.clicked.connect(self.close)
         self._padding = 5  # 设置边界宽度为5
         self.initDrag() # 设置鼠标跟踪判断默认值
         self._tracking = False
@@ -89,8 +93,19 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.btn_toggle_menu.clicked.connect(lambda: UIFunctions.toggleMenu(self, 220, True))#设置动画
         UIFunctions.selectStandardMenu(self, "btn_running")
         self.stackedWidget.setCurrentWidget(self.page_home)
+
+        #按鈕連接函數設定
+        self.btn_down_view.clicked.connect(lambda: self.up_view(self.camera, self.Temp_Mid_X, self.Temp_Mid_Y, self.Temp_Mid_Z))
+        self.btn_left_view.clicked.connect(lambda: self.left_view(self.camera, self.Temp_Mid_X, self.Temp_Mid_Y, self.Temp_Mid_Z))
+        self.btn_minimize.clicked.connect(self.showMinimized)
+        self.btn_maximize_restore.clicked.connect(self.max_recv)
+        self.btn_close.clicked.connect(self.close)
         self.btn_running.clicked.connect(self.Button)
         self.btn_settings.clicked.connect(self.Button)
+        self.btn_connect.clicked.connect(self.Prepare_To_Catch)
+        self.btn_stop.clicked.connect(self.Stop_Conneted)
+        self.btn_detect.clicked.connect(self.To_Catch)
+
         #vtk設置
         self.frame = QtWidgets.QFrame()
         self.vtkWidget = QVTKRenderWindowInteractor(self.frame)
@@ -100,39 +115,33 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.vtkWidget.GetRenderWindow().AddRenderer(self.ren)
         self.iren = self.vtkWidget.GetRenderWindow().GetInteractor()
         self.iren.SetInteractorStyle(vtk.vtkInteractorStyleTrackballCamera())
+        self.poins = vtk.vtkPoints()
+        self.polydata = vtk.vtkPolyData()
+        self.vtkDepth = vtk.vtkDoubleArray()
+        self.vtkCells = vtk.vtkCellArray()
         #####這行很重要，因為vtk有兩種交互方式，一種是trackball模式，還有一種是joystick模式，trackball模式才和open3d的操作模式一樣
         #####joystick模式下的操作一般人做不來
         # Create source
-        txt_path = '../../txtcouldpoint/Finalzhengzheng5.txt'
-        pcd = np.loadtxt(txt_path, delimiter=",")
+        # txt_path = '../../txtcouldpoint/Finalzhengzheng5.txt'
+        # self.pcd = np.loadtxt(txt_path, delimiter=",")
+        self.pcd = None
 
-        poins = vtk.vtkPoints()
-        for i in range(pcd.shape[0]):
-            dp = pcd[i]
-            poins.InsertNextPoint(dp[0], dp[1], dp[2])
-        a=time.time()
-        Temp_Mid_X=(np.max(pcd[:,0])+np.min(pcd[:,0]))/2
-        Temp_Mid_Y=(np.max(pcd[:,1])+np.min(pcd[:,1]))/2
-        Temp_Mid_Z=(np.max(pcd[:,2])+np.min(pcd[:,2]))/2
-        b=time.time()
-        print(b-a)
-        polydata = vtk.vtkPolyData()
-        polydata.SetPoints(poins)
-
-        glyphFilter = vtk.vtkVertexGlyphFilter()
-        glyphFilter.SetInputData(polydata)
-        glyphFilter.Update()
-
-        dataMapper = vtk.vtkPolyDataMapper()
-        dataMapper.SetInputConnection(glyphFilter.GetOutputPort())
+        self.glyphFilter = vtk.vtkVertexGlyphFilter()
+        self.glyphFilter.SetInputData(self.polydata)
+        self.glyphFilter.Update()
+        self.dataMapper = vtk.vtkPolyDataMapper()
+        self.dataMapper.SetInputConnection(self.glyphFilter.GetOutputPort())
 
         # Create an actor
-        actor = vtk.vtkActor()
-        actor.SetMapper(dataMapper)
-        self.ren.AddActor(actor)
+        self.actor = vtk.vtkActor()
+        self.actor.SetMapper(self.dataMapper)
+        self.ren.AddActor(self.actor)
         #这是上视图
-        camera = self.ren.GetActiveCamera()
-        self.up_view(camera,Temp_Mid_X,Temp_Mid_Y,Temp_Mid_Z)
+        self.camera = self.ren.GetActiveCamera()
+        self.Temp_Mid_X = 0
+        self.Temp_Mid_Y = 0
+        self.Temp_Mid_Z = 0
+        # self.up_view(self.camera,self.Temp_Mid_X,self.Temp_Mid_Y,self.Temp_Mid_Z)
         #这是显示我们的坐标轴的
         axesActor = vtk.vtkAxesActor()
         self.axes_widget = vtk.vtkOrientationMarkerWidget()
@@ -141,12 +150,35 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.axes_widget.EnabledOn()
         self.axes_widget.InteractiveOff()
 
-        self.show()
+        # self.show()
         self.iren.Initialize()
 
-        self.btn_down_view.clicked.connect(lambda: self.up_view(camera, Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z))
-        self.btn_left_view.clicked.connect(lambda: self.left_view(camera, Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z))
+    def Change_To_VTK(self):
+        for i in range(self.pcd.shape[0]):
+            self.poins.InsertNextPoint(self.pcd[i][0], self.pcd[i][1], self.pcd[i][2])
+            self.vtkDepth.InsertNextValue(self.pcd[i][3])
+        self.vtkDepth.Modified()
+        self.Temp_Mid_X = (np.max(self.pcd[:, 0]) + np.min(self.pcd[:, 0])) / 2
+        self.Temp_Mid_Y = (np.max(self.pcd[:, 1]) + np.min(self.pcd[:, 1])) / 2
+        self.Temp_Mid_Z = (np.max(self.pcd[:, 2]) + np.min(self.pcd[:, 2])) / 2
+        self.polydata.SetPoints(self.poins)
+        self.polydata.SetVerts(self.vtkCells)
+        self.polydata.GetPointData().SetScalars(self.vtkDepth)
+    def To_Catch(self):
+        # pcd = Py_Catch(targe1t)
+        txt_path = '../../txtcouldpoint/Finalzhengzheng5.txt'
+        pcd = np.loadtxt(txt_path, delimiter=",")
+        self.pcd,defect_meassage = display2(pcd)
+        self.Change_To_VTK()
+        self.up_view(self.camera, self.Temp_Mid_X, self.Temp_Mid_Y, self.Temp_Mid_Z)
+        self.textBrowser.setText(str(defect_meassage))
 
+    def Stop_Conneted(self):
+        a=Py_Stop(targe1t)
+        return a
+    def Prepare_To_Catch(self):
+        a=Py_PrepareToCatch(targe1t)
+        return a
     def Button(self):
         # GET BT CLICKED
         btnWidget = self.sender()
@@ -241,7 +273,7 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
     def up_view(self,camera,Temp_Mid_X,Temp_Mid_Y,Temp_Mid_Z):
         camera.SetViewUp(0, 1, 0)
-        camera.SetPosition(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z+250)
+        camera.SetPosition(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z+200)
         camera.SetFocalPoint(Temp_Mid_X, Temp_Mid_Y, Temp_Mid_Z)
         self.ren.ResetCameraClippingRange()
         self.show()

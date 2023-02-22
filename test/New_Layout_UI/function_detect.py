@@ -162,29 +162,42 @@ def function(x):
 
 # def display2(pcd_1):
 def display2(pcd_1):
+  if len(pcd_1)==0:
+    return np.zeros([1,4]),["扫描数据为空"]
+  # afile='fanzheng5'
+  #设fan为我们的正确的方向
+  # txt_path= '../txtcouldpoint/Final{}.txt'.format(afile)
 
-  afile='fanzheng5'
-  txt_path= '../../txtcouldpoint/Final{}.txt'.format(afile)
+  # save_path = "../test/FinalOutPut/{}/".format(afile)+"Filter_{}.png"
 
+  # np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
   defect_meassage=[]
+  start_time = time.time()
   # 通过numpy读取txt点云
-  pcd_1=np.loadtxt(txt_path, delimiter=",")
+  # pcd_1 = np.genfromtxt(txt_path, delimiter=",")
+  # pcd_1=np.loadtxt(txt_path, delimiter=",")
   pcd = o3d.geometry.PointCloud()
   pcd_50percent = o3d.geometry.PointCloud()
 
   # 加载点坐标
   pcd.points = o3d.utility.Vector3dVector(pcd_1)
   pcd_50percent.points=pcd.points[(pcd_1.shape[0]//4):((pcd_1.shape[0]//4)*3)]
+  end_time = time.time()
+  print(end_time - start_time)
 
   pcd = pcd.translate(-pcd_50percent.get_center(), relative=True)  #平移
   pcd_50percent = pcd_50percent.translate(-pcd_50percent.get_center(), relative=True)
+  firstime=time.time()
   w, v = PCA(pcd_50percent.points)  # PCA方法得到对应的特征值和特征向量
-
+  second_time = time.time()
+  print('firstime',second_time-firstime)
   point_cloud_vector = v[:, 0]  # 点云主方向对应的向量为最大特征值对应的特征向量
   print('the main orientation of this pointcloud is: ', point_cloud_vector)
+  print('v',v)
   if(v[0][0]<0):
     v[:,0]=-v[:,0]
     v[:,1]=-v[:,1]
+  print('v', v)
 
   pcd = pcd.uniform_down_sample(50) #均匀下采样，50个点取一个点
 
@@ -205,6 +218,22 @@ def display2(pcd_1):
   pcd = sor_pcd
   points = pcd.points
   point = np.asarray(points)
+  temp_point=point
+  # np_temp_array=np.array([point.shape[0],4])
+  # np_temp_array[:,0]=point[:,0]
+  # np_temp_array[:,1]=point[:,1]
+  # np_temp_array[:,2]=point[:,2]
+  # np_temp_array[:,3]=1
+
+
+
+  mesh_1 = o3d.geometry.TriangleMesh.create_coordinate_frame()
+  axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
+  mesh_1.scale(20, center=(0, 0, 0))
+  axis.scale(20, center=(0, 0, 0))
+  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+  # 可视化
+  # o3d.visualization.draw_geometries([pc_view, axis, mesh_1], point_show_normal=True)
 
   # 转化xy轴
   h1, h2, h3 = Router(v)
@@ -217,7 +246,12 @@ def display2(pcd_1):
   R2= pcd.get_rotation_matrix_from_xyz((0, 0,np.pi))#如果后缀是zheng的话，需要把这个启用
   pcd.rotate(R2,center=(0,0,0))        # 旋转
   pcd.rotate(R1,center=(0,0,0))        # 旋转
-
+  mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
+  mesh.scale(20, center=(0,0,0))
+  pc_view_1 = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
+  # 可视化
+  # o3d.visualization.draw_geometries([pc_view_1,pc_view_1, mesh], point_show_normal=True)
+  #
   # 计算要切割的值
   point_size = point.shape[0]
   idx = []
@@ -240,6 +274,7 @@ def display2(pcd_1):
     slicing_max = slicing_points[0][0]
 
   poi = np.asarray(slicing_cloud.points)  #转换数组
+  # Point_Show(poi)
   poi_x = poi[:, 0]     #切片  第一列
   pre_sort_x = sorted(enumerate(poi_x), key=lambda poi_x: poi_x[1])     #以第二个值X[1]进行排序
   sorted_poi = np.zeros((poi.shape))
@@ -260,13 +295,26 @@ def display2(pcd_1):
   x = x - x[0]
   y = y - y[0]
 
+  a=time.time()
+
+  plt.plot(x[sorrrayiex:sorrrayiey], y[sorrrayiex:sorrrayiey], '*', label='original values')
   akb=signal.argrelmin(y[sorrrayiex:sorrrayiey], order=15)    #局部相对最小
+  print("akb", akb[0][0])
   xmin=x[akb[0][0]+sorrrayiex]
   ymin=y[akb[0][0]+sorrrayiex]
   for i in akb[0]:
     if (y[i+sorrrayiex]<ymin):
       ymin=y[i+sorrrayiex]
       xmin=x[i+sorrrayiex]
+
+  plt.plot(xmin,ymin, '+',markersize=20)  # 极小值点
+  plt.title('')
+  plt.xlabel('')
+  plt.ylabel('')
+  plt.legend(loc=3, borderaxespad=0., bbox_to_anchor=(0, 0))
+  b=time.time()
+  print('time',b-a)
+  # plt.show()
 
   mask =point[:, 0] < slicing_max     #比较point第一列与slicing_max，结果保存在mask
   pcd.points = o3d.utility.Vector3dVector(point[mask])
@@ -275,6 +323,7 @@ def display2(pcd_1):
   pcd.points = o3d.utility.Vector3dVector(points2[mask2])
   point= np.asarray(pcd.points)
 
+  start_guai=0#拐点的判断
   tank1=1   #每次切间隔距离（除以10为真实距离单位：mm）
   astart = time.time()
   step = 0
@@ -324,7 +373,7 @@ def display2(pcd_1):
     project_pane = [-1, 0, 0, tank]
     points_new = point_project_array(slicing_points, project_pane)#这是投影的函数，投影到一个平面上
     pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(points_new))
-
+    # o3d.visualization.draw_geometries([pc_view], point_show_normal=True)
 
     poi = np.asarray(pc_view.points)
     poi_x = poi[:, 1]
@@ -335,16 +384,15 @@ def display2(pcd_1):
 
     #判断是否有空白#
     #如果数据长度小于1.75的话，判断有点遗失，数据量不够
-    #TODO 将里面电脑缺陷判断进行替换，同时最好将函数放置到函数内部，方便修改阈值
     if (len(sorted_poi)==0):
       no_data = 1
-      print("no_data")
+      print("缺焊")
       print(tank1)
-      defect_meassage.append("no_data:"+str(tank1))
+      defect_meassage.append("缺焊:"+str(tank1))
       # print(tank1, file=f5)
     elif(-0.75<(sorted_poi[-1][1]- sorted_poi[0][1])<0.75):
       no_data = 1
-      print("no_data")
+      print("noda")
       print(tank1)
       # print(tank1, file=f5)
       defect_meassage.append("no_data:" + str(tank1))
@@ -372,7 +420,7 @@ def display2(pcd_1):
       zzz = np.hstack((zzz, z_original[len(z_original) * 2 // 3:]))  # 边缘部分
       yy = y_original[len(y_original) // 6:len(y_original) *5// 6]#中间段
       zz = z_original[len(z_original) // 6:len(z_original) *5// 6]
-      akb1 = signal.argrelmax(z_original, order=40)  # 局部相对最大
+      akb1 = signal.argrelmax(z_original, order=20)  # 局部相对最大
 
       if np.size(akb1)<=1:
         # z1 = np.polyfit(yy, zz, 2)  # 曲线拟合，返回值为多项式的各项系数
@@ -397,70 +445,113 @@ def display2(pcd_1):
       for num in range(0,len(y_adjusted)):
         z_pred.append(function(y_adjusted[num]))
 
-      z_adjusted=z_adjusted-np.mean(z_adjusted-z_pred)
-      score=Rationality(z_adjusted,z_pred,0.05)
+      if np.size(akb1)<=1:
 
-      if(score<=0.9):#得分低的，将重新进行2次拟合进行第二次判断
-        z1 = np.polyfit(y_adjusted,z_adjusted,2)
-        p1 = np.poly1d(z1)
-        z_pred=p1(y_adjusted)
+        z_adjusted=z_adjusted-np.mean(z_adjusted-z_pred)
         score=Rationality(z_adjusted,z_pred,0.05)
-        if(score<=0.9):
-          # print("输出图像")
-          step += 1
+
+        if(score<=0.9):#得分低的，将重新进行2次拟合进行第二次判断
+          z1 = np.polyfit(y_adjusted,z_adjusted,2)
+          p1 = np.poly1d(z1)
+          z_pred=p1(y_adjusted)
+          score=Rationality(z_adjusted,z_pred,0.05)
+          if(score<=0.9):
+            # print("输出图像")
+            step += 1
+          else:
+            if (step != 0):#输出缺陷位置
+              print("缺陷起始位置", tank1 - step)
+              print("缺陷结束位置", tank1)
+              defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+              defect_meassage.append("裂缝结束位置:" + str(tank1))
+            step = 0
+
+          for i in range(len(z_adjusted)):
+            list_1=[]
+            if(abs(z_adjusted[i]-z_pred[i])<=0.05):
+              list_1.append(x_original[i])
+              list_1.append(y_original[i])
+              list_1.append(z_original[i])
+              list_1.append(1)
+
+              indx += 1
+              list_all.append(list_1)
+
+            else:
+              list_1.append(x_original[i])
+              list_1.append(y_original[i])
+              list_1.append(z_original[i])
+              list_1.append(0.5)
+
+              indx += 1
+              list_all.append(list_1)
+
+
         else:
-          if (step != 0):#输出缺陷位置
-            print("缺陷起始位置", tank1 - step)
+          if (step!=0):#输出缺陷位置
+            print("缺陷起始位置",tank1-step)
             print("缺陷结束位置", tank1)
-            defect_meassage.append("缺陷起始位置:" + str(tank1 - step))
-            defect_meassage.append("缺陷结束位置:" + str(tank1))
+            defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+            defect_meassage.append("裂缝结束位置:" + str(tank1))
           step = 0
 
-        for i in range(len(z_adjusted)):
-          list_1=[]
-          if(abs(z_adjusted[i]-z_pred[i])<=0.05):
+          for i in range(len(z_adjusted)):
+            list_1=[]
             list_1.append(x_original[i])
             list_1.append(y_original[i])
             list_1.append(z_original[i])
             list_1.append(1)
-
             indx += 1
             list_all.append(list_1)
 
-          else:
-            list_1.append(x_original[i])
-            list_1.append(y_original[i])
-            list_1.append(z_original[i])
-            list_1.append(0.5)
 
-            indx += 1
-            list_all.append(list_1)
+        if(tank+0.2>=slicing_max - 0.1):#焊缝末尾判断输出
+          if (step!=0):
+            print("缺陷起始位置",tank1-step)
+            print("缺陷结束位置", tank1)
+            defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+            defect_meassage.append("裂缝结束位置:" + str(tank1))
 
+
+        # if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
+        #   start_guai=1
+        #   None
+        # else:
+        #   None
 
       else:
-        if (step!=0):#输出缺陷位置
-          print("缺陷起始位置",tank1-step)
-          print("缺陷结束位置", tank1)
-          defect_meassage.append("缺陷起始位置:" + str(tank1 - step))
-          defect_meassage.append("缺陷结束位置:" + str(tank1))
-        step = 0
+        huken=-np.mean(z_adjusted[len(z_adjusted)//2-2:len(z_adjusted)//2+2])
+        print(huken)
+        if huken>=0.3:
+          list_1.append(x_original[i])
+          list_1.append(y_original[i])
+          list_1.append(z_original[i])
+          list_1.append(0)
 
-        for i in range(len(z_adjusted)):
-          list_1=[]
+          step += 1
+        else:
+          if step!=0:
+            defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
           list_1.append(x_original[i])
           list_1.append(y_original[i])
           list_1.append(z_original[i])
           list_1.append(1)
-          indx += 1
-          list_all.append(list_1)
+          step=0
 
-
-      if(tank+0.2>=slicing_max - 0.1):#焊缝末尾判断输出
-        if (step!=0):
-          print("缺陷起始位置",tank1-step)
-          print("缺陷结束位置", tank1)
-          defect_meassage.append("缺陷起始位置:" + str(tank1 - step))
-          defect_meassage.append("缺陷结束位置:" + str(tank1))
+        if huken<-0.1:
+          list_1.append(x_original[i])
+          list_1.append(y_original[i])
+          list_1.append(z_original[i])
+          list_1.append(0.8)
+          step += 1
+        else:
+          if step!=0:
+            defect_meassage.append("焊瘤起始位置:" + str(tank1 - step))
+          list_1.append(x_original[i])
+          list_1.append(y_original[i])
+          list_1.append(z_original[i])
+          list_1.append(1)
+          step=0
 
       print(tank1)
 
@@ -469,6 +560,7 @@ def display2(pcd_1):
   print(bstart - astart)
 
   return result11,defect_meassage
+  # return temp_point,defect_meassage
 
 # def train_coefficent(pcd_1):
 def train_coefficient():

@@ -723,6 +723,7 @@ def display2():
 
     #判断是否有空白#
     #如果数据长度小于1.75的话，判断有点遗失，数据量不够
+    #TODO 将里面电脑缺陷判断进行替换，同时最好将函数放置到函数内部，方便修改阈值
     if (len(sorted_poi)==0):
       no_data = 1
       print("no_data")
@@ -1301,10 +1302,14 @@ class MainWindows(QMainWindow, Demo_VTK.Ui_MainWindow):
     s2=-0.55248
     s0=0
     findbest = 0.05 #打分的评判依据，距离
+
     def __init__(self, parent=None):
         QMainWindow.__init__(self, parent)
         self.setupUi(self)
         self.pushButton.clicked.connect(self.do)
+        # self.findbest = self.doubleSpinBox.value(self)
+        # self.findbest = self.doubleSpinBox.value(self)/10
+
         # self.vtkDepth = vtk.vtkDoubleArray()
 
 

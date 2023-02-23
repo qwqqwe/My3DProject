@@ -164,9 +164,6 @@ def function(x):
 def display2(pcd_1):
   if len(pcd_1)==0:
     return np.zeros([1,4]),["扫描数据为空"]
-  # afile='fanzheng5'
-  #设fan为我们的正确的方向
-  # txt_path= '../txtcouldpoint/Final{}.txt'.format(afile)
 
   afile='fanzheng5'
   txt_path= '../../txtcouldpoint/Final{}.txt'.format(afile)
@@ -282,8 +279,8 @@ def display2(pcd_1):
 
   tank1=1   #每次切间隔距离（除以10为真实距离单位：mm）
   astart = time.time()
-  step = 0
-  indx = 0
+  step = 0  #记录裂缝位置
+  step1=0   #记录弧坑及焊瘤位置
   list_all = []
 
   #改进切片
@@ -377,7 +374,9 @@ def display2(pcd_1):
       zzz = np.hstack((zzz, z_original[len(z_original) * 2 // 3:]))  # 边缘部分
       yy = y_original[len(y_original) // 6:len(y_original) *5// 6]#中间段
       zz = z_original[len(z_original) // 6:len(z_original) *5// 6]
-      akb1 = signal.argrelmax(z_original, order=20)  # 局部相对最大
+      akb1 = signal.argrelmax(z_original, order=10)  # 局部相对最大
+
+
 
       if np.size(akb1)<=1:
         # z1 = np.polyfit(yy, zz, 2)  # 曲线拟合，返回值为多项式的各项系数
@@ -430,8 +429,6 @@ def display2(pcd_1):
               list_1.append(y_original[i])
               list_1.append(z_original[i])
               list_1.append(1)
-
-              indx += 1
               list_all.append(list_1)
 
             else:
@@ -439,8 +436,6 @@ def display2(pcd_1):
               list_1.append(y_original[i])
               list_1.append(z_original[i])
               list_1.append(0.5)
-
-              indx += 1
               list_all.append(list_1)
 
 
@@ -458,7 +453,6 @@ def display2(pcd_1):
             list_1.append(y_original[i])
             list_1.append(z_original[i])
             list_1.append(1)
-            indx += 1
             list_all.append(list_1)
 
 
@@ -476,39 +470,89 @@ def display2(pcd_1):
         # else:
         #   None
 
-      else:
-        huken=-np.mean(z_adjusted[len(z_adjusted)//2-2:len(z_adjusted)//2+2])
-        print(huken)
-        if huken>=0.3:
-          list_1.append(x_original[i])
-          list_1.append(y_original[i])
-          list_1.append(z_original[i])
-          list_1.append(0)
+      else:#else判断的是波峰至少有两个，akb2是判断是否有俩个及两个以上的
+        akb2 = signal.argrelmin(z_original[akb1[0][0]:akb1[0][-1]], order=10)  # 局部相对最小
+        if np.size(akb2)<=1:
+          for i in range(len(z_adjusted)):
+            list_1=[]
+            list_1.append(x_original[i])
+            list_1.append(y_original[i])
+            list_1.append(z_original[i])
+            if(i>=akb1[0][0] and i<=akb1[0][-1]):
+              list_1.append(0)#添加的是弧坑
+            else:
+              list_1.append(1)
+            list_all.append(list_1)
+      # else:
+      #   for i in range(len(z_adjusted)):
+      #     list_1=[]
+      #     list_1.append(x_original[i])
+      #     list_1.append(y_original[i])
+      #     list_1.append(z_original[i])
+      #     if(i>=akb1[0][0] and i<=akb1[0][-1]):
+      #       list_1.append(0.8)#添加的是焊瘤
+      #     else:
+      #       list_1.append(1)
+      #     list_all.append(list_1)
 
-          step += 1
-        else:
-          if step!=0:
-            defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
-          list_1.append(x_original[i])
-          list_1.append(y_original[i])
-          list_1.append(z_original[i])
-          list_1.append(1)
-          step=0
 
-        if huken<-0.1:
-          list_1.append(x_original[i])
-          list_1.append(y_original[i])
-          list_1.append(z_original[i])
-          list_1.append(0.8)
-          step += 1
-        else:
-          if step!=0:
-            defect_meassage.append("焊瘤起始位置:" + str(tank1 - step))
-          list_1.append(x_original[i])
-          list_1.append(y_original[i])
-          list_1.append(z_original[i])
-          list_1.append(1)
-          step=0
+
+        # huken=-np.mean(z_adjusted[len(z_adjusted)//2-2:len(z_adjusted)//2+2])
+        # print(huken)
+        # if huken>=0:
+        #   for i in range(len(z_adjusted)):
+        #     list_1=[]
+        #     list_1.append(x_original[i])
+        #     list_1.append(y_original[i])
+        #     list_1.append(z_original[i])
+        #     list_1.append(0)
+        #     list_all.append(list_1)
+        #
+        #   # list_1.append(x_original[i])
+        #   # list_1.append(y_original[i])
+        #   # list_1.append(z_original[i])
+        #   # list_1.append(0)
+        #
+        #   step1 += 1
+        # else:
+        #   if step1!=0:
+        #     defect_meassage.append("弧坑起始位置:" + str(tank1 - step1))
+        #     defect_meassage.append("弧坑结束位置:" + str(tank1))
+        #   # list_1.append(x_original[i])
+        #   # list_1.append(y_original[i])
+        #   # list_1.append(z_original[i])
+        #   # list_1.append(1)
+        #   step1=0
+        #
+        #   if huken<-0.1:
+        #     for i in range(len(z_adjusted)):
+        #       list_1=[]
+        #       list_1.append(x_original[i])
+        #       list_1.append(y_original[i])
+        #       list_1.append(z_original[i])
+        #       list_1.append(0.8)
+        #       list_all.append(list_1)
+        #     # list_1.append(x_original[i])
+        #     # list_1.append(y_original[i])
+        #     # list_1.append(z_original[i])
+        #     # list_1.append(0.8)
+        #     step1 += 1
+        #   else:
+        #     if step1!=0:
+        #       defect_meassage.append("焊瘤起始位置:" + str(tank1 - step1))
+        #       defect_meassage.append("焊瘤结束位置:" + str(tank1))
+        #     for i in range(len(z_adjusted)):
+        #       list_1=[]
+        #       list_1.append(x_original[i])
+        #       list_1.append(y_original[i])
+        #       list_1.append(z_original[i])
+        #       list_1.append(1)
+        #       list_all.append(list_1)
+        #   # list_1.append(x_original[i])
+        #   # list_1.append(y_original[i])
+        #   # list_1.append(z_original[i])
+        #   # list_1.append(1)
+        #   step1=0
 
       print(tank1)
 
@@ -698,8 +742,6 @@ def train_coefficient():
   start_guai = 0  # 拐点的判断
   tank1 = 1  # 每次切间隔距离（除以10为真实距离单位：mm）
   astart = time.time()
-  step = 0
-  indx = 0
   list_all = []
   middle_fitting = []
   side_fitting = []

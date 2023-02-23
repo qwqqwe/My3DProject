@@ -256,9 +256,9 @@ def display():
 
   a=time.time()
 
-
+  sorrrayiex=0
   plt.plot(x[sorrrayiex:sorrrayiey], y[sorrrayiex:sorrrayiey], '*', label='original values')
-  akb=signal.argrelmin(y[sorrrayiex:sorrrayiey], order=15)    #局部相对最小
+  akb=signal.argrelmin(y[sorrrayiex:sorrrayiey], order=25)    #局部相对最小
   print("akb", akb[0][0])
   xmin=x[akb[0][0]+sorrrayiex]
   ymin=y[akb[0][0]+sorrrayiex]
@@ -268,13 +268,15 @@ def display():
       xmin=x[i+sorrrayiex]
 
   plt.plot(xmin,ymin, '+',markersize=20)  # 极小值点
+  plt.plot(x[akb[0][-1]+sorrrayiex],y[akb[0][-1]+sorrrayiex], '+',markersize=20)  # 极小值点
+
   plt.title('')
   plt.xlabel('')
   plt.ylabel('')
   plt.legend(loc=3, borderaxespad=0., bbox_to_anchor=(0, 0))
   b=time.time()
   print('time',b-a)
-  # plt.show()
+  plt.show()
 
 
   mask =point[:, 0] < slicing_max     #比较point第一列与slicing_max，结果保存在mask

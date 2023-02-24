@@ -281,6 +281,8 @@ def display2(pcd_1):
   astart = time.time()
   step = 0  #记录裂缝位置
   step1=0   #记录弧坑及焊瘤位置
+  type_label=1
+
   list_all = []
 
   #改进切片
@@ -414,6 +416,26 @@ def display2(pcd_1):
           if(score<=0.9):
             # print("输出图像")
             step += 1
+            type_label=0.5
+            for i in range(len(z_adjusted)):
+              list_1 = []
+              if (abs(z_adjusted[i] - z_pred[i]) <= 0.05):
+                list_1.append(x_original[i])
+                list_1.append(y_original[i])
+                list_1.append(z_original[i])
+                list_1.append(1)
+                list_all.append(list_1)
+
+
+              else:
+                list_1.append(x_original[i])
+                list_1.append(y_original[i])
+                list_1.append(z_original[i])
+                list_1.append(0.5)
+                list_all.append(list_1)
+
+
+
           else:
             if (step != 0):#输出缺陷位置
               print("缺陷起始位置", tank1 - step)
@@ -421,22 +443,33 @@ def display2(pcd_1):
               defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
               defect_meassage.append("裂缝结束位置:" + str(tank1))
             step = 0
-
-          for i in range(len(z_adjusted)):
-            list_1=[]
-            if(abs(z_adjusted[i]-z_pred[i])<=0.05):
+            type_label=1
+            for i in range(len(z_adjusted)):
+              list_1 = []
               list_1.append(x_original[i])
               list_1.append(y_original[i])
               list_1.append(z_original[i])
               list_1.append(1)
               list_all.append(list_1)
 
-            else:
-              list_1.append(x_original[i])
-              list_1.append(y_original[i])
-              list_1.append(z_original[i])
-              list_1.append(0.5)
-              list_all.append(list_1)
+
+          # for i in range(len(z_adjusted)):
+          #   list_1=[]
+          #   if(abs(z_adjusted[i]-z_pred[i])<=0.05):
+          #     list_1.append(x_original[i])
+          #     list_1.append(y_original[i])
+          #     list_1.append(z_original[i])
+          #     list_1.append(1)
+          #     list_all.append(list_1)
+          #     type_label=1
+          #
+          #   else:
+          #     list_1.append(x_original[i])
+          #     list_1.append(y_original[i])
+          #     list_1.append(z_original[i])
+          #     list_1.append(0.5)
+          #     list_all.append(list_1)
+          #     type_label=0.5
 
 
         else:
@@ -446,7 +479,7 @@ def display2(pcd_1):
             defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
             defect_meassage.append("裂缝结束位置:" + str(tank1))
           step = 0
-
+          type_label = 1
           for i in range(len(z_adjusted)):
             list_1=[]
             list_1.append(x_original[i])
@@ -471,6 +504,9 @@ def display2(pcd_1):
         #   None
 
       else:#else判断的是波峰至少有两个，akb2是判断是否有俩个及两个以上的
+
+        step +=1
+        type_label=0
         akb2 = signal.argrelmin(z_original[akb1[0][0]:akb1[0][-1]], order=10)  # 局部相对最小
         if np.size(akb2)<=1:
           for i in range(len(z_adjusted)):

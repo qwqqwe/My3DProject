@@ -438,10 +438,16 @@ def display2(pcd_1):
 
           else:
             if (step != 0):#输出缺陷位置
-              print("缺陷起始位置", tank1 - step)
-              print("缺陷结束位置", tank1)
-              defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
-              defect_meassage.append("裂缝结束位置:" + str(tank1))
+              if type_label== 1:
+                print("缺陷起始位置", tank1 - step)
+                print("缺陷结束位置", tank1)
+                defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+                defect_meassage.append("裂缝结束位置:" + str(tank1))
+              else:
+                print("弧坑起始位置", tank1 - step)
+                print("弧坑结束位置", tank1)
+                defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
+                defect_meassage.append("弧坑结束位置:" + str(tank1))
             step = 0
             type_label=1
             for i in range(len(z_adjusted)):
@@ -474,10 +480,16 @@ def display2(pcd_1):
 
         else:
           if (step!=0):#输出缺陷位置
-            print("缺陷起始位置",tank1-step)
-            print("缺陷结束位置", tank1)
-            defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
-            defect_meassage.append("裂缝结束位置:" + str(tank1))
+            if type_label == 1:
+              print("缺陷起始位置", tank1 - step)
+              print("缺陷结束位置", tank1)
+              defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+              defect_meassage.append("裂缝结束位置:" + str(tank1))
+            else:
+              print("弧坑起始位置", tank1 - step)
+              print("弧坑结束位置", tank1)
+              defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
+              defect_meassage.append("弧坑结束位置:" + str(tank1))
           step = 0
           type_label = 1
           for i in range(len(z_adjusted)):
@@ -491,10 +503,16 @@ def display2(pcd_1):
 
         if(tank+0.2>=slicing_max - 0.1):#焊缝末尾判断输出
           if (step!=0):
-            print("缺陷起始位置",tank1-step)
-            print("缺陷结束位置", tank1)
-            defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
-            defect_meassage.append("裂缝结束位置:" + str(tank1))
+            if type_label == 1:
+              print("缺陷起始位置", tank1 - step)
+              print("缺陷结束位置", tank1)
+              defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+              defect_meassage.append("裂缝结束位置:" + str(tank1))
+            else:
+              print("弧坑起始位置", tank1 - step)
+              print("弧坑结束位置", tank1)
+              defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
+              defect_meassage.append("弧坑结束位置:" + str(tank1))
 
 
         # if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。

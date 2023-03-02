@@ -5,12 +5,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QApplication, QMainWindow
 from PyQt5.QtCore import pyqtSignal,QObject
 
-
+import re
 import numpy as np
 import open3d as o3d
 from ctypes import *
 
-
+import configparser
 import vtk
 from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 from matplotlib import pyplot as plt
@@ -18,13 +18,12 @@ from scipy import signal
 from line_profiler import LineProfiler
 from functools import wraps
 
-# txt_path = '..//txtcouldpoint//Finalzhengzheng5.txt'
-# pcd = np.loadtxt(txt_path, delimiter=",")
-remark =2
-# global result11
-# windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\SgCamWrapper.dll")
+
+windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\SgCamWrapper.dll")
+targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
 # targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
-# targe1t=windll.LoadLibrary(r"C:\Users\Administrator\Documents\WeChat Files\wxid_bj5u8pz1th8e12\FileStorage\File\2022-08\v2.1.15.138(1)\G56N_SDK_DEMO_2.1.15.138_20220121_1748\CamWrapper\bins\X64\Debug\Dll6.dll")
+
+
 
 def Py_Catch(targe1t):
     targe1t.Catch()
@@ -48,6 +47,56 @@ def Py_PrepareToCatch(targe1t):
 def Py_Stop(targe1t):
     a=targe1t.Stop()
     return a
+
+def Ip_Finder(str):
+  result = re.findall(r'\D(?:\d{1,3}\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\D', str)
+  print(result)
+
+  # 匹配开头可能出现ip
+  ret_start = re.match(r'(\d{1,3}\.){3}(?:25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\D', str)
+  if ret_start:
+    print("start:", ret_start.group())
+    result.append(ret_start.group())
+
+  # 匹配结尾
+  ret_end = re.search(r'\D(\d{1,3}\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)$', str)
+  if ret_end:
+    print("end: ", ret_end.group())
+    result.append(ret_end.group())
+
+  print('*' * 20)
+  print("result: ", result)  # result:  ['g45.23.278.34h', 'f127.0.0.1j', 'j255.45.45.45b', '123.12.12.12']
+
+  # 构造列表保存ip地址
+  ip_list = []
+  for r in result:
+    # 正则提取ip
+    ret = re.search(r'((25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)\.){3}(25[0-5]|2[0-4]\d|1\d{2}|[1-9]?\d)', r)
+    if ret:
+      # 匹配成功则将ip地址添加到列表中
+      ip_list.append(ret.group())
+
+  # 输入结果列表
+  print(ip_list)
+  return ip_list
+
+def Prepare_To_Catch(targe1t, hostip, camip):
+  targe1t.PrepareToCatch.argtypes = [c_char_p, c_char_p]
+  hostip = hostip.encode("UTF-8")
+  camip = camip.encode("UTF-8")
+  bhostip = create_string_buffer(hostip)
+  bcamip = create_string_buffer(camip)
+  return_prepare = targe1t.PrepareToCatch(bcamip, bhostip)  #######在这里完成了相机的连接
+  return return_prepare
+def Py_Detect_IP(targe1t):
+  targe1t.SGE_DETECENETCAM.restype = c_char_p
+  std = targe1t.SGE_DETECENETCAM()
+  str = bytes.decode(std)
+  lista = Ip_Finder(str)
+  return lista,str
+
+
+
 
 def point_project_array(points, para):
   # 这是投影的函数，投影到一个平面上
@@ -617,82 +666,46 @@ def display2(pcd_1):
   return result11,defect_meassage
 
 # def train_coefficent(pcd_1):
-def train_coefficient():
+def train_coefficient(pcd_1,YuZhi1,WuCha):
   afile = 'fanzheng1'
   # 设fan为我们的正确的方向
   txt_path = 'txtcouldpoint/Final{}.txt'.format(afile)
 
-  # fp = open('test/FinalOutPut/{}/20.txt'.format(afile), 'w')
-  # f3 = open('test/FinalOutPut/{}/30.txt'.format(afile), 'w')
-  # f4 = open('test/FinalOutPut/{}/40.txt'.format(afile), 'w')
-  # f5 = open('test/FinalOutPut/{}/50none.txt'.format(afile), 'w')
-  # f6 = open('test/FinalOutPut/{}/60.txt'.format(afile), 'w')
-  # f11 = open('test/FinalOutPut/{}/1_normal_x2_green_mid.txt'.format(afile), 'a+')
-  # f22 = open('test/FinalOutPut/{}/2_normal_x2_red_side.txt'.format(afile), 'a+')
-  # f33 = open('test/FinalOutPut/{}/3_guai_x2_green_mid.txt'.format(afile), 'a+')
-  # f44 = open('test/FinalOutPut/{}/4_guai_x2_red_side.txt'.format(afile), 'a+')
-  # f55 = open('test/FinalOutPut/{}/5_afterguai_x2_green_mid.txt'.format(afile), 'a+')
-  # f66 = open('test/FinalOutPut/{}/6_afterguai_x2_red_side.txt'.format(afile), 'a+')
-
-  # save_path = "test/FinalOutPut/{}/".format(afile)+"Filter_{}.png"
 
   np.set_printoptions(formatter={'float': '{: 0.5f}'.format})
 
-  start_time = time.time()
+
   # 通过numpy读取txt点云
-  # pcd_1 = np.genfromtxt(txt_path, delimiter=",")
   pcd_1 = np.loadtxt(txt_path, delimiter=",")
+
+
   pcd = o3d.geometry.PointCloud()
   pcd_50percent = o3d.geometry.PointCloud()
-
   # 加载点坐标
   pcd.points = o3d.utility.Vector3dVector(pcd_1)
   pcd_50percent.points = pcd.points[(pcd_1.shape[0] // 4):((pcd_1.shape[0] // 4) * 3)]
-  end_time = time.time()
-  print(end_time - start_time)
 
   pcd = pcd.translate(-pcd_50percent.get_center(), relative=True)  # 平移
   pcd_50percent = pcd_50percent.translate(-pcd_50percent.get_center(), relative=True)
-  firstime = time.time()
   w, v = PCA(pcd_50percent.points)  # PCA方法得到对应的特征值和特征向量
-  second_time = time.time()
-  print('firstime', second_time - firstime)
-  point_cloud_vector = v[:, 0]  # 点云主方向对应的向量为最大特征值对应的特征向量
-  print('the main orientation of this pointcloud is: ', point_cloud_vector)
-  print('v', v)
+
   if (v[0][0] < 0):
     v[:, 0] = -v[:, 0]
     v[:, 1] = -v[:, 1]
-  print('v', v)
 
   pcd = pcd.uniform_down_sample(50)  # 均匀下采样，50个点取一个点
 
   # ------------------------- 统计滤波 --------------------------
-  print("->正在进行统计滤波...")
-  astart = time.time()
   num_neighbors = 20  # K邻域点的个数
   std_ratio = 2.0  # 标准差乘数
   # 执行统计滤波，返回滤波后的点云sor_pcd和对应的索引ind  去除离群点
   sor_pcd, ind = pcd.remove_statistical_outlier(num_neighbors, std_ratio)  # 目标点相邻点个数，偏离标准差的倍速，返回元组，列表
   # 在一个点周围选择若干个点，计算它们距离的统计参数，如果某个点偏离平均值超过stdio_ratio倍的方差则认为是离群点
   # remove_radius_outlier（points,radius）目标点周围指定半径内统计点的数量，如果点的数量小于某一阈值则认为目标点是离群点并进行删除
-  bstartime = time.time()
-  print("统计滤波", bstartime - astart)
-  # 可视化统计滤波后的点云和噪声点云
-  # display_inlier_outlier(pcd, ind)
 
   pcd = sor_pcd
   points = pcd.points
   point = np.asarray(points)
-
-  mesh_1 = o3d.geometry.TriangleMesh.create_coordinate_frame()
-  axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
-  mesh_1.scale(20, center=(0, 0, 0))
-  axis.scale(20, center=(0, 0, 0))
-  pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
-  # 可视化
-  # o3d.visualization.draw_geometries([pc_view, axis, mesh_1], point_show_normal=True)
-  # o3d.visualization.draw_geometries([pc_view, mesh_1], point_show_normal=True)
 
   # 转化xy轴
   h1, h2, h3 = Router(v)
@@ -705,11 +718,6 @@ def train_coefficient():
   R2 = pcd.get_rotation_matrix_from_xyz((0, 0, np.pi))  # 如果后缀是zheng的话，需要把这个启用
   pcd.rotate(R2, center=(0, 0, 0))  # 旋转
   pcd.rotate(R1, center=(0, 0, 0))  # 旋转
-  mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
-  mesh.scale(20, center=(0, 0, 0))
-  pc_view_1 = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(pcd.points))
-  # 可视化
-  # o3d.visualization.draw_geometries([pc_view_1,pc_view_1, mesh], point_show_normal=True)
 
   # 计算要切割的值
   point_size = point.shape[0]
@@ -732,14 +740,7 @@ def train_coefficient():
     slicing_min = slicing_points[-1][0]
     slicing_max = slicing_points[0][0]
 
-  # axis = o3d.geometry.TriangleMesh.create_coordinate_frame().rotate(v, center=(0, 0, 0))
-  # mesh = o3d.geometry.TriangleMesh.create_coordinate_frame()
-  # pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(slicing_cloud.points))
-  # # 可视化
-  # o3d.visualization.draw_geometries([pc_view, mesh], point_show_normal=True)
-
   poi = np.asarray(slicing_cloud.points)  # 转换数组
-  # Point_Show(poi)
   poi_x = poi[:, 0]  # 切片  第一列
   pre_sort_x = sorted(enumerate(poi_x), key=lambda poi_x: poi_x[1])  # 以第二个值X[1]进行排序
   sorted_poi = np.zeros((poi.shape))
@@ -760,11 +761,7 @@ def train_coefficient():
   x = x - x[0]
   y = y - y[0]
 
-  a = time.time()
-
-  plt.plot(x[sorrrayiex:sorrrayiey], y[sorrrayiex:sorrrayiey], '*', label='original values')
   akb = signal.argrelmin(y[sorrrayiex:sorrrayiey], order=15)  # 局部相对最小
-  print("akb", akb[0][0])
   xmin = x[akb[0][0] + sorrrayiex]
   ymin = y[akb[0][0] + sorrrayiex]
   for i in akb[0]:
@@ -772,26 +769,12 @@ def train_coefficient():
       ymin = y[i + sorrrayiex]
       xmin = x[i + sorrrayiex]
 
-  plt.plot(xmin, ymin, '+', markersize=20)  # 极小值点
-  plt.title('')
-  plt.xlabel('')
-  plt.ylabel('')
-  plt.legend(loc=3, borderaxespad=0., bbox_to_anchor=(0, 0))
-  b = time.time()
-  print('time', b - a)
-  # plt.show()
-
   mask = point[:, 0] < slicing_max  # 比较point第一列与slicing_max，结果保存在mask
   pcd.points = o3d.utility.Vector3dVector(point[mask])
   points2 = np.asarray(pcd.points)
   mask2 = points2[:, 0] > slicing_min
   pcd.points = o3d.utility.Vector3dVector(points2[mask2])
   point = np.asarray(pcd.points)
-
-  # poly3 = list()
-  # poly2 = list()
-  # poly1 = list()
-  # poly0 = list()
 
   start_guai = 0  # 拐点的判断
   tank1 = 1  # 每次切间隔距离（除以10为真实距离单位：mm）
@@ -842,7 +825,6 @@ def train_coefficient():
     project_pane = [-1, 0, 0, tank]
     points_new = point_project_array(slicing_points, project_pane)  # 这是投影的函数，投影到一个平面上
     pc_view = o3d.geometry.PointCloud(points=o3d.utility.Vector3dVector(points_new))
-    # o3d.visualization.draw_geometries([pc_view], point_show_normal=True)
 
     poi = np.asarray(pc_view.points)
     poi_x = poi[:, 1]
@@ -877,16 +859,6 @@ def train_coefficient():
     if (no_data != 1):
 
       # 将图像中点坐标转移到0，0,
-
-      # x = sorted_poi[:, 1]
-      # y = sorted_poi[:, 2]
-      # xxx=x[0:len(x)//3]
-      # xxx=np.hstack((xxx, x[len(x)*2//3:]))
-      # yyy=y[0:len(y)//3]
-      # yyy=np.hstack((yyy, y[len(y)*2//3:]))
-      # xx = x[len(x) // 6:len(x) *5// 6]
-      # yy = y[len(y) // 6:len(y) *5// 6]
-      # akb1 = signal.argrelmax(y, order=40)  # 局部相对最大
 
       x_original = sorted_poi[:, 0]
       y_original = sorted_poi[:, 1]
@@ -927,41 +899,11 @@ def train_coefficient():
 
       z1 = np.polyfit(y_inside, z_inside, 2)  # 曲线拟合，返回值为多项式的各项系数
       zz1 = np.polyfit(y_out, z_out, 2)  # 曲线拟合，返回值为多项式的各项系数
-      p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
-      pp1 = np.poly1d(zz1)  # 返回值为多项式的表达式，也就是函数式子
-      # y_pred = p1(x)  # 根据函数的多项式表达式，求解 y
-      # yy_pred = pp1(x)  # 根据函数的多项式表达式，求解 y
       z2 = np.asarray(z1)
       zz2 = np.asarray(zz1)
 
-      '''
-      xxx = x[0:len(x) // 3]
-      xxx = np.hstack((xxx, x[len(x) * 2 // 3:]))
-      yyy = y[0:len(y) // 3]
-      yyy = np.hstack((yyy, y[len(y) * 2 // 3:]))
-      xx = x[len(x) // 6:len(x) *5// 6]
-      yy = y[len(y) // 6:len(y) *5// 6]
-      z1 = np.polyfit(xx, yy, 2)  # 曲线拟合，返回值为多项式的各项系数
-      zz1 = np.polyfit(xxx, yyy, 2)  # 曲线拟合，返回值为多项式的各项系数
-      p1 = np.poly1d(z1)  # 返回值为多项式的表达式，也就是函数式子
-      pp1 = np.poly1d(zz1)  # 返回值为多项式的表达式，也就是函数式子
-
-      y_pred = p1(x)  # 根据函数的多项式表达式，求解 y
-      yy_pred = pp1(x)  # 根据函数的多项式表达式，求解 y
-      z2 = np.asarray(z1)
-      zz2 = np.asarray(zz1)
-      '''
-
-      #
-      #
-      #
-
-      if (
-              tank - xmin - slicing_min - 1 <= 2 and tank - xmin - slicing_min - 1 >= -2):  # 因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
+      if (tank - xmin - slicing_min - 1 <= 2 and tank - xmin - slicing_min - 1 >= -2):  # 因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
         start_guai = 1
-        # save_plt="test/FinalOutPut/{}/".format(afile)
-        # plt.savefig(save_plt+"Filter_One_{}.png".format(tank1))
-        # plt.clf()
         # 保存拐点绿色中间的
         # TODO:把数据保存方式进行改进，训练模型的过程
         # middle_fitting 和side_fitting 保存数据最后可以用return方式返回
@@ -1039,6 +981,8 @@ def train_coefficient():
   # print(AAAA)
 
   return middle_fit, side_fit
+
+
 
 
 class MainWindows(QMainWindow):
@@ -1216,9 +1160,9 @@ class MainWindows(QMainWindow):
 
     # 创建槽函数 槽函数直接使用元件的名称即可
 
-if __name__ == "__main__":
-  pcddd, message=display2(1)
-  print(pcddd, message)
+# if __name__ == "__main__":
+#   pcddd, message=display2(1)
+#   print(pcddd, message)
     # app = QApplication(sys.argv)
     # # mainWindow = QMainWindow()
     # ui = MainWindows()

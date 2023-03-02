@@ -1206,8 +1206,7 @@ def train_coefficient():
       #
       #
 
-      if (
-              tank - xmin - slicing_min - 1 <= 2 and tank - xmin - slicing_min - 1 >= -2):  # 因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
+      if (tank - xmin - slicing_min - 1 <= 2 and tank - xmin - slicing_min - 1 >= -2):  # 因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
         start_guai = 1
         # save_plt="test/FinalOutPut/{}/".format(afile)
         # plt.savefig(save_plt+"Filter_One_{}.png".format(tank1))

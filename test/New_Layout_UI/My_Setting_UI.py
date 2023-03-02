@@ -772,16 +772,44 @@ class Ui_MainWindow(object):
         self.left_page.setObjectName("left_page")
         self.verticalLayout_11 = QtWidgets.QVBoxLayout(self.left_page)
         self.verticalLayout_11.setObjectName("verticalLayout_11")
-        self.Threshold = QtWidgets.QWidget(self.left_page)
-        self.Threshold.setObjectName("Threshold")
-        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.Threshold)
+        self.Start_Train = QtWidgets.QWidget(self.left_page)
+        self.Start_Train.setObjectName("Start_Train")
+        self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.Start_Train)
+        self.verticalLayout_15.setObjectName("verticalLayout_15")
+        self.Start_Train_btn = QtWidgets.QPushButton(self.Start_Train)
+        self.Start_Train_btn.setMinimumSize(QtCore.QSize(120, 30))
+        font = QtGui.QFont()
+        font.setFamily("Segoe UI")
+        self.Start_Train_btn.setFont(font)
+        self.Start_Train_btn.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon7 = QtGui.QIcon()
+        icon7.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-lightbulb.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.Start_Train_btn.setIcon(icon7)
+        self.Start_Train_btn.setObjectName("Start_Train_btn")
+        self.verticalLayout_15.addWidget(self.Start_Train_btn)
+        self.verticalLayout_11.addWidget(self.Start_Train)
+        self.YuZhi = QtWidgets.QWidget(self.left_page)
+        self.YuZhi.setObjectName("YuZhi")
+        self.horizontalLayout_14 = QtWidgets.QHBoxLayout(self.YuZhi)
         self.horizontalLayout_14.setObjectName("horizontalLayout_14")
-        self.Threshold_Lab = QtWidgets.QLabel(self.Threshold)
-        self.Threshold_Lab.setObjectName("Threshold_Lab")
-        self.horizontalLayout_14.addWidget(self.Threshold_Lab)
-        self.Threshold_SpinBox = QtWidgets.QDoubleSpinBox(self.Threshold)
-        self.Threshold_SpinBox.setMinimumSize(QtCore.QSize(0, 30))
-        self.Threshold_SpinBox.setStyleSheet("QDoubleSpinBox\n"
+        self.YuZhi_Lab = QtWidgets.QLabel(self.YuZhi)
+        self.YuZhi_Lab.setObjectName("YuZhi_Lab")
+        self.horizontalLayout_14.addWidget(self.YuZhi_Lab)
+        self.YuZhi_Spin = QtWidgets.QDoubleSpinBox(self.YuZhi)
+        self.YuZhi_Spin.setMinimumSize(QtCore.QSize(0, 30))
+        self.YuZhi_Spin.setStyleSheet("QDoubleSpinBox\n"
 "{\n"
 "    background-color: rgb(27, 29, 35);\n"
 "    border-radius: 5px;\n"
@@ -807,10 +835,10 @@ class Ui_MainWindow(object):
 "    image: url(:/16x16/icons/16x16/cil-chevron-left.png);\n"
 "}\n"
 "")
-        self.Threshold_SpinBox.setAlignment(QtCore.Qt.AlignCenter)
-        self.Threshold_SpinBox.setObjectName("Threshold_SpinBox")
-        self.horizontalLayout_14.addWidget(self.Threshold_SpinBox)
-        self.verticalLayout_11.addWidget(self.Threshold)
+        self.YuZhi_Spin.setAlignment(QtCore.Qt.AlignCenter)
+        self.YuZhi_Spin.setObjectName("YuZhi_Spin")
+        self.horizontalLayout_14.addWidget(self.YuZhi_Spin)
+        self.verticalLayout_11.addWidget(self.YuZhi)
         self.Allowable_Error = QtWidgets.QWidget(self.left_page)
         self.Allowable_Error.setObjectName("Allowable_Error")
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.Allowable_Error)
@@ -850,73 +878,6 @@ class Ui_MainWindow(object):
         self.Allowable_Error_SpinBox.setObjectName("Allowable_Error_SpinBox")
         self.horizontalLayout_13.addWidget(self.Allowable_Error_SpinBox)
         self.verticalLayout_11.addWidget(self.Allowable_Error)
-        self.Pit_Threshold = QtWidgets.QWidget(self.left_page)
-        self.Pit_Threshold.setObjectName("Pit_Threshold")
-        self.horizontalLayout_15 = QtWidgets.QHBoxLayout(self.Pit_Threshold)
-        self.horizontalLayout_15.setObjectName("horizontalLayout_15")
-        self.Pit_Threshold_Lab = QtWidgets.QLabel(self.Pit_Threshold)
-        self.Pit_Threshold_Lab.setObjectName("Pit_Threshold_Lab")
-        self.horizontalLayout_15.addWidget(self.Pit_Threshold_Lab)
-        self.Pit_Threshold_SpinBox = QtWidgets.QDoubleSpinBox(self.Pit_Threshold)
-        self.Pit_Threshold_SpinBox.setMinimumSize(QtCore.QSize(0, 30))
-        self.Pit_Threshold_SpinBox.setStyleSheet("QDoubleSpinBox\n"
-"{\n"
-"    background-color: rgb(27, 29, 35);\n"
-"    border-radius: 5px;\n"
-"    border: 2px solid rgb(27, 29, 35);\n"
-"    padding-left: 10px;\n"
-"    font: 75 10pt \"Microsoft YaHei\";\n"
-"}\n"
-"QDoubleSpinBox:hover\n"
-"{\n"
-"    border: 2px solid rgb(64, 71, 88);\n"
-"}\n"
-" \n"
-"QDoubleSpinBox:up-button \n"
-"{\n"
-"    subcontrol-origin:border;\n"
-"    subcontrol-position:right;\n"
-"    image: url(:/16x16/icons/16x16/cil-chevron-right.png);      \n"
-"}\n"
-"QDoubleSpinBox:down-button \n"
-"{\n"
-"    subcontrol-origin:border;\n"
-"    subcontrol-position:left;\n"
-"    image: url(:/16x16/icons/16x16/cil-chevron-left.png);\n"
-"}\n"
-"")
-        self.Pit_Threshold_SpinBox.setAlignment(QtCore.Qt.AlignCenter)
-        self.Pit_Threshold_SpinBox.setObjectName("Pit_Threshold_SpinBox")
-        self.horizontalLayout_15.addWidget(self.Pit_Threshold_SpinBox)
-        self.verticalLayout_11.addWidget(self.Pit_Threshold)
-        self.Start_Train = QtWidgets.QWidget(self.left_page)
-        self.Start_Train.setObjectName("Start_Train")
-        self.verticalLayout_15 = QtWidgets.QVBoxLayout(self.Start_Train)
-        self.verticalLayout_15.setObjectName("verticalLayout_15")
-        self.Start_Train_btn = QtWidgets.QPushButton(self.Start_Train)
-        self.Start_Train_btn.setMinimumSize(QtCore.QSize(120, 30))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        self.Start_Train_btn.setFont(font)
-        self.Start_Train_btn.setStyleSheet("QPushButton {\n"
-"    border: 2px solid rgb(52, 59, 72);\n"
-"    border-radius: 5px;    \n"
-"    background-color: rgb(52, 59, 72);\n"
-"}\n"
-"QPushButton:hover {\n"
-"    background-color: rgb(57, 65, 80);\n"
-"    border: 2px solid rgb(61, 70, 86);\n"
-"}\n"
-"QPushButton:pressed {    \n"
-"    background-color: rgb(35, 40, 49);\n"
-"    border: 2px solid rgb(43, 50, 61);\n"
-"}")
-        icon7 = QtGui.QIcon()
-        icon7.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-lightbulb.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.Start_Train_btn.setIcon(icon7)
-        self.Start_Train_btn.setObjectName("Start_Train_btn")
-        self.verticalLayout_15.addWidget(self.Start_Train_btn)
-        self.verticalLayout_11.addWidget(self.Start_Train)
         self.Host_IP = QtWidgets.QWidget(self.left_page)
         self.Host_IP.setObjectName("Host_IP")
         self.horizontalLayout_17 = QtWidgets.QHBoxLayout(self.Host_IP)
@@ -969,11 +930,12 @@ class Ui_MainWindow(object):
         self.IP_Detect.setObjectName("IP_Detect")
         self.horizontalLayout_20 = QtWidgets.QHBoxLayout(self.IP_Detect)
         self.horizontalLayout_20.setObjectName("horizontalLayout_20")
-        self.IP_Detect_btn = QtWidgets.QPushButton(self.IP_Detect)
+        self.widget_2 = QtWidgets.QWidget(self.IP_Detect)
+        self.widget_2.setObjectName("widget_2")
+        self.verticalLayout_16 = QtWidgets.QVBoxLayout(self.widget_2)
+        self.verticalLayout_16.setObjectName("verticalLayout_16")
+        self.IP_Detect_btn = QtWidgets.QPushButton(self.widget_2)
         self.IP_Detect_btn.setMinimumSize(QtCore.QSize(120, 30))
-        font = QtGui.QFont()
-        font.setFamily("Segoe UI")
-        self.IP_Detect_btn.setFont(font)
         self.IP_Detect_btn.setStyleSheet("QPushButton {\n"
 "    border: 2px solid rgb(52, 59, 72);\n"
 "    border-radius: 5px;    \n"
@@ -991,7 +953,26 @@ class Ui_MainWindow(object):
         icon8.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-wifi-signal-1.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.IP_Detect_btn.setIcon(icon8)
         self.IP_Detect_btn.setObjectName("IP_Detect_btn")
-        self.horizontalLayout_20.addWidget(self.IP_Detect_btn)
+        self.verticalLayout_16.addWidget(self.IP_Detect_btn)
+        self.IP_Connect_btn = QtWidgets.QPushButton(self.widget_2)
+        self.IP_Connect_btn.setMinimumSize(QtCore.QSize(120, 30))
+        self.IP_Connect_btn.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        self.IP_Connect_btn.setIcon(icon5)
+        self.IP_Connect_btn.setObjectName("IP_Connect_btn")
+        self.verticalLayout_16.addWidget(self.IP_Connect_btn)
+        self.horizontalLayout_20.addWidget(self.widget_2)
         self.IP_Detect_Text = QtWidgets.QTextBrowser(self.IP_Detect)
         self.IP_Detect_Text.setStyleSheet("QTextBrowser {\n"
 "    background-color: rgb(27, 29, 35);\n"
@@ -1007,13 +988,11 @@ class Ui_MainWindow(object):
         self.IP_Detect_Text.setObjectName("IP_Detect_Text")
         self.horizontalLayout_20.addWidget(self.IP_Detect_Text)
         self.verticalLayout_11.addWidget(self.IP_Detect)
-        self.verticalLayout_11.setStretch(0, 1)
         self.verticalLayout_11.setStretch(1, 1)
         self.verticalLayout_11.setStretch(2, 1)
         self.verticalLayout_11.setStretch(3, 1)
         self.verticalLayout_11.setStretch(4, 1)
-        self.verticalLayout_11.setStretch(5, 1)
-        self.verticalLayout_11.setStretch(6, 3)
+        self.verticalLayout_11.setStretch(5, 3)
         self.horizontalLayout_9.addWidget(self.left_page)
         self.right_page = QtWidgets.QWidget(self.page_settings)
         self.right_page.setObjectName("right_page")
@@ -1176,6 +1155,31 @@ class Ui_MainWindow(object):
         self.DB_Btn_Signin.setObjectName("DB_Btn_Signin")
         self.verticalLayout_14.addWidget(self.DB_Btn_Signin)
         self.verticalLayout_13.addWidget(self.DB_Signin)
+        self.Save = QtWidgets.QWidget(self.DataBase)
+        self.Save.setObjectName("Save")
+        self.verticalLayout_17 = QtWidgets.QVBoxLayout(self.Save)
+        self.verticalLayout_17.setObjectName("verticalLayout_17")
+        self.btn_Save = QtWidgets.QPushButton(self.Save)
+        self.btn_Save.setMinimumSize(QtCore.QSize(120, 30))
+        self.btn_Save.setStyleSheet("QPushButton {\n"
+"    border: 2px solid rgb(52, 59, 72);\n"
+"    border-radius: 5px;    \n"
+"    background-color: rgb(52, 59, 72);\n"
+"}\n"
+"QPushButton:hover {\n"
+"    background-color: rgb(57, 65, 80);\n"
+"    border: 2px solid rgb(61, 70, 86);\n"
+"}\n"
+"QPushButton:pressed {    \n"
+"    background-color: rgb(35, 40, 49);\n"
+"    border: 2px solid rgb(43, 50, 61);\n"
+"}")
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(":/16x16/icons/16x16/cil-save.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.btn_Save.setIcon(icon10)
+        self.btn_Save.setObjectName("btn_Save")
+        self.verticalLayout_17.addWidget(self.btn_Save)
+        self.verticalLayout_13.addWidget(self.Save)
         self.verticalLayout_12.addWidget(self.DataBase)
         self.FeedBack = QtWidgets.QWidget(self.right_page)
         self.FeedBack.setObjectName("FeedBack")
@@ -1199,7 +1203,8 @@ class Ui_MainWindow(object):
         self.FeedBack_Text.setObjectName("FeedBack_Text")
         self.horizontalLayout_21.addWidget(self.FeedBack_Text)
         self.verticalLayout_12.addWidget(self.FeedBack)
-        self.verticalLayout_12.setStretch(1, 1)
+        self.verticalLayout_12.setStretch(0, 5)
+        self.verticalLayout_12.setStretch(1, 5)
         self.horizontalLayout_9.addWidget(self.right_page)
         self.horizontalLayout_9.setStretch(0, 1)
         self.horizontalLayout_9.setStretch(1, 1)
@@ -1284,15 +1289,15 @@ class Ui_MainWindow(object):
         self.btn_connect.setText(_translate("MainWindow", "连接相机"))
         self.btn_detect.setText(_translate("MainWindow", "开始检测"))
         self.btn_stop.setText(_translate("MainWindow", "停止相机"))
-        self.Threshold_Lab.setText(_translate("MainWindow", "阈值1"))
+        self.Start_Train_btn.setText(_translate("MainWindow", "训练模型"))
+        self.YuZhi_Lab.setText(_translate("MainWindow", "阈值1"))
         self.Allowable_Error_Lab.setText(_translate("MainWindow", "允许误差"))
-        self.Pit_Threshold_Lab.setText(_translate("MainWindow", "坑陷阈值"))
-        self.Start_Train_btn.setText(_translate("MainWindow", "开始训练"))
         self.Host_IP_Lab.setText(_translate("MainWindow", "电脑IP"))
         self.Host_IP_Line.setPlaceholderText(_translate("MainWindow", "电脑的IP地址"))
         self.Camera_IP_Lable.setText(_translate("MainWindow", "相机IP"))
         self.Camera_IP_Line.setPlaceholderText(_translate("MainWindow", "相机的IP地址"))
-        self.IP_Detect_btn.setText(_translate("MainWindow", "IP探测"))
+        self.IP_Detect_btn.setText(_translate("MainWindow", "探测IP"))
+        self.IP_Connect_btn.setText(_translate("MainWindow", "连接相机"))
         self.DB_Lab_Connet_Name.setText(_translate("MainWindow", "数据库连接名称"))
         self.DB_Line_Connet_Name.setPlaceholderText(_translate("MainWindow", "数据库的连接名称"))
         self.DB_Lab_Host.setText(_translate("MainWindow", "数据库IP"))
@@ -1304,6 +1309,7 @@ class Ui_MainWindow(object):
         self.DB_Lab_Password.setText(_translate("MainWindow", "密码"))
         self.DB_Line_Password.setPlaceholderText(_translate("MainWindow", "数据库的密码"))
         self.DB_Btn_Signin.setText(_translate("MainWindow", "数据库登录"))
+        self.btn_Save.setText(_translate("MainWindow", "保存所有数据"))
         self.FeedBack_Lab.setText(_translate("MainWindow", "反馈信息"))
         self.label_credits.setText(_translate("MainWindow", "Registered by: 蘿蔔"))
         self.label_version.setText(_translate("MainWindow", "v1.0.0"))

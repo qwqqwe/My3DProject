@@ -105,6 +105,9 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.btn_connect.clicked.connect(self.Prepare_To_Catch)
         self.btn_stop.clicked.connect(self.Stop_Conneted)
         self.btn_detect.clicked.connect(self.To_Catch)
+        self.IP_Detect_btn.clicked.connect(self.Ip_Detect)
+        self.IP_Connect_btn.clicked.connect(self.Connect_To_Camera)
+        self.btn_Save.clicked.connect(self.SaveConfig)
 
         #vtk設置
         self.frame = QtWidgets.QFrame()
@@ -154,6 +157,8 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         # self.show()
         self.iren.Initialize()
 
+        self.ReadConfig()
+
     def Change_To_VTK(self):
         for i in range(self.pcd.shape[0]):
             self.poins.InsertNextPoint(self.pcd[i][0], self.pcd[i][1], self.pcd[i][2])
@@ -174,9 +179,29 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.up_view(self.camera, self.Temp_Mid_X, self.Temp_Mid_Y, self.Temp_Mid_Z)
         self.textBrowser.setText(str(defect_meassage))
 
+    def Connect_To_Camera(self):
+        a=self.Host_IP_Line.text()
+        b=self.Camera_IP_Line.text()
+        self.FeedBack_Text.setText(a)
+        try:
+            catch_back=Prepare_To_Catch(targe1t,a,b)
+        except:
+            print("Error")
+            self.FeedBack_Text.setText('连接相机出现错误，请关闭程序再次尝试')
+            return -1
+        else:
+            return catch_back
+        #这里输入的是两个line里面的值
+    def Ip_Detect(self):
+        lista,strrr = Py_Detect_IP(targe1t)  # 探測IP返回的是IP的list,
+        self.IP_Detect_Text.setText(strrr)
+        self.FeedBack_Text.setText('IP探测')
+        # self.IP_Detect_Text.setText('strrr')
+        return lista
     def Stop_Conneted(self):
         a=Py_Stop(targe1t)
         return a
+
     def Prepare_To_Catch(self):
         a=Py_PrepareToCatch(targe1t)
         return a
@@ -307,6 +332,50 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         # writer.SetFileName('cs.ps')
         writer.SetInputConnection(windowto_image_filter.GetOutputPort())
         writer.Write()
+
+    def ReadConfig(self):
+        config = configparser.ConfigParser()
+        # 传入读取文件的地址，encoding文件编码格式，中文必须
+        try:
+            config.read('configs.ini', encoding='UTF-8')
+        except:
+            pass
+        else:
+            self.YuZhi_Spin.setValue(float(config['Traing']['YuZhi1']))
+            self.Allowable_Error_SpinBox.setValue(float(config['Traing']['WuCha']))
+
+            self.Host_IP_Line.setText(config['Connect_Cam']['Computer_IP'])
+            self.Camera_IP_Line.setText(config['Connect_Cam']['Cam_IP'])
+
+            self.DB_Line_Connet_Name.setText(config['DataBase']['Connect_Name'])
+            self.DB_Line_Host.setText(config['DataBase']['Host'])
+            self.DB_Line_Port.setText(config['DataBase']['Port'])
+            self.DB_Line_Userid.setText(config['DataBase']['UserName'])
+            self.DB_Line_Password.setText(config['DataBase']['PassWord'])
+
+    def SaveConfig(self):
+        config = configparser.ConfigParser()
+        config['Traing'] = {}
+        config['Traing']['YuZhi1'] =self.YuZhi_Spin.text()
+        config['Traing']['WuCha'] =self.Allowable_Error_SpinBox.text()
+
+        config['Connect_Cam']={}
+        config['Connect_Cam']['Computer_IP']=self.Host_IP_Line.text()
+        config['Connect_Cam']['Cam_IP']=self.Camera_IP_Line.text()
+
+        config['DataBase']={}
+        config['DataBase']['Connect_Name']=self.DB_Line_Connet_Name.text()
+        config['DataBase']['Host']=self.DB_Line_Host.text()
+        config['DataBase']['Port']=self.DB_Line_Port.text()
+        config['DataBase']['UserName']=self.DB_Line_Userid.text()
+        config['DataBase']['PassWord']=self.DB_Line_Password.text()
+
+        self.FeedBack_Text.setText('保存成功')
+
+        with open('configs.ini', 'w') as configfile:
+            config.write(configfile)
+
+
 
 
 if __name__ == '__main__':

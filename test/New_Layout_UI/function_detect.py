@@ -876,7 +876,7 @@ def train_coefficient(pcd_1,YuZhi1,WuCha):
         zz1 = np.polyfit(yyy, zzz, 2)  # 曲线拟合，返回值为多项式的各项系数
 
       elif np.size(akb1) > 1:
-        z1 = np.polyfit(y_original, z_original, 4)  # 曲线拟合，返回值为多项式的各项系数
+        z1 = np.polyfit(y_original, z_original, 2)  # 曲线拟合，返回值为多项式的各项系数
         zz1 = np.polyfit(yyy, zzz, 2)  # 曲线拟合，返回值为多项式的各项系数
 
       # 找到函数的最高点并进行平移
@@ -907,17 +907,17 @@ def train_coefficient(pcd_1,YuZhi1,WuCha):
         # 保存拐点绿色中间的
         # TODO:把数据保存方式进行改进，训练模型的过程
         # middle_fitting 和side_fitting 保存数据最后可以用return方式返回
-        data_list = []
+        '''data_list = []
         data_list.append(z2[0])
         data_list.append(z2[1])
         data_list.append(z2[2])
         # list1 = json.dumps(data_list)
-        # f33.write(list1 + "\n")
+        # 
         # 保存拐点红色两边的
         data_list = []
         data_list.append(zz2[0])
         data_list.append(zz2[1])
-        data_list.append(zz2[2])
+        data_list.append(zz2[2])'''
         # data_list.append(z2[3])
         # list2 = json.dumps(data_list)
         # f44.write(list2 + "\n")
@@ -939,6 +939,7 @@ def train_coefficient(pcd_1,YuZhi1,WuCha):
           # list2 = json.dumps(data_list)
           # f22.write(list2 + "\n")
           side_fitting.append(data_list)
+          '''拐点之后的不需要保存
         elif (start_guai == 1):
           # 保存拐点之后绿色中间的
           data_list = []
@@ -953,11 +954,11 @@ def train_coefficient(pcd_1,YuZhi1,WuCha):
           data_list.append(zz2[1])
           data_list.append(zz2[2])
           # list2 = json.dumps(data_list)
-          # f66.write(list2 + "\n")
+          # f66.write(list2 + "\n")'''
 
         # plt.savefig(save_path.format(tank1))
         # plt.clf()
-        cc = 0
+
 
       # poly3.append(z2[0])
       # poly2.append(z2[1])

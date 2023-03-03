@@ -13,6 +13,7 @@ from vtkmodules.qt.QVTKRenderWindowInteractor import QVTKRenderWindowInteractor
 import open3d as o3d
 import numpy as np
 from pathlib import Path
+import pymysql
 
 from function_detect import *
 
@@ -108,6 +109,7 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.IP_Detect_btn.clicked.connect(self.Ip_Detect)
         self.IP_Connect_btn.clicked.connect(self.Connect_To_Camera)
         self.btn_Save.clicked.connect(self.SaveConfig)
+        self.DB_Btn_Signin.clicked.connect(self.DB_Sign_In)
 
         #vtk設置
         self.frame = QtWidgets.QFrame()
@@ -157,7 +159,7 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         # self.show()
         self.iren.Initialize()
 
-        self.ReadConfig()
+        # self.ReadConfig()
 
     def Change_To_VTK(self):
         for i in range(self.pcd.shape[0]):
@@ -337,6 +339,7 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         config = configparser.ConfigParser()
         # 传入读取文件的地址，encoding文件编码格式，中文必须
         try:
+
             config.read('configs.ini', encoding='UTF-8')
         except:
             pass
@@ -374,6 +377,26 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
 
         with open('configs.ini', 'w') as configfile:
             config.write(configfile)
+
+    def DB_Sign_In(self):
+        try:
+            db = pymysql.connect(host='localhost', user='root', passwd='123456', port=3306)
+            # db = pymysql.connect(host='192.168.31.1', user='root', passwd='123456', port=3306)
+            print('连接成功！')
+        except:
+            print('something wrong!')
+        # 使用 cursor() 方法创建一个游标对象 cursor
+        cursor = db.cursor()
+
+        # 使用 execute()  方法执行 SQL 查询
+        cursor.execute("SELECT VERSION()")
+        # 使用 fetchone() 方法获取单条数据.
+        data = cursor.fetchone()
+
+        print("Database version : %s " % data)
+
+        # 关闭数据库连接
+        db.close()
 
 
 

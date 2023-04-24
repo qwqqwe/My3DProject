@@ -453,19 +453,27 @@ def display2(pcd_1):
         z_pred.append(function(y_adjusted[num]))
 
       if np.size(akb1)<=1:
+        if step1 != 0:
+          print("弧坑起始位置", tank1 - step1)
+          print("弧坑结束位置", tank1)
+          defect_meassage.append("弧坑起始位置:" + str(tank1 - step1))
+          defect_meassage.append("弧坑结束位置:" + str(tank1))
+          step1 =0
 
         z_adjusted=z_adjusted-np.mean(z_adjusted-z_pred)
         score=Rationality(z_adjusted,z_pred,0.05)
+        # score=Rationality(z_adjusted,z_pred,0.1)
 
-        if(score<=0.9):#得分低的，将重新进行2次拟合进行第二次判断
+
+        if(score<=0.85):#得分低的，将重新进行2次拟合进行第二次判断
           z1 = np.polyfit(y_adjusted,z_adjusted,2)
           p1 = np.poly1d(z1)
           z_pred=p1(y_adjusted)
           score=Rationality(z_adjusted,z_pred,0.05)
-          if(score<=0.9):
+          if(score<=0.85):
             # print("输出图像")
             step += 1
-            type_label=0.5
+            # type_label=1
             for i in range(len(z_adjusted)):
               list_1 = []
               if (abs(z_adjusted[i] - z_pred[i]) <= 0.05):
@@ -486,19 +494,22 @@ def display2(pcd_1):
 
 
           else:
-            if (step != 0):#输出缺陷位置
-              if type_label== 1:
+            if (step != 0 or step1 !=0):#输出缺陷位置
+              if step != 0:
                 print("缺陷起始位置", tank1 - step)
                 print("缺陷结束位置", tank1)
                 defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
                 defect_meassage.append("裂缝结束位置:" + str(tank1))
-              else:
-                print("弧坑起始位置", tank1 - step)
+                step = 0
+              # else:
+              if step1 != 0:
+                print("弧坑起始位置", tank1 - step1)
                 print("弧坑结束位置", tank1)
-                defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
+                defect_meassage.append("弧坑起始位置:" + str(tank1 - step1))
                 defect_meassage.append("弧坑结束位置:" + str(tank1))
-            step = 0
-            type_label=1
+
+
+            # type_label=1
             for i in range(len(z_adjusted)):
               list_1 = []
               list_1.append(x_original[i])
@@ -506,6 +517,7 @@ def display2(pcd_1):
               list_1.append(z_original[i])
               list_1.append(1)
               list_all.append(list_1)
+
 
 
           # for i in range(len(z_adjusted)):
@@ -528,19 +540,23 @@ def display2(pcd_1):
 
 
         else:
-          if (step!=0):#输出缺陷位置
-            if type_label == 1:
+          if (step!=0 or step1 != 0):#输出缺陷位置
+            if step!=0:
               print("缺陷起始位置", tank1 - step)
               print("缺陷结束位置", tank1)
               defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
               defect_meassage.append("裂缝结束位置:" + str(tank1))
-            else:
-              print("弧坑起始位置", tank1 - step)
+
+            # else:
+            if step1 != 0:
+              print("弧坑起始位置", tank1 - step1)
               print("弧坑结束位置", tank1)
-              defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
+              defect_meassage.append("弧坑起始位置:" + str(tank1 - step1))
               defect_meassage.append("弧坑结束位置:" + str(tank1))
+
           step = 0
-          type_label = 1
+
+          # type_label = 1
           for i in range(len(z_adjusted)):
             list_1=[]
             list_1.append(x_original[i])
@@ -549,19 +565,25 @@ def display2(pcd_1):
             list_1.append(1)
             list_all.append(list_1)
 
+        # step1 = 0
+
 
         if(tank+0.2>=slicing_max - 0.1):#焊缝末尾判断输出
-          if (step!=0):
-            if type_label == 1:
+          if (step!=0 or step1 !=0 ):
+            if step!=0:
               print("缺陷起始位置", tank1 - step)
               print("缺陷结束位置", tank1)
               defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
               defect_meassage.append("裂缝结束位置:" + str(tank1))
-            else:
-              print("弧坑起始位置", tank1 - step)
+              step=0
+            # else:
+            if step1 !=0:
+              print("弧坑起始位置", tank1 - step1)
               print("弧坑结束位置", tank1)
-              defect_meassage.append("弧坑起始位置:" + str(tank1 - step))
+              defect_meassage.append("弧坑起始位置:" + str(tank1 - step1))
               defect_meassage.append("弧坑结束位置:" + str(tank1))
+
+        step1 = 0
 
 
         # if (tank-xmin-slicing_min-1 <=2 and tank-xmin-slicing_min-1>=-2):#因为拐点的范围比较大，比0.2mm要大得多，所以如果这里用0.2mm的话，那么这边边上一片邻域都是和它接近一模一样的拐点。
@@ -571,8 +593,8 @@ def display2(pcd_1):
         #   None
 
       else:#else判断的是波峰至少有两个，akb2是判断是否有俩个及两个以上的
-
-        step +=1
+        # step=0
+        step1 +=1
         type_label=0
         akb2 = signal.argrelmin(z_original[akb1[0][0]:akb1[0][-1]], order=10)  # 局部相对最小
         if np.size(akb2)<=1:
@@ -586,6 +608,13 @@ def display2(pcd_1):
             else:
               list_1.append(1)
             list_all.append(list_1)
+        if step !=0:
+          print("缺陷起始位置", tank1 - step)
+          print("缺陷结束位置", tank1)
+          defect_meassage.append("裂缝起始位置:" + str(tank1 - step))
+          defect_meassage.append("裂缝结束位置:" + str(tank1))
+          step = 0
+
       # else:
       #   for i in range(len(z_adjusted)):
       #     list_1=[]
@@ -983,8 +1012,45 @@ def train_coefficient(pcd_1,YuZhi1,WuCha):
 
   return middle_fit, side_fit
 
+  def select_type(pcd, type):
+    pd = []
+    for i in range(len(pcd)):
+      if pcd[i][3] == type:
+        print(pcd[i])
+        pdd = []
+        pdd.append(pcd[i][0])
+        pdd.append(pcd[i][1])
+        pdd.append(pcd[i][2])
+        # pdd.append(0)
+        pd.append(pdd)
+    return pd
+
+def select_type(pcd, type):
+  pd = []
+  for i in range(len(pcd)):
+    if pcd[i][3] == type:
+      # print(pcd[i])
+      pdd = []
+      pdd.append(pcd[i][0])
+      pdd.append(pcd[i][1])
+      pdd.append(pcd[i][2])
+      # pdd.append(0)
+
+      pd.append(pdd)
+  return pd
 
 
+def polygon_area(polygon):
+  """
+  compute polygon area
+  polygon: list with shape [n, 3], n is the number of polygon points
+  """
+  area = 0
+  q = polygon[1]
+  for p in polygon:
+    area += p[0] * q[1] - p[1] * q[0]
+    q = p
+  return abs(area) / 2.0
 
 class MainWindows(QMainWindow):
     a = pyqtSignal()

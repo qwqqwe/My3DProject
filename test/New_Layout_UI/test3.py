@@ -180,6 +180,72 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         self.Change_To_VTK()
         self.up_view(self.camera, self.Temp_Mid_X, self.Temp_Mid_Y, self.Temp_Mid_Z)
         self.textBrowser.setText(str(defect_meassage))
+        self.defect_Area(0)
+        self.defect_Area(0.5)
+
+
+        # # pd = select_type(self.pcd, 0.5)
+        # pd = select_type(self.pcd, 0.5)
+        #
+        # pcdd = o3d.geometry.PointCloud()
+        # # 加载点坐标
+        # pcdd.points = o3d.utility.Vector3dVector(pd)
+        # print("->正在DBSCAN聚类...")
+        # # eps = 1.5  # 同一聚类中最大点间距
+        # eps = 1.0  # 同一聚类中最大点间距
+        #
+        # min_points = 3  # 有效聚类的最小点数
+        # labels = np.array(pcdd.cluster_dbscan(eps, min_points, print_progress=True))
+        # max_label = labels.max()  # 获取聚类标签的最大值 [-1,0,1,2,...,max_label]，label = -1 为噪声，因此总聚类个数为 max_label + 1
+        # print(f"point cloud has {max_label + 1} clusters")
+        # colors = plt.get_cmap("tab20")(labels / (max_label if max_label > 0 else 1))
+        # colors[labels < 0] = 0  # labels = -1 的簇为噪声，以黑色显示
+        # pcdd.colors = o3d.utility.Vector3dVector(colors[:, :3])
+        # o3d.visualization.draw_geometries([pcdd])
+        # for j in range(max_label + 1):
+        #     point1 = []
+        #     for i in range(np.array(pcdd.points).shape[0]):
+        #         # print(i)
+        #         if labels[i] == j:
+        #             # print(pcdd[i])
+        #             # pin = pcdd.select_by_index(i)
+        #             # print(pcdd.points[i])
+        #             # print("-----")
+        #             point1.append(pcdd.points[i])
+        #     area = polygon_area(point1)
+        #     print("第" + str(j) + "的缺陷的面积：" + str(area))
+        #     self.textBrowser.append("第" + str(j) + "的缺陷的面积：" + str(area))
+
+    def defect_Area(self,type):
+        pd = select_type(self.pcd, type)
+        pcdd = o3d.geometry.PointCloud()
+        # 加载点坐标
+        pcdd.points = o3d.utility.Vector3dVector(pd)
+        print("->正在DBSCAN聚类...")
+        # eps = 1.5  # 同一聚类中最大点间距
+        eps = 1.0  # 同一聚类中最大点间距
+        min_points = 3  # 有效聚类的最小点数
+        labels = np.array(pcdd.cluster_dbscan(eps, min_points, print_progress=True))
+        max_label = labels.max()  # 获取聚类标签的最大值 [-1,0,1,2,...,max_label]，label = -1 为噪声，因此总聚类个数为 max_label + 1
+        print(f"point cloud has {max_label + 1} clusters")
+        colors = plt.get_cmap("tab20")(labels / (max_label if max_label > 0 else 1))
+        colors[labels < 0] = 0  # labels = -1 的簇为噪声，以黑色显示
+        pcdd.colors = o3d.utility.Vector3dVector(colors[:, :3])
+        o3d.visualization.draw_geometries([pcdd])
+        for j in range(max_label + 1):
+            point1 = []
+            for i in range(np.array(pcdd.points).shape[0]):
+                # print(i)
+                if labels[i] == j:
+                    # print(pcdd[i])
+                    # pin = pcdd.select_by_index(i)
+                    # print(pcdd.points[i])
+                    # print("-----")
+                    point1.append(pcdd.points[i])
+            area = polygon_area(point1)
+            print("第" + str(j) + "个的"+str(type)+"缺陷的面积：" + str(area))
+            self.textBrowser.append("第" + str(j) + "个的"+str(type)+"缺陷的面积：" + str(area))
+
 
     def Connect_To_Camera(self):
         a=self.Host_IP_Line.text()
@@ -374,24 +440,51 @@ class mywindow(QtWidgets.QMainWindow,Ui_MainWindow):
         config['DataBase']['PassWord']=self.DB_Line_Password.text()
 
         self.FeedBack_Text.setText('保存成功')
+        # db.close()
 
         with open('configs.ini', 'w') as configfile:
             config.write(configfile)
 
     def DB_Sign_In(self):
         try:
-            db = pymysql.connect(host='localhost', user='root', passwd='123456', port=3306)
+            str1=self.DB_Line_Connet_Name.text()
+            host1 =self.DB_Line_Host.text()
+            port1 =self.DB_Line_Port.text()
+            user1=self.DB_Line_Userid.text()
+            passwd1 = self.DB_Line_Password.text()
+            self.FeedBack_Text.append(str1)
+            global  db
+            # db = pymysql.connect(host=host1, user=user1, passwd=passwd1, port=int(port1),database="test1")
+
+            db = pymysql.connect(host='localhost', user='root', passwd='123456', port=3306,database='test1')
             # db = pymysql.connect(host='192.168.31.1', user='root', passwd='123456', port=3306)
+            self.FeedBack_Text.append('连接成功！')
             print('连接成功！')
         except:
+            self.FeedBack_Text.append('something wrong!')
             print('something wrong!')
         # 使用 cursor() 方法创建一个游标对象 cursor
         cursor = db.cursor()
+
+        #sql插入语句
+        sql ="""INSERT INTO test_image(id,image,txt)
+                VALUES (2,'message','dir')
+                """
+        try:
+            #执行sql语句
+            cursor.execute(sql)
+            #提交到数据库执行
+            db.commit()
+            self.FeedBack_Text.append('yes！')
+        except:
+            #发生错误则回滚
+            db.rollback()
 
         # 使用 execute()  方法执行 SQL 查询
         cursor.execute("SELECT VERSION()")
         # 使用 fetchone() 方法获取单条数据.
         data = cursor.fetchone()
+        self.FeedBack_Text.append('Database version : %s'% data)
 
         print("Database version : %s " % data)
 

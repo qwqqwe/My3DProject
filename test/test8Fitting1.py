@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 from mayavi import mlab
 from pyinstrument import Profiler
 from line_profiler import LineProfiler
-import heartrate
+# import heartrate
 import random
 from scipy import signal
 from kneed import KneeLocator
@@ -118,7 +118,7 @@ def display():
   # fp=open('AllOutPutNom/O777/1.txt', 'w')
   # fp = open('AllOutPutNom/O777/2.txt', 'w')
   # save_path="../test/AllOutPutNom/O777/Filter_{}.png"
-  fp = open('AllOutPutNom/O8/2.txt', 'w')
+  # fp = open('AllOutPutNom/O8/2.txt', 'w')
   save_path = "../test/AllOutPutNom/O8/Filter_{}.png"
 
   # np.set_printoptions(precision=5)

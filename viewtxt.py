@@ -3,7 +3,7 @@ import time
 import open3d as o3d
 import numpy as np
 y_threshold = 0.1
-txt_path = 'txtcouldpoint/Finalzhengzheng5.txt'
+txt_path = 'txtcouldpoint/Finalfanzheng5.txt'
 # txt_path = 'txtcouldpoint/Original/Third_146.txt'
 # txt_path = 'heidian.txt'
 
@@ -13,7 +13,7 @@ start_time = time.time()
 pcd = np.loadtxt(txt_path, delimiter=",")
 pcd_vector = o3d.geometry.PointCloud()
 # print(pcd.shape)
-
+# pcd.paint_uniform_color([1, 1, 1])
 # 加载点坐标
 pcd_vector.points = o3d.utility.Vector3dVector(pcd[:, :3])
 # pcd_vector.paint_uniform_color([1,0.706,0])

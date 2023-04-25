@@ -3,8 +3,8 @@ import time
 import open3d as o3d
 import numpy as np
 y_threshold = 0.1
-txt_path = 'txtcouldpoint/Finaldistroy1.txt'
-# txt_path = 'txtcouldpoint/Original/Third_146.txt'
+# txt_path = 'txtcouldpoint/Finaldistroy1.txt'
+txt_path = 'txtcouldpoint/Original/Third_146.txt'
 
 start_time = time.time()
 # 通过numpy读取txt点云

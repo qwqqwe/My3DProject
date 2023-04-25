@@ -11,7 +11,7 @@ from matplotlib import pyplot as plt
 from mayavi import mlab
 from pyinstrument import Profiler
 from line_profiler import LineProfiler
-import heartrate
+# import heartrate
 
 def display_inlier_outlier(cloud, ind):
   inlier_cloud = cloud.select_by_index(ind)
@@ -37,7 +37,8 @@ def visualizer_cloud(filtered):
 # heartrate.trace(browser=True)
 if __name__ == "__main__":
 
-  txt_path = '../txtcouldpoint/Depth_L5000_t220802_104306_01111.txt'
+  # txt_path = '../txtcouldpoint/Depth_L5000_t220802_104306_01111.txt'
+  txt_path='../txtcouldpoint\Finalzhengfan3.txt'
   start_time = time.time()
   # 通过numpy读取txt点云
   pcd_1 = np.genfromtxt(txt_path, delimiter=",")

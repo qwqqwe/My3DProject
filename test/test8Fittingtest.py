@@ -23,6 +23,7 @@ from scipy import signal
 from kneed import KneeLocator
 from line_profiler import LineProfiler
 from functools import wraps
+
 def display_inlier_outlier(cloud, ind):
   inlier_cloud = cloud.select_by_index(ind)
   outlier_cloud = cloud.select_by_index(ind, invert=True)

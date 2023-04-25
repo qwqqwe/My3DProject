@@ -2121,7 +2121,7 @@ QLineEdit:focus {
 }</string>
                                </property>
                                <property name="placeholderText">
-                                <string>数据库的IP地址</string>
+                                <string>数据库的IP地址localhost</string>
                                </property>
                               </widget>
                              </item>
@@ -2167,7 +2167,7 @@ QLineEdit:focus {
 }</string>
                                </property>
                                <property name="placeholderText">
-                                <string>数据库的端口号</string>
+                                <string>数据库的端口号3306</string>
                                </property>
                               </widget>
                              </item>
@@ -2213,7 +2213,7 @@ QLineEdit:focus {
 }</string>
                                </property>
                                <property name="placeholderText">
-                                <string>数据库的用户名</string>
+                                <string>数据库的用户名root</string>
                                </property>
                               </widget>
                              </item>
@@ -2259,7 +2259,7 @@ QLineEdit:focus {
 }</string>
                                </property>
                                <property name="placeholderText">
-                                <string>数据库的密码</string>
+                                <string>数据库的密码123456</string>
                                </property>
                               </widget>
                              </item>

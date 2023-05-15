@@ -24,6 +24,8 @@ from kneed import KneeLocator
 from line_profiler import LineProfiler
 from functools import wraps
 
+from matplotlib.font_manager import FontProperties
+
 def display_inlier_outlier(cloud, ind):
   inlier_cloud = cloud.select_by_index(ind)
   outlier_cloud = cloud.select_by_index(ind, invert=True)
@@ -100,7 +102,8 @@ def Router(v):
 # @func_line_time
 # 定义一个测试函数
 def display():
-
+  my_font = FontProperties(fname=r"C:\Users\Administrator\Downloads\微软雅黑.ttf", size=12)
+  plt.rcParams['font.family'] = my_font.get_name()
   afile='fanzheng5'
   #设fan为我们的正确的方向
   txt_path= '../txtcouldpoint/Final{}.txt'.format(afile)
@@ -417,16 +420,13 @@ def display():
 
 
 
-
-
-
       plt.plot(x[akb1], y[akb1], '+', markersize=20)
-      plt.plot(x, y, '*', label='original values')
+      plt.plot(x, y, '*', label='原始数据',color='black')
 
 
 
-      plt.plot(x, y_pred, label='fit values')
-      plt.plot(x, yy_pred, label='fitttt values')
+      plt.plot(x, y_pred, label='拟合曲线A', linestyle='--',color='black')
+      plt.plot(x, yy_pred, label='拟合曲线B',color='black')
       plt.title('')
       plt.xlabel('')
       plt.ylabel('')
